@@ -1,0 +1,3059 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full bg-slate-50"><head><script data-bard-client-injected="true">(function(firebaseConfig, initialAuthToken, appId) {
+        window.__firebase_config = firebaseConfig;
+        window.__initial_auth_token = initialAuthToken;
+        window.__app_id = appId;
+            })("\n{\n  \"apiKey\": \"AIzaSyCqyCcs2R2e7AegGjvFAwG98wlamtbHvZY\",\n  \"authDomain\": \"bard-frontend.firebaseapp.com\",\n  \"projectId\": \"bard-frontend\",\n  \"storageBucket\": \"bard-frontend.firebasestorage.app\",\n  \"messagingSenderId\": \"175205271074\",\n  \"appId\": \"1:175205271074:web:2b7bd4d34d33bf38e6ec7b\"\n}\n","eyJhbGciOiJSUzI1NiIsImtpZCI6IjExNjRiNzdiNDMzZDdhMDAyMWI4NjE4YjhjYTU3ZTMyZGI5MWUxMTMiLCJ0eXAiOiJKV1QifQ.eyJzdWIiOiJmaXJlYmFzZS1hZG1pbnNkay1mYnN2Y0BiYXJkLWZyb250ZW5kLmlhbS5nc2VydmljZWFjY291bnQuY29tIiwiYXVkIjoiaHR0cHM6Ly9pZGVudGl0eXRvb2xraXQuZ29vZ2xlYXBpcy5jb20vZ29vZ2xlLmlkZW50aXR5LmlkZW50aXR5dG9vbGtpdC52MS5JZGVudGl0eVRvb2xraXQiLCJ1aWQiOiIwMzY1OTI3OTcxMDkwNzA2MzI0NCIsImlzcyI6ImZpcmViYXNlLWFkbWluc2RrLWZic3ZjQGJhcmQtZnJvbnRlbmQuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJjbGFpbXMiOnsiYXBwSWQiOiJjX2QyOTk0OTk5MzU4MjVlNmZfaW5kZXguaHRtbC04MjMifSwiZXhwIjoxNzk0MTQ0NTU4LCJpYXQiOjE3OTQxNDA5NTgsImFsZyI6IlJTMjU2In0.N9PuKFHEPzM88sXpp3qBNbhnIXNXrZ5ohASQy47RDMLWmFJd2Z4xz_Ot2Gu8JpQ7Hlo0QhvO0HD0wYwIiISlQzQZzFDseqm9F6NTkYP4uFfHZgk9xCL-HZdEYP3e_sgcULCI7K5r-0ZDK5s1prD17jUuU-tI1yUCh1XWMfBv0mbWxvp8ngQlxst4crWIPM4dj-6-WUFHfS4nhfvvwsfvw4aG9egF38ZpqHSVYi49QQTQIdcWHH-47RDOEUReZ5moez-OqHAb0R76CF24HXjKeuixNw3FLKWxbEvzR0Q_7dR1NjysQEyMSXfh0sDJYieBiASHEROd-2gp4GuIlkYXZw","c_d299499935825e6f_index.html-823")</script><script data-bard-client-injected="true">
+  document.addEventListener('input', (event) => {
+    if (event.target && (event.target.isContentEditable || event.target.hasAttribute('contenteditable'))) {
+      const clonedDoc = document.cloneNode(true);
+      const injectedScripts = clonedDoc.querySelectorAll('[data-bard-client-injected="true"]');
+      injectedScripts.forEach(el => el.remove());
+      window.parent.postMessage({
+        type: 'inlineEdit',
+        html: '<!DOCTYPE html>\n' + clonedDoc.documentElement.outerHTML
+      }, '*');
+    }
+  });
+</script><script data-bard-client-injected="true">(function(){'use strict';window.addEventListener("message",a=>{a.data&&a.data.type==="SUPPLEMENTAL_DATA_UPDATE"&&window.dispatchEvent(new CustomEvent("supplementaldataupdate",{detail:a.data.data}))});}).call(this);
+</script><script data-bard-client-injected="true">(function() {
+  const SCROLL_KEYS = new Set([
+    'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight',
+    ' ', 'Spacebar', 'PageUp', 'PageDown', 'Home', 'End',
+  ]);
+  const HORIZONTAL_KEYS = new Set(['ArrowLeft', 'ArrowRight']);
+
+  function isTextEntryTarget(target) {
+    if (!target) return false;
+    const tagName = target.tagName;
+    return tagName === 'INPUT' || tagName === 'TEXTAREA' ||
+        tagName === 'SELECT' || target.isContentEditable === true;
+  }
+
+  // An element absorbs the key only if it both overflows on the axis being
+  // scrolled and is configured to scroll on that axis. The cheap dimension
+  // test runs first because getComputedStyle forces a style recalc, and this
+  // runs on every keypress. Each axis is read from its own longhand: the
+  // 'overflow' shorthand serializes as two values when the axes differ, which
+  // is the common 'overflow-x: hidden; overflow-y: auto' pane.
+  function canScroll(node, horizontal) {
+    const overflows = horizontal ? node.scrollWidth > node.clientWidth
+                                 : node.scrollHeight > node.clientHeight;
+    if (!overflows) return false;
+    const style = window.getComputedStyle(node);
+    const overflow = horizontal ? style.overflowX : style.overflowY;
+    return overflow === 'auto' || overflow === 'scroll';
+  }
+
+  // Walks up from the event target so nested scrollers keep their behavior.
+  // <body> is included because pages that pin the root height make it the
+  // scroll container.
+  function hasScrollableAncestor(target, horizontal) {
+    let node = target;
+    while (node && node !== document.documentElement) {
+      if (canScroll(node, horizontal)) return true;
+      node = node.parentElement;
+    }
+    return false;
+  }
+
+  function rootCanScroll(horizontal) {
+    const scroller = document.scrollingElement || document.documentElement;
+    if (!scroller) return false;
+    // Tolerate a pixel of rounding so subpixel layouts do not look scrollable.
+    return horizontal ? scroller.scrollWidth > window.innerWidth + 1
+                      : scroller.scrollHeight > window.innerHeight + 1;
+  }
+
+  window.addEventListener('keydown', function(event) {
+    if (!SCROLL_KEYS.has(event.key)) return;
+    if (event.defaultPrevented) return;
+    // Alt and Meta turn arrows into browser history navigation, and Ctrl is
+    // reserved for shortcuts, so none of them are scroll intent.
+    if (event.altKey || event.metaKey || event.ctrlKey) return;
+
+    const target = event.target;
+    if (isTextEntryTarget(target)) return;
+
+    // Anything that can still absorb the scroll gets to keep it.
+    const horizontal = HORIZONTAL_KEYS.has(event.key);
+    if (rootCanScroll(horizontal)) return;
+    if (hasScrollableAncestor(target, horizontal)) return;
+
+    event.preventDefault();
+  }, {capture: true, passive: false});
+})();</script><script data-bard-client-injected="true">(function() {
+  // Ensure this script is executed only once
+  if (window.firebaseAuthBridgeScriptLoaded) {
+    return;
+  }
+  window.firebaseAuthBridgeScriptLoaded = true;
+
+  let nextTokenPromiseId = 0;
+
+  // Stores { resolve, reject } for ongoing token requests
+  const pendingTokenPromises = {};
+
+  // Listen for messages from the Host Application
+  window.addEventListener('message', function(event) {
+
+    const messageData = event.data;
+
+  if (messageData && messageData.type === 'RESOLVE_NEW_FIREBASE_TOKEN') {
+      const { success, token, error, promiseId } = messageData ?? {};
+      if (pendingTokenPromises[promiseId]) {
+        if (success) {
+          pendingTokenPromises[promiseId].resolve(token);
+        } else {
+          pendingTokenPromises[promiseId].reject(new Error(error || 'Token refresh failed from host.'));
+        }
+        delete pendingTokenPromises[promiseId];
+      }
+    }
+  });
+
+  // Expose a function for the Generated App to request a new Firebase token
+  window.requestNewFirebaseToken = function() {
+    const currentPromiseId = nextTokenPromiseId++;
+    const promise = new Promise((resolve, reject) => {
+      pendingTokenPromises[currentPromiseId] = { resolve, reject };
+    });
+    if (window.parent && window.parent !== window) {
+      window.parent.postMessage({
+        type: 'REQUEST_NEW_FIREBASE_TOKEN',
+        promiseId: currentPromiseId
+      }, '*');
+    } else {
+      pendingTokenPromises[currentPromiseId].reject(new Error('No parent window to request token from.'));
+      delete pendingTokenPromises[currentPromiseId];
+    }
+    return promise;
+  };
+})();</script><script data-bard-client-injected="true">
+let realOriginalGetUserMedia = null;
+if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+  realOriginalGetUserMedia = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
+}
+
+(function() {
+  if (navigator.mediaDevices && navigator.mediaDevices.__proto__) {
+    try {
+      Object.defineProperty(navigator.mediaDevices.__proto__, 'getUserMedia', {
+        get: function() {
+          return undefined; // Or throw an error
+        },
+        configurable: false
+      });
+    } catch (error) {
+      console.error("Error defining prototype getter:", error);
+    }
+  }
+})();
+
+(function() {
+  const pendingMediaResolvers = {};
+  let nextMediaPromiseId = 0;
+
+  function requestMediaPermissions(constraints) {
+    const mediaPromiseId = nextMediaPromiseId++;
+    const promise = new Promise((resolve, reject) => {
+      pendingMediaResolvers[mediaPromiseId] = (granted) => {
+        delete pendingMediaResolvers[mediaPromiseId];
+        resolve(granted);
+      };
+    });
+
+    window.parent.postMessage({
+      type: 'requestMediaPermission',
+      constraints: constraints,
+      promiseId: mediaPromiseId,
+    }, '*');
+
+    return promise;
+  }
+
+  let originalGetUserMedia = realOriginalGetUserMedia;
+
+  function interceptGetUserMedia() {
+    if (navigator.mediaDevices) {
+      Object.defineProperty(navigator.mediaDevices, 'getUserMedia', {
+        value: function(constraints) {
+          return requestMediaPermissions(constraints).then((granted) => {
+            if (granted) {
+              if (originalGetUserMedia) {
+                return originalGetUserMedia(constraints);
+              } else {
+                throw new Error("Original getUserMedia not available.");
+              }
+            } else {
+              throw new DOMException('Permission denied', 'NotAllowedError');
+            }
+          });
+        },
+        writable: false,
+        configurable: false
+      });
+    }
+  }
+
+  interceptGetUserMedia();
+
+  const observer = new MutationObserver(function(mutationsList, observer) {
+    for (const mutation of mutationsList) {
+      if (mutation.type === 'reconfigured' && mutation.name === 'getUserMedia' && mutation.object === navigator.mediaDevices) {
+        interceptGetUserMedia();
+      } else if (mutation.type === 'attributes' && mutation.attributeName === 'getUserMedia' && mutation.target === navigator.mediaDevices) {
+        interceptGetUserMedia();
+      } else if (mutation.type === 'childList' && mutation.addedNodes) {
+        mutation.addedNodes.forEach(node => {
+          if (node === navigator.mediaDevices) {
+            interceptGetUserMedia();
+          }
+        });
+      }
+    }
+  });
+
+  function interceptSpeechRecognition() {
+    if (!window.SpeechRecognition && !window.webkitSpeechRecognition) {
+      return;
+    }
+
+    const OriginalSpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    const SpeechRecognitionWrapper = function(...args) {
+      const recognizer = new OriginalSpeechRecognition(...args);
+      const originalStart = recognizer.start.bind(recognizer);
+
+      recognizer.start = function() {
+        requestMediaPermissions({ audio: true }).then(granted => {
+          if (granted) {
+            originalStart();
+          } else {
+            const errorEvent = new SpeechRecognitionErrorEvent('error');
+            errorEvent.error = 'not-allowed'; // This is the standard error for permission denial.
+            recognizer.dispatchEvent(errorEvent);
+          }
+        });
+      };
+
+      return recognizer;
+    };
+
+    SpeechRecognitionWrapper.prototype = OriginalSpeechRecognition.prototype;
+    SpeechRecognitionWrapper.prototype.constructor = SpeechRecognitionWrapper;
+
+    if (window.SpeechRecognition) {
+      window.SpeechRecognition = SpeechRecognitionWrapper;
+    }
+    if (window.webkitSpeechRecognition) {
+      window.webkitSpeechRecognition = SpeechRecognitionWrapper;
+    }
+  }
+
+  interceptSpeechRecognition();
+
+  window.addEventListener('message', function(event) {
+    if (event.data) {
+      if (event.data.type === 'resolveMediaPermission') {
+        const { promiseId, granted } = event.data;
+        if (pendingMediaResolvers[promiseId]) {
+          pendingMediaResolvers[promiseId](granted);
+        }
+      }
+    }
+  });
+
+})();</script><script ws-interception-config="{&quot;parentOrigin&quot;:&quot;https://gemini.google.com&quot;,&quot;proxiedDomains&quot;:[]}" data-bard-client-injected="true">(function(){'use strict';var u=typeof Object.defineProperties=="function"?Object.defineProperty:function(b,d,e){if(b==Array.prototype||b==Object.prototype)return b;b[d]=e.value;return b};function v(b){b=["object"==typeof globalThis&&globalThis,b,"object"==typeof window&&window,"object"==typeof self&&self,"object"==typeof global&&global];for(var d=0;d<b.length;++d){var e=b[d];if(e&&e.Math==Math)return e}throw Error("Cannot find global object");}var w=v(this);
+function y(b,d){if(d)a:{var e=w;b=b.split(".");for(var h=0;h<b.length-1;h++){var k=b[h];if(!(k in e))break a;e=e[k]}b=b[b.length-1];h=e[b];d=d(h);d!=h&&d!=null&&u(e,b,{configurable:!0,writable:!0,value:d})}}function z(b){function d(h){return b.next(h)}function e(h){return b.throw(h)}return new Promise(function(h,k){function m(n){n.done?h(n.value):Promise.resolve(n.value).then(d,e).then(m,k)}m(b.next())})}y("globalThis",function(b){return b||w});/*
+
+ Copyright The Closure Library Authors.
+ SPDX-License-Identifier: Apache-2.0
+*/
+function A(b,d){function e(){}e.prototype=d.prototype;b.j=d.prototype;b.prototype=new e;b.prototype.constructor=b;b.h=function(h,k,m){for(var n=Array(arguments.length-2),p=2;p<arguments.length;p++)n[p-2]=arguments[p];return d.prototype[k].apply(h,n)}};function B(b,d,e="*"){function h(a){if(typeof a==="string")return F.encode(a).buffer;if(a instanceof ArrayBuffer)return a.slice(0);if(ArrayBuffer.isView(a))return a.buffer.slice(a.byteOffset,a.byteOffset+a.byteLength);throw Error("Invalid data type");}function k(a){a=h(a);var f={type:"send",data:new Uint8Array(a)},g;(g=r)==null||g.postMessage(f,[a])}function m(){if(!r)throw Error("Data port not captured yet.");r.onmessage=a=>{if(a.data.type==="message"){a=new MessageEvent("message",{data:G.decode(a.data.data)});
+let f;(f=c.onmessage)==null||f.call(c,a);c.dispatchEvent(a)}}}function n(){if(!t)throw Error("Control port not captured yet.");t.onmessage=a=>{switch(a.data.type){case "open":l=1;var f=new Event("open"),g;(g=c.onopen)==null||g.call(c,f);c.dispatchEvent(f);q.forEach(H=>{k(H)});q=[];break;case "close":g=a.data;l=3;g=new CloseEvent("close",{code:g.code,reason:g.reason,wasClean:g.wasClean});(f=c.onclose)==null||f.call(c,g);c.dispatchEvent(g);break;case "error":l=3;f=new Event("error");let x;(x=c.onerror)==
+null||x.call(c,f);c.dispatchEvent(f)}}}function p(a){return z(function*(){var f=new MessageChannel;t=f.port1;var g=new MessageChannel;r=g.port1;n();m();window.parent.postMessage({type:"websocket_open",portOrdering:["control","data"],url:b,protocols:a||[],connectionId:I},e,[f.port2,g.port2])}())}var c=Reflect.construct(EventTarget,[],new.target);c.CONNECTING=0;c.OPEN=1;c.CLOSING=2;c.CLOSED=3;c.url=b;c.binaryType="arraybuffer";c.protocol="";c.i="";var l=0,t=null,r=null,q=[],F=new TextEncoder,G=new TextDecoder;
+c.onopen=null;c.onmessage=null;c.onclose=null;c.onerror=null;Object.defineProperty(c,"readyState",{get:()=>l,enumerable:!0,configurable:!0});Object.defineProperty(c,"bufferedAmount",{get:()=>{var a=0;q.forEach(f=>{a+=typeof f==="string"?f.length:f.byteLength});return a},enumerable:!0,configurable:!0});var I=function(){var a;return((a=globalThis.crypto)==null?0:a.randomUUID)?globalThis.crypto.randomUUID():"xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,f=>{var g=Math.random()*16|0;return(f===
+"x"?g:g&3|8).toString(16)})}();c.send=a=>{if(l===1)a instanceof Blob?a.arrayBuffer().then(f=>{k(f)}):k(a);else if(l===0)if(typeof a==="string")q.push(a);else if(a instanceof ArrayBuffer||ArrayBuffer.isView(a))q.push(h(a));else throw Error("Sending Blob is not supported before the connection is open.");else console.debug("WebSocket send called in CLOSING or CLOSED state; ignored.")};c.close=(a=1E3,f="")=>{if(l!==2&&l!==3){l=2;a={type:"close",code:a,reason:f,wasClean:a===1E3};var g;(g=t)==null||g.postMessage(a)}};
+Promise.resolve().then(()=>p(d));return c}A(B,EventTarget);var C=document.currentScript,D=C==null?void 0:C.getAttribute("ws-interception-config");if(!D)throw Error("WebSocket Interceptor: Missing ws-interception-config attribute in the script tag.");var E=JSON.parse(D);if(!E.parentOrigin||typeof E.parentOrigin!=="string")throw Error("WebSocket Interceptor: Invalid parentOrigin in ws-interception-config");
+(function(b){var d=Object.getOwnPropertyDescriptor(window,"WebSocket");if(!d||d.writable||d.configurable)d=Object.assign(function(e,h){try{let k=(new URL(e)).hostname;if(b.proxiedDomains.some(m=>k===m||k.endsWith(`.${m}`)))return new B(e,h,b.parentOrigin)}catch(k){throw window.parent.postMessage({type:"websocket_blocked",url:e,reason:"blocked_invalid_url"},b.parentOrigin),new DOMException(`WebSocket connection to '${e}' is not allowed in Canvas.`,"SecurityError");}window.parent.postMessage({type:"websocket_blocked",
+url:e,reason:"blocked_domain_not_allowlisted"},b.parentOrigin);throw new DOMException(`WebSocket connection to '${e}' is not allowed in Canvas.`,"SecurityError");},{CONNECTING:0,OPEN:1,CLOSING:2,CLOSED:3}),Object.defineProperty(window,"WebSocket",{value:d,writable:!1,configurable:!1})})({proxiedDomains:E.proxiedDomains||[],parentOrigin:E.parentOrigin});}).call(this);
+</script><script data-bard-client-injected="true">((function(modelInformation) {
+  const originalFetch = window.fetch;
+  // TODO: b/421908508 - Move these out of the script and match all generative AI model calls.
+  let googleLlmBaseApiUrls = [
+    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.textModelName + ':streamGenerateContent',
+    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.textModelName + ':generateContent',
+    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.imageModelName + ':predict',
+    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.imageModelName + ':predictLongRunning',
+    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.imageEditModelName + ':generateContent',
+    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.imageTransformModelName + ':generateContent',
+    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.videoModelName + ':predict',
+    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.videoModelName + ':predictLongRunning',
+    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.ttsModelName + ':generateContent',
+  ];
+  modelInformation.deprecatedTextModelNames.forEach((modelName) => {
+    googleLlmBaseApiUrls.push(
+      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':streamGenerateContent',
+      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':generateContent',
+    );
+  });
+  modelInformation.deprecatedImageModelNames.forEach((modelName) => {
+    googleLlmBaseApiUrls.push(
+      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':predict',
+      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':predictLongRunning',
+      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':generateContent',
+      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':streamGenerateContent',
+    );
+  });
+  modelInformation.deprecatedGenerateImageModelNames.forEach((modelName) => {
+    googleLlmBaseApiUrls.push(
+      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':generateContent',
+      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':streamGenerateContent',
+    );
+  });
+  modelInformation.deprecatedImageTransformModelNames.forEach((modelName) => {
+    googleLlmBaseApiUrls.push(
+      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':generateContent',
+      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':streamGenerateContent',
+    );
+  });
+
+  const pendingFetchResolvers = {};
+  let nextPromiseId = 0;
+
+  function handleStringInput(input, optionsArgument) {
+    const actualUrl = input;
+    const fetchCallArgs = [actualUrl, optionsArgument];
+    const effectiveOptions = optionsArgument || {};
+    const bodyForApiKeyCheck = effectiveOptions.body;
+    const bodyForPostMessage = effectiveOptions.body;
+    return { actualUrl, fetchCallArgs, effectiveOptions, bodyForApiKeyCheck, bodyForPostMessage };
+  }
+
+  function handleRequestInput(input, optionsArgument) {
+    const actualUrl = input.url;
+    const fetchCallArgs = [input, optionsArgument];
+    const effectiveOptions = { method: input.method, headers: new Headers(input.headers) };
+    let bodyForApiKeyCheck;
+    let bodyForPostMessage;
+
+    if (optionsArgument) {
+      if (optionsArgument.method) effectiveOptions.method = optionsArgument.method;
+      if (optionsArgument.headers) effectiveOptions.headers = new Headers(optionsArgument.headers);
+      if ('body' in optionsArgument) {
+        bodyForApiKeyCheck = optionsArgument.body;
+        bodyForPostMessage = optionsArgument.body;
+      } else {
+        bodyForApiKeyCheck = undefined;
+        bodyForPostMessage = input.body;
+      }
+    } else {
+      bodyForApiKeyCheck = undefined;
+      bodyForPostMessage = input.body;
+    }
+    return { actualUrl, fetchCallArgs, effectiveOptions, bodyForApiKeyCheck, bodyForPostMessage };
+  }
+
+  window.fetch = function(input, optionsArgument) {
+    let actualUrl;
+    let fetchCallArgs;
+    let effectiveOptions = {};
+    let bodyForApiKeyCheck;
+    let bodyForPostMessage;
+
+    if (typeof input === 'string') {
+      ({actualUrl, fetchCallArgs, effectiveOptions, bodyForApiKeyCheck, bodyForPostMessage} = handleStringInput(input, optionsArgument));
+    } else if (input instanceof Request) {
+      ({actualUrl, fetchCallArgs, effectiveOptions, bodyForApiKeyCheck, bodyForPostMessage} = handleRequestInput(input, optionsArgument));
+    } else {
+      return originalFetch.apply(window, [input, optionsArgument]);
+    }
+
+    effectiveOptions.method = effectiveOptions.method || 'GET';
+    if (!effectiveOptions.headers) {
+      effectiveOptions.headers = new Headers();
+    }
+
+
+    if (typeof actualUrl === 'string' && googleLlmBaseApiUrls.some((url) => actualUrl.startsWith(url))) {
+      let apiKeyIsNull = true;
+
+      const regex = new RegExp("models/([^:]+)");
+      const modelNameMatch = actualUrl.match(regex);
+      const modelName = modelNameMatch ? modelNameMatch[1] : 'unspecified';
+
+
+      try {
+        const urlObject = new URL(actualUrl);  // Use URL object for robust parsing
+        const apiKeyParam = urlObject.searchParams.get('key');
+        if (apiKeyParam) {
+          apiKeyIsNull = false;
+        }
+      } catch (e) {
+        // Continue checks even if URL parsing fails
+      }
+
+      if (apiKeyIsNull && effectiveOptions.headers) {
+        const h = new Headers(effectiveOptions.headers);
+        const apiKeyHeaderValue = h.get('X-API-Key') || h.get('x-api-key');
+        if (apiKeyHeaderValue) {
+          apiKeyIsNull = false;
+          return originalFetch.apply(window, fetchCallArgs);
+        }
+      }
+
+      if (apiKeyIsNull && effectiveOptions.method && ['POST', 'PUT', 'PATCH'].includes(effectiveOptions.method.toUpperCase()) && typeof bodyForApiKeyCheck === 'string') {
+        try {
+          const bodyData = JSON.parse(bodyForApiKeyCheck);
+          if (bodyData && bodyData.apiKey) {
+            apiKeyIsNull = false;
+            return originalFetch.apply(window, fetchCallArgs);
+          }
+        } catch (e) {
+          // Ignore JSON parsing errors
+        }
+      }
+
+      if(apiKeyIsNull) {
+        const promiseId = nextPromiseId++;
+        const promise = new Promise((resolve) => {
+          pendingFetchResolvers[promiseId] = (resolvedResponse) => {
+            delete pendingFetchResolvers[promiseId];
+            resolve(resolvedResponse);
+          };
+        });
+
+        let serializedBodyForPostMessage;
+        if (typeof bodyForPostMessage === 'string' || bodyForPostMessage == null) {
+            serializedBodyForPostMessage = bodyForPostMessage;
+        } else if (bodyForPostMessage instanceof ReadableStream) {
+            serializedBodyForPostMessage = null;
+        } else {
+            try {
+                serializedBodyForPostMessage = JSON.stringify(bodyForPostMessage);
+            } catch (e) {
+                serializedBodyForPostMessage = null;
+            }
+        }
+
+        const messageOptions = {
+            method: effectiveOptions.method,
+            headers: Object.fromEntries(new Headers(effectiveOptions.headers).entries()),
+            body: serializedBodyForPostMessage
+        };
+
+        window.parent.postMessage({
+          type: 'requestFetch',
+          url: actualUrl,
+          modelName: modelName,
+          options: messageOptions,
+          promiseId: promiseId,
+        }, '*');
+
+        return promise;
+      }
+      return originalFetch.apply(window, fetchCallArgs);
+    }
+    return originalFetch.apply(window, fetchCallArgs);
+  };
+
+  window.addEventListener('message', function(event) {
+    if (event.data && event.data.type === 'resolveFetch') {
+      const { promiseId, response } = event.data;
+      if (pendingFetchResolvers[promiseId]) {
+        try {
+          const reconstructedResponse = new Response(response.body, {
+            status: response.status,
+            statusText: response.statusText,
+            headers: new Headers(response.headers),
+          });
+          pendingFetchResolvers[promiseId](reconstructedResponse);
+        } catch (error) {
+          pendingFetchResolvers[promiseId](new Response(null, { status: 500, statusText: "Interceptor Response Reconstruction Error" }));
+        }
+      }
+    }
+  });
+
+}))({"textModelName":"gemini-3-flash-preview","imageModelName":"imagen-4.0-generate-001","imageEditModelName":"gemini-3.1-flash-image","imageTransformModelName":"gemini-3-pro-image","videoModelName":"veo-2.0-generate-001","ttsModelName":"gemini-2.5-flash-preview-tts","deprecatedTextModelNames":["gemini-2.0-flash","gemini-2.5-flash","gemini-2.5-flash-preview-04-17","gemini-2.5-flash-preview-05-20","gemini-2.5-flash-preview-09-2025"],"deprecatedImageModelNames":["imagen-3.0-generate-001","imagen-3.0-generate-002"],"deprecatedGenerateImageModelNames":["gemini-2.5-flash-image-preview","gemini-2.5-flash-image","gemini-3.1-flash-image-preview"],"deprecatedImageTransformModelNames":["gemini-3-pro-image-preview-11-2025"]})</script><script data-bard-client-injected="true">(function() {
+  function normalizeSlug(str) {
+    try {
+      return str
+        .trim()
+        .toLowerCase()
+        .replace(/[^p{L}p{N}s_-]/gu, '')
+        .replace(/s+/g, '-');
+    } catch (e) {
+      return str
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9s_-]/g, '')
+        .replace(/s+/g, '-');
+    }
+  }
+
+  function findTargetElement(hash) {
+    if (!hash || hash === '#') {
+      return null;
+    }
+    const rawId = hash.startsWith('#') ? hash.slice(1) : hash;
+    let decodedId = rawId;
+    try {
+      decodedId = decodeURIComponent(rawId);
+    } catch (e) {
+      // Ignore URI malformed errors.
+    }
+
+    // 1. Direct ID match (raw and decoded).
+    let target = document.getElementById(rawId) || document.getElementById(decodedId);
+    if (target) {
+      return target;
+    }
+
+    // 2. Name attribute match (<a name="...">).
+    try {
+      if (typeof CSS !== 'undefined' && CSS.escape) {
+        target =
+          document.querySelector('[name="' + CSS.escape(rawId) + '"]') ||
+          document.querySelector('[name="' + CSS.escape(decodedId) + '"]');
+      } else {
+        const namedElements = document.getElementsByName(rawId);
+        if (namedElements && namedElements.length > 0) {
+          return namedElements[0];
+        }
+      }
+    } catch (e) {
+      // Ignore querySelector syntax errors.
+    }
+    if (target) {
+      return target;
+    }
+
+    // 3. Match heading text by slug (for Markdown TOCs where headings lack explicit IDs).
+    const targetSlug = normalizeSlug(decodedId);
+    if (targetSlug) {
+      for (const heading of document.querySelectorAll('h1, h2, h3, h4, h5, h6')) {
+        if (normalizeSlug(heading.textContent || '') === targetSlug) {
+          return heading;
+        }
+      }
+    }
+
+    return null;
+  }
+
+  document.addEventListener('click', function(event) {
+    const target = event.target;
+    const anchor = target && typeof target.closest === 'function' ? target.closest('a') : null;
+    if (!anchor) {
+      return;
+    }
+
+    const href = anchor.getAttribute('href');
+    if (
+      !href ||
+      href.trim().toLowerCase().startsWith('javascript:') ||
+      anchor.hasAttribute('download')
+    ) {
+      return;
+    }
+
+    // Check if the link is an in-page hash / anchor link.
+    if (href.startsWith('#')) {
+      event.preventDefault();
+      const targetElement = findTargetElement(href);
+      if (targetElement) {
+        targetElement.scrollIntoView({behavior: 'smooth', block: 'start'});
+      }
+      return;
+    }
+
+    // Check if the URL has the same origin/pathname but with a hash.
+    try {
+      const url = new URL(anchor.href, window.location.href);
+      if (
+        url.hash &&
+        url.origin === window.location.origin &&
+        url.pathname === window.location.pathname
+      ) {
+        event.preventDefault();
+        const targetElement = findTargetElement(url.hash);
+        if (targetElement) {
+          targetElement.scrollIntoView({behavior: 'smooth', block: 'start'});
+        }
+        return;
+      }
+    } catch (e) {
+      // Fall through if URL parsing fails.
+    }
+
+    // For all external or full navigation links, prevent iframe-level navigation
+    // (which breaks in AGSA WebView or sandboxed iframes) and ensure they open
+    // safely in a new tab/window.
+    if (anchor.target !== '_blank') {
+      event.preventDefault();
+      window.open(anchor.href, '_blank', 'noopener,noreferrer');
+    }
+  }, {capture: true});
+})();</script><script data-bard-client-injected="true">(function(){'use strict';function a(){window.parent.postMessage({type:"interaction"},"*")}window.addEventListener("click",a,{capture:!0,passive:!0});window.addEventListener("touchstart",a,{capture:!0,passive:!0});window.addEventListener("keydown",a,{capture:!0,passive:!0});}).call(this);
+</script><script data-bard-client-injected="true">(function() {
+  const originalConsoleLog = console.log;
+  const originalConsoleError = console.error;
+
+    /**
+   * Normalizes an error event or a promise rejection reason into a structured error object.
+   * @param {*} errorEventOrReason The error object or reason.
+   * @return {object} Structured error data { message, name, stack }.
+   */
+  function getErrorObject(errorEventOrReason) {
+    if (errorEventOrReason instanceof Error) {
+      return {
+        message: errorEventOrReason.message,
+        name: errorEventOrReason.name,
+        stack: errorEventOrReason.stack,
+      };
+    }
+    // Fallback for non-Error objects.
+    try {
+      return {
+        message: JSON.stringify(errorEventOrReason),
+        name: 'UnknownErrorType',
+        stack: null,
+      };
+    } catch (e) {
+      return {
+        message: String(errorEventOrReason),
+        name: 'UnknownErrorTypeNonStringifiable',
+        stack: null,
+      };
+    }
+  }
+
+  /**
+   * Converts an array of arguments (from log/error) into a single string.
+   * Handles Error objects specially to include their message and stack.
+   * @param {Array<*>} args - Arguments passed to console methods.
+   * @return {string} A string representation of the arguments.
+   */
+  function stringifyArgs(args) {
+    return args
+      .map((arg) => {
+        if (arg instanceof Error) {
+          const {message, stack} = arg;
+          return `Error: ${message}${stack ? ('\nStack: ' + stack) : ''}`;
+        }
+        if (typeof arg === 'object' && arg !== null) {
+          try {
+            return JSON.stringify(arg);
+          } catch (error) {
+            return '[Circular Object]';
+          }
+        } else {
+          return String(arg);
+        }
+      })
+      .join(' ');
+  }
+
+  console.log = function(...args) {
+    const logString = stringifyArgs(args);
+    window.parent.postMessage({ type: 'log', message: logString }, '*');
+    originalConsoleLog.apply(console, args);
+  };
+
+  console.error = function(...args) {
+    let errorData;
+    if (args.length > 0 && args[0] instanceof Error) {
+      const err = args[0];
+      // If the first arg is an Error, capture its details.
+      errorData = {
+        type: 'error',
+        source: 'CONSOLE_ERROR',
+        ...getErrorObject(err),
+        rawArgsString: stringifyArgs(args.slice(1)),
+        timestamp: new Date().toISOString(),
+      };
+    } else {
+      // If not an Error object, treat all args as a general error message.
+      errorData = {
+        type: 'error',
+        source: 'CONSOLE_ERROR',
+        message: stringifyArgs(args),
+        name: 'ConsoleLoggedError',
+        stack: null,
+        timestamp: new Date().toISOString(),
+      };
+    }
+    window.parent.postMessage(errorData, '*');
+    originalConsoleError.apply(console, args);
+  };
+
+  // Listen for global unhandled synchronous errors.
+  window.addEventListener('error', function(event) {
+    const errorDetails = event.error ? getErrorObject(event.error) : {
+      message: event.message,
+      name: 'GlobalError',
+      stack: null,
+      filename: event.filename,
+      lineno: event.lineno,
+      colno: event.colno,
+    };
+
+    window.parent.postMessage({
+      type: 'error',
+      source: 'global',
+      ...errorDetails,
+      message: errorDetails.message || event.message,
+      timestamp: new Date().toISOString(),
+    }, '*');
+  });
+
+  // Listen for unhandled promise rejections (asynchronous errors).
+  window.addEventListener('unhandledrejection', function(event) {
+    const errorDetails = getErrorObject(event.reason);
+
+    window.parent.postMessage({
+      type: 'error',
+      source: 'unhandledrejection',
+      ...errorDetails,
+      message: errorDetails.message || 'Unhandled Promise Rejection',
+      timestamp: new Date().toISOString(),
+    }, '*');
+  });
+
+})();</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SúperPlan - Compra Inteligente Mercadona Castellón</title>
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="SúperPlan">
+  <meta name="theme-color" content="#007A3D">
+  <!-- Enlace al manifest.json (para GitHub Pages) y fallback dinámico -->
+  <link id="pwa-manifest-link" rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='112' fill='%23007A3D'/%3E%3Cpath d='M160 160h224l-24 128H184L160 160zm-32-32h32l32 192h192v32H176l-32-192h-16v-32zm80 256a24 24 0 1 1 0 48 24 24 0 0 1 0-48zm128 0a24 24 0 1 1 0 48 24 24 0 0 1 0-48z' fill='%23ffffff'/%3E%3C/svg%3E">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            mercadona: {
+              DEFAULT: '#007A3D', // Classic Mercadona Green
+              dark: '#005e2e',
+              light: '#e6f4ed',
+              accent: '#F9A01B', // Warm yellow/orange
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Smooth Transitions & Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+    .fade-in {
+      animation: fadeIn 0.25s ease-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:"Plus Jakarta Sans", sans-serif;font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.pointer-events-none{pointer-events:none}.fixed{position:fixed}.sticky{position:sticky}.inset-0{inset:0px}.right-4{right:1rem}.top-0{top:0px}.top-4{top:1rem}.z-30{z-index:30}.z-50{z-index:50}.mx-auto{margin-left:auto;margin-right:auto}.ml-1{margin-left:0.25rem}.mr-1{margin-right:0.25rem}.mt-0\.5{margin-top:0.125rem}.block{display:block}.flex{display:flex}.grid{display:grid}.hidden{display:none}.h-full{height:100%}.h-10{height:2.5rem}.h-16{height:4rem}.max-h-\[92vh\]{max-height:92vh}.w-10{width:2.5rem}.w-full{width:100%}.max-w-6xl{max-width:72rem}.max-w-sm{max-width:24rem}.max-w-xl{max-width:36rem}.flex-1{flex:1 1 0%}@keyframes pulse{50%{opacity:.5}}.animate-pulse{animation:pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite}.list-inside{list-style-position:inside}.list-decimal{list-style-type:decimal}.grid-cols-1{grid-template-columns:repeat(1, minmax(0, 1fr))}.flex-col{flex-direction:column}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:0.25rem}.gap-1\.5{gap:0.375rem}.gap-2{gap:0.5rem}.gap-2\.5{gap:0.625rem}.gap-3{gap:0.75rem}.space-x-1 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(0.25rem * var(--tw-space-x-reverse));margin-left:calc(0.25rem * calc(1 - var(--tw-space-x-reverse)))}.space-y-1\.5 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.375rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.375rem * var(--tw-space-y-reverse))}.space-y-2 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.5rem * var(--tw-space-y-reverse))}.space-y-3 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.75rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.overflow-hidden{overflow:hidden}.overflow-x-auto{overflow-x:auto}.overflow-y-auto{overflow-y:auto}.whitespace-nowrap{white-space:nowrap}.rounded{border-radius:0.25rem}.rounded-2xl{border-radius:1rem}.rounded-3xl{border-radius:1.5rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:0.5rem}.rounded-xl{border-radius:0.75rem}.border{border-width:1px}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-amber-200{--tw-border-opacity:1;border-color:rgb(253 230 138 / var(--tw-border-opacity, 1))}.border-emerald-200{--tw-border-opacity:1;border-color:rgb(167 243 208 / var(--tw-border-opacity, 1))}.border-emerald-300{--tw-border-opacity:1;border-color:rgb(110 231 183 / var(--tw-border-opacity, 1))}.border-slate-100{--tw-border-opacity:1;border-color:rgb(241 245 249 / var(--tw-border-opacity, 1))}.border-slate-200{--tw-border-opacity:1;border-color:rgb(226 232 240 / var(--tw-border-opacity, 1))}.bg-slate-50{--tw-bg-opacity:1;background-color:rgb(248 250 252 / var(--tw-bg-opacity, 1))}.bg-amber-100{--tw-bg-opacity:1;background-color:rgb(254 243 199 / var(--tw-bg-opacity, 1))}.bg-amber-400{--tw-bg-opacity:1;background-color:rgb(251 191 36 / var(--tw-bg-opacity, 1))}.bg-amber-50\/70{background-color:rgb(255 251 235 / 0.7)}.bg-emerald-100{--tw-bg-opacity:1;background-color:rgb(209 250 229 / var(--tw-bg-opacity, 1))}.bg-emerald-100\/80{background-color:rgb(209 250 229 / 0.8)}.bg-emerald-50\/80{background-color:rgb(236 253 245 / 0.8)}.bg-mercadona{--tw-bg-opacity:1;background-color:rgb(0 122 61 / var(--tw-bg-opacity, 1))}.bg-mercadona-light{--tw-bg-opacity:1;background-color:rgb(230 244 237 / var(--tw-bg-opacity, 1))}.bg-slate-100{--tw-bg-opacity:1;background-color:rgb(241 245 249 / var(--tw-bg-opacity, 1))}.bg-slate-200{--tw-bg-opacity:1;background-color:rgb(226 232 240 / var(--tw-bg-opacity, 1))}.bg-slate-900{--tw-bg-opacity:1;background-color:rgb(15 23 42 / var(--tw-bg-opacity, 1))}.bg-slate-900\/60{background-color:rgb(15 23 42 / 0.6)}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.bg-gradient-to-r{background-image:linear-gradient(to right, var(--tw-gradient-stops))}.from-emerald-600{--tw-gradient-from:#059669 var(--tw-gradient-from-position);--tw-gradient-to:rgb(5 150 105 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.to-teal-700{--tw-gradient-to:#0f766e var(--tw-gradient-to-position)}.p-3{padding:0.75rem}.p-3\.5{padding:0.875rem}.p-4{padding:1rem}.p-6{padding:1.5rem}.px-1\.5{padding-left:0.375rem;padding-right:0.375rem}.px-2{padding-left:0.5rem;padding-right:0.5rem}.px-3{padding-left:0.75rem;padding-right:0.75rem}.px-3\.5{padding-left:0.875rem;padding-right:0.875rem}.px-4{padding-left:1rem;padding-right:1rem}.px-5{padding-left:1.25rem;padding-right:1.25rem}.py-0\.5{padding-top:0.125rem;padding-bottom:0.125rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-1\.5{padding-top:0.375rem;padding-bottom:0.375rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-2\.5{padding-top:0.625rem;padding-bottom:0.625rem}.py-4{padding-top:1rem;padding-bottom:1rem}.pb-24{padding-bottom:6rem}.pb-3{padding-bottom:0.75rem}.pl-1{padding-left:0.25rem}.pt-1{padding-top:0.25rem}.pt-3{padding-top:0.75rem}.text-left{text-align:left}.font-sans{font-family:"Plus Jakarta Sans", sans-serif}.font-mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}.text-\[10px\]{font-size:10px}.text-\[11px\]{font-size:11px}.text-base{font-size:1rem;line-height:1.5rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:0.75rem;line-height:1rem}.font-bold{font-weight:700}.font-extrabold{font-weight:800}.font-medium{font-weight:500}.font-semibold{font-weight:600}.uppercase{text-transform:uppercase}.leading-none{line-height:1}.leading-relaxed{line-height:1.625}.tracking-wider{letter-spacing:0.05em}.text-slate-800{--tw-text-opacity:1;color:rgb(30 41 59 / var(--tw-text-opacity, 1))}.text-amber-300{--tw-text-opacity:1;color:rgb(252 211 77 / var(--tw-text-opacity, 1))}.text-amber-500{--tw-text-opacity:1;color:rgb(245 158 11 / var(--tw-text-opacity, 1))}.text-amber-600{--tw-text-opacity:1;color:rgb(217 119 6 / var(--tw-text-opacity, 1))}.text-amber-900{--tw-text-opacity:1;color:rgb(120 53 15 / var(--tw-text-opacity, 1))}.text-emerald-600{--tw-text-opacity:1;color:rgb(5 150 105 / var(--tw-text-opacity, 1))}.text-emerald-900{--tw-text-opacity:1;color:rgb(6 78 59 / var(--tw-text-opacity, 1))}.text-mercadona{--tw-text-opacity:1;color:rgb(0 122 61 / var(--tw-text-opacity, 1))}.text-slate-400{--tw-text-opacity:1;color:rgb(148 163 184 / var(--tw-text-opacity, 1))}.text-slate-500{--tw-text-opacity:1;color:rgb(100 116 139 / var(--tw-text-opacity, 1))}.text-slate-600{--tw-text-opacity:1;color:rgb(71 85 105 / var(--tw-text-opacity, 1))}.text-slate-700{--tw-text-opacity:1;color:rgb(51 65 85 / var(--tw-text-opacity, 1))}.text-slate-900{--tw-text-opacity:1;color:rgb(15 23 42 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.underline{-webkit-text-decoration-line:underline;text-decoration-line:underline}.antialiased{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.shadow-2xl{--tw-shadow:0 25px 50px -12px rgb(0 0 0 / 0.25);--tw-shadow-colored:0 25px 50px -12px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-sm{--tw-shadow:0 1px 2px 0 rgb(0 0 0 / 0.05);--tw-shadow-colored:0 1px 2px 0 var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-emerald-700\/20{--tw-shadow-color:rgb(4 120 87 / 0.2);--tw-shadow:var(--tw-shadow-colored)}.shadow-mercadona\/30{--tw-shadow-color:rgb(0 122 61 / 0.3);--tw-shadow:var(--tw-shadow-colored)}.transition-all{transition-property:all;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-colors{transition-property:color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.selection\:bg-mercadona-light *::selection{--tw-bg-opacity:1;background-color:rgb(230 244 237 / var(--tw-bg-opacity, 1))}.selection\:text-mercadona *::selection{--tw-text-opacity:1;color:rgb(0 122 61 / var(--tw-text-opacity, 1))}.selection\:bg-mercadona-light::selection{--tw-bg-opacity:1;background-color:rgb(230 244 237 / var(--tw-bg-opacity, 1))}.selection\:text-mercadona::selection{--tw-text-opacity:1;color:rgb(0 122 61 / var(--tw-text-opacity, 1))}.hover\:bg-amber-300:hover{--tw-bg-opacity:1;background-color:rgb(252 211 77 / var(--tw-bg-opacity, 1))}.hover\:bg-emerald-200\/80:hover{background-color:rgb(167 243 208 / 0.8)}.hover\:bg-emerald-50:hover{--tw-bg-opacity:1;background-color:rgb(236 253 245 / var(--tw-bg-opacity, 1))}.hover\:bg-mercadona-dark:hover{--tw-bg-opacity:1;background-color:rgb(0 94 46 / var(--tw-bg-opacity, 1))}.hover\:bg-slate-100:hover{--tw-bg-opacity:1;background-color:rgb(241 245 249 / var(--tw-bg-opacity, 1))}.hover\:bg-slate-50:hover{--tw-bg-opacity:1;background-color:rgb(248 250 252 / var(--tw-bg-opacity, 1))}.hover\:bg-slate-800:hover{--tw-bg-opacity:1;background-color:rgb(30 41 59 / var(--tw-bg-opacity, 1))}.hover\:from-emerald-700:hover{--tw-gradient-from:#047857 var(--tw-gradient-from-position);--tw-gradient-to:rgb(4 120 87 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.hover\:to-teal-800:hover{--tw-gradient-to:#115e59 var(--tw-gradient-to-position)}.hover\:text-slate-600:hover{--tw-text-opacity:1;color:rgb(71 85 105 / var(--tw-text-opacity, 1))}.hover\:text-slate-900:hover{--tw-text-opacity:1;color:rgb(15 23 42 / var(--tw-text-opacity, 1))}.active\:scale-95:active{--tw-scale-x:.95;--tw-scale-y:.95;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}@media (min-width: 640px){.sm\:inline{display:inline}.sm\:hidden{display:none}.sm\:grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.sm\:space-x-4 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(1rem * var(--tw-space-x-reverse));margin-left:calc(1rem * calc(1 - var(--tw-space-x-reverse)))}.sm\:p-6{padding:1.5rem}.sm\:px-4{padding-left:1rem;padding-right:1rem}.sm\:px-6{padding-left:1.5rem;padding-right:1.5rem}.sm\:text-sm{font-size:0.875rem;line-height:1.25rem}}@media (min-width: 768px){.md\:inline{display:inline}}</style></head>
+<body class="h-full text-slate-800 flex flex-col font-sans antialiased selection:bg-mercadona-light selection:text-mercadona">
+
+  <!-- NOTIFICATION TOAST CONTAINER -->
+  <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none"></div>
+
+  <!-- TOP APP BAR -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-mercadona text-white flex items-center justify-center font-bold text-xl shadow-sm shadow-mercadona/30">
+          <i class="fa-solid fa-cart-shopping"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="font-bold text-lg text-slate-900 leading-none">SúperPlan</h1>
+            <span class="text-[10px] font-semibold bg-emerald-100 text-mercadona px-2 py-0.5 rounded-full uppercase tracking-wider">Castellón</span>
+            <span id="cloud-sync-badge" class="text-[10px] font-medium bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full flex items-center gap-1"><i class="fa-solid fa-cloud-arrow-up text-emerald-600 text-[10px]"></i><span>Sincronizado en la nube</span></span>
+          </div>
+          <p class="text-xs text-slate-500 flex items-center gap-1 mt-0.5">
+            <i class="fa-solid fa-location-dot text-mercadona text-[11px]"></i>
+            <span id="header-store-label">Mercadona</span> · <span id="header-members-label">1 Adulto · 26-40 años ⚡</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- Quick Action Buttons -->
+      <div class="flex items-center gap-2">
+        <!-- Botón nativo de instalación PWA (aparece automáticamente en GitHub Pages) -->
+        <button id="btn-native-pwa-install" onclick="triggerNativePWAInstall()" class="hidden items-center gap-1.5 text-xs font-extrabold bg-amber-400 hover:bg-amber-300 text-slate-900 px-3.5 py-2 rounded-xl shadow-sm transition-all animate-pulse">
+          <i class="fa-solid fa-download"></i>
+          <span>¡Instalar App!</span>
+        </button>
+
+        <button onclick="openPhoneInstallModal()" class="flex items-center gap-1.5 text-xs font-bold bg-emerald-100/80 hover:bg-emerald-200/80 text-emerald-900 border border-emerald-300 px-3 py-2 rounded-xl transition-all shadow-2xs">
+          <i class="fa-brands fa-github text-slate-900 text-sm"></i>
+          <span>Kit PWA / GitHub Pages</span>
+        </button>
+
+        <button onclick="openAIAssistantModal()" class="flex items-center gap-2 text-xs sm:text-sm font-semibold bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white px-3 sm:px-4 py-2 rounded-xl shadow-sm shadow-emerald-700/20 transition-all active:scale-95">
+          <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
+          <span class="hidden sm:inline">IA Nutricionista &amp; Lista</span>
+          <span class="sm:hidden">IA Plan</span>
+        </button>
+
+        <button onclick="openShareModal('NOTES')" title="Copiar para Notas del celular o WhatsApp" class="px-3 py-2 text-xs sm:text-sm font-semibold border border-slate-200 rounded-xl hover:bg-slate-50 text-slate-700 flex items-center gap-1.5 transition-colors shadow-2xs">
+          <i class="fa-regular fa-clipboard text-mercadona text-sm"></i>
+          <span class="hidden md:inline">Copiar a Notas</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- MAIN NAVIGATION TABS -->
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <nav class="flex space-x-1 sm:space-x-4 border-t border-slate-100 py-1 overflow-x-auto no-scrollbar">
+        <button onclick="switchTab('list')" id="tab-btn-list" class="tab-btn flex items-center gap-2 py-2 px-3 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all whitespace-nowrap">
+          <i class="fa-solid fa-basket-shopping"></i>
+          <span>Lista de Compra</span>
+          <span id="badge-cart-count" class="bg-mercadona text-white text-[11px] px-1.5 py-0.2 rounded-full font-bold ml-1">8</span>
+        </button>
+
+        <button onclick="switchTab('pantry')" id="tab-btn-pantry" class="tab-btn flex items-center gap-2 py-2 px-3 text-sm font-semibold rounded-lg text-mercadona bg-mercadona-light transition-all whitespace-nowrap">
+          <i class="fa-solid fa-boxes-stacked"></i>
+          <span>Mi Despensa &amp; Nevera</span>
+          <span id="badge-pantry-count" class="bg-slate-200 text-slate-700 text-[11px] px-1.5 py-0.2 rounded-full font-semibold ml-1">20</span>
+        </button>
+
+        <button onclick="switchTab('budget')" id="tab-btn-budget" class="tab-btn flex items-center gap-2 py-2 px-3 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all whitespace-nowrap">
+          <i class="fa-solid fa-piggy-bank text-amber-500"></i>
+          <span>Presupuesto &amp; Ahorro (mercadona.es)</span>
+          <span id="badge-budget-total" class="bg-amber-100 text-amber-900 text-[11px] px-2 py-0.2 rounded-full font-bold ml-1">17,69 €</span>
+        </button>
+
+        <button onclick="switchTab('menu')" id="tab-btn-menu" class="tab-btn flex items-center gap-2 py-2 px-3 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all whitespace-nowrap">
+          <i class="fa-solid fa-utensils"></i>
+          <span>Plan de Comidas</span>
+        </button>
+
+        <button onclick="switchTab('config')" id="tab-btn-config" class="tab-btn flex items-center gap-2 py-2 px-3 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all whitespace-nowrap">
+          <i class="fa-solid fa-sliders"></i>
+          <span>Hogar y Preferencias</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MAIN APP CONTAINER -->
+  <main class="flex-1 max-w-6xl w-full mx-auto p-4 sm:p-6 pb-24">
+
+    <!-- ========================================== -->
+  <!-- MODAL: KIT PWA & GITHUB PAGES              -->
+  <!-- ========================================== -->
+  <div id="modal-phone-install" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-xl rounded-3xl p-6 shadow-2xl border border-slate-100 fade-in flex flex-col max-h-[92vh] overflow-hidden">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div class="flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center font-bold text-lg shadow-sm">
+            <i class="fa-brands fa-github"></i>
+          </div>
+          <div>
+            <h3 class="text-base font-bold text-slate-900">Publicar como PWA en GitHub Pages</h3>
+            <p class="text-xs text-slate-500">Descarga los 3 archivos listos para instalar offline en tu móvil</p>
+          </div>
+        </div>
+        <button onclick="closeModal('modal-phone-install')" class="text-slate-400 hover:text-slate-600 text-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="overflow-y-auto space-y-4 py-4 flex-1 text-xs">
+        <!-- Estado actual de la PWA -->
+        <div id="pwa-status-banner" class="bg-slate-100 border border-slate-200 rounded-2xl p-3.5 flex items-center justify-between gap-3">
+          <div class="flex items-center gap-2.5">
+            <i class="fa-solid fa-circle-check text-mercadona text-base"></i>
+            <div>
+              <span class="font-bold text-slate-800 block">Motor PWA y Service Worker integrados</span>
+              <span id="pwa-sw-status-text" class="text-[11px] text-slate-500">Cuando subas los 3 archivos a GitHub Pages, Chrome activará "Instalar aplicación" y modo 100% offline.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Paso 1: Descargar los 3 archivos obligatorios -->
+        <div class="bg-emerald-50/80 border border-emerald-200 rounded-2xl p-4 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="font-extrabold uppercase tracking-wider text-mercadona flex items-center gap-1.5">
+              <i class="fa-solid fa-1"></i> Descarga los 3 archivos para tu repositorio
+            </span>
+            <button onclick="downloadAllPWAFiles()" class="text-[11px] font-bold bg-mercadona hover:bg-mercadona-dark text-white px-3 py-1.5 rounded-xl shadow-xs transition-all">
+              <i class="fa-solid fa-cloud-arrow-down mr-1"></i> Descargar los 3 juntos
+            </button>
+          </div>
+          <p class="text-slate-600">Chrome exige que estos 3 archivos estén en la misma carpeta de tu repositorio de GitHub:</p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1">
+            <button onclick="downloadAppFile()" class="p-3 bg-white hover:bg-emerald-50 rounded-xl border border-emerald-200 text-left flex flex-col justify-between gap-1 transition-all shadow-2xs">
+              <div class="flex items-center justify-between w-full">
+                <span class="font-mono font-bold text-slate-900">index.html</span>
+                <i class="fa-solid fa-download text-mercadona"></i>
+              </div>
+              <span class="text-[10px] text-slate-500">La aplicación completa</span>
+            </button>
+
+            <button onclick="downloadManifestFile()" class="p-3 bg-white hover:bg-emerald-50 rounded-xl border border-emerald-200 text-left flex flex-col justify-between gap-1 transition-all shadow-2xs">
+              <div class="flex items-center justify-between w-full">
+                <span class="font-mono font-bold text-slate-900">manifest.json</span>
+                <i class="fa-solid fa-download text-mercadona"></i>
+              </div>
+              <span class="text-[10px] text-slate-500">Iconos, nombre y pantalla completa</span>
+            </button>
+
+            <button onclick="downloadServiceWorkerFile()" class="p-3 bg-white hover:bg-emerald-50 rounded-xl border border-emerald-200 text-left flex flex-col justify-between gap-1 transition-all shadow-2xs">
+              <div class="flex items-center justify-between w-full">
+                <span class="font-mono font-bold text-slate-900">sw.js</span>
+                <i class="fa-solid fa-download text-mercadona"></i>
+              </div>
+              <span class="text-[10px] text-slate-500">Service Worker (Funciona sin internet)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Paso 2: Subir a GitHub Pages -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-4 space-y-2">
+          <span class="font-extrabold uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
+            <i class="fa-brands fa-github text-slate-900"></i> 2. Sube los archivos a GitHub Pages (2 minutos)
+          </span>
+          <ol class="list-decimal list-inside space-y-1.5 text-slate-600 pl-1">
+            <li>Entra en <a href="https://github.com/new" target="_blank" class="text-mercadona font-bold underline" rel="noopener noreferrer">github.com/new</a> y crea un repositorio público (ej: <code class="bg-slate-100 px-1.5 py-0.5 rounded text-slate-800">superplan</code>).</li>
+            <li>Pulsa en <strong>"uploading an existing file"</strong> y arrastra los 3 archivos: <code class="font-mono font-bold">index.html</code>, <code class="font-mono font-bold">manifest.json</code> y <code class="font-mono font-bold">sw.js</code>. Haz clic en <strong>Commit changes</strong>.</li>
+            <li>Ve a <strong>Settings</strong> → <strong>Pages</strong> (en el menú izquierdo) y en <strong>Branch</strong> elige <code class="font-mono font-bold">main</code> y pulsa <strong>Save</strong>.</li>
+          </ol>
+        </div>
+
+        <!-- Paso 3: Instalar desde el móvil -->
+        <div class="bg-amber-50/70 border border-amber-200 rounded-2xl p-4 space-y-1.5">
+          <span class="font-extrabold uppercase tracking-wider text-amber-900 flex items-center gap-1.5">
+            <i class="fa-solid fa-mobile-screen-button text-amber-600"></i> 3. Ábrelo en tu móvil e instala la PWA
+          </span>
+          <p class="text-slate-700 leading-relaxed">
+            Abre tu enlace <code class="bg-white px-1.5 py-0.5 rounded border border-amber-200 text-slate-800">https://tu-usuario.github.io/superplan/</code> en Chrome desde tu móvil. Verás aparecer arriba el botón amarillo <strong>"¡Instalar App!"</strong> o en los 3 puntos de Chrome la opción <strong>"Instalar aplicación"</strong>. Funcionará incluso dentro del Mercadona aunque no tengas cobertura.
+          </p>
+        </div>
+      </div>
+
+      <div class="pt-3 border-t border-slate-100 flex justify-between items-center">
+        <span class="text-[11px] text-slate-400">100% Gratis · Offline Cache v1</span>
+        <button onclick="closeModal('modal-phone-install')" class="text-xs font-bold bg-slate-900 text-white px-5 py-2.5 rounded-xl hover:bg-slate-800 transition-all">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DATALIST OFICIAL HOMOGENEIZADO DE PRODUCTOS MERCADONA -->
+  <datalist id="mercadona-catalog-datalist">
+    <!-- Frutas y Verduras -->
+    <option value="Plátanos de Canarias IGP (Bananas)"></option>
+    <option value="Mandarinas Clemenules de Castellón"></option>
+    <option value="Manzanas Fuji / Golden (Malla 1.5kg)"></option>
+    <option value="Tomate Ensalada / Tomate Pera"></option>
+    <option value="Cebollas Dulces / Grano de Oro (Malla 1kg)"></option>
+    <option value="Ajos Morados Hacendado (Malla 250g)"></option>
+    <option value="Patatas para Cocer o Asar (Malla 2kg)"></option>
+    <option value="Zanahorias Hacendado (Malla 1kg)"></option>
+    <option value="Espinacas Baby Verdifresh (Bolsa)"></option>
+    <option value="Champiñones Laminados (Bandeja 300g)"></option>
+    <option value="Pimientos Semáforo Tricolor (Rojo, Verde, Amarillo)"></option>
+    <option value="Limones de Mesa (Malla 1kg)"></option>
+    <option value="Brócoli Fresco"></option>
+    <option value="Ensalada Mezclum Brotes Tiernos Verdifresh"></option>
+    <option value="Aguacates Hass"></option>
+    <option value="Calabacín Verde"></option>
+
+    <!-- Carnicería -->
+    <option value="Pechuga de Pollo Fileteada (Bandeja ~500g)"></option>
+    <option value="Cinta de Lomo de Cerdo Extrafina"></option>
+    <option value="Hamburguesas de Vacuno y Cerdo / Pollo (Pack 2)"></option>
+    <option value="Pechuga de Pavo en Lonchas Finas Hacendado"></option>
+    <option value="Jamón Serrano Reserva Lonchas Incarlopsa"></option>
+    <option value="Carne Picada Vacuno / Pollo"></option>
+
+    <!-- Pescadería -->
+    <option value="Filetes de Merluza sin Piel Hacendado"></option>
+    <option value="Lomos de Salmón Fresco / Ultracongelado"></option>
+
+    <!-- Lácteos y Huevos -->
+    <option value="Huevos Camperos / Grandes L Huevos Guillén (Docena)"></option>
+    <option value="Yogur +Proteínas Natural Hacendado (Pack 4)"></option>
+    <option value="Queso Fresco Batido 0% +Proteínas Hacendado (500g)"></option>
+    <option value="Queso Cottage Hacendado"></option>
+    <option value="Queso Fresco de Burgos Hacendado"></option>
+    <option value="Queso Grana Padano en Cuña / Polvo Hacendado"></option>
+    <option value="Queso en Lonchas Havarti Light Hacendado"></option>
+    <option value="Leche Semidesnatada / +Proteínas Hacendado (Brik 1L)"></option>
+    <option value="Bebida de Avena Sin Azúcar Hacendado (Brik 1L)"></option>
+
+    <!-- Aceites, Especias y Sazonadores -->
+    <option value="Aceite de Oliva Virgen Extra (AOVE) Hacendado (1L)"></option>
+    <option value="Aceite de Oliva Suave 0,4º Hacendado (1L)"></option>
+    <option value="Vinagre de Manzana / Vino Blanco Hacendado"></option>
+    <option value="Sal Marina Fina Hacendado (1kg)"></option>
+    <option value="Sazonador Pollo y Carne Hacendado"></option>
+    <option value="Sazonador Pasta Hacendado"></option>
+    <option value="Comino Molido Hacendado"></option>
+    <option value="Ajo Granulado / En Polvo Hacendado"></option>
+    <option value="Cebolla en Polvo Hacendado"></option>
+    <option value="Curry Molido Hacendado"></option>
+    <option value="Pimienta Negra Molida Hacendado"></option>
+    <option value="Orégano en Hoja Hacendado"></option>
+    <option value="Pimentón Dulce de la Vera Hacendado"></option>
+    <option value="Canela Molida Hacendado"></option>
+    <option value="Salsa de Soja Reducida en Sal Hacendado"></option>
+
+    <!-- Alacena Seca & Despensa -->
+    <option value="Arroz Redondo Hacendado (Paquete 1kg)"></option>
+    <option value="Arroz Integral / Basmati Hacendado (1kg)"></option>
+    <option value="Espaguetis / Macarrones Integrales Hacendado (500g)"></option>
+    <option value="Atún Claro en Aceite de Oliva Hacendado (Pack 6 latas)"></option>
+    <option value="Atún Claro al Natural Hacendado (Pack 6 latas)"></option>
+    <option value="Copos de Avena Integral Bruselas (500g)"></option>
+    <option value="Lenteja Pardina Cocida Hacendado (Bote 400g)"></option>
+    <option value="Garbanzo Cocido Pedrosillano Hacendado (Bote 400g)"></option>
+    <option value="Alubias Blancas Cocidas Hacendado (Bote 400g)"></option>
+    <option value="Quinoa Hacendado (500g)"></option>
+    <option value="Maíz Dulce Hacendado (Pack 3 latas)"></option>
+    <option value="Tomate Triturado Natural Hacendado (Bote 400g)"></option>
+    <option value="Pan de Molde 100% Integral Familiar Hacendado"></option>
+    <option value="Nueces Naturales Peladas Hacendado (Bolsa 200g)"></option>
+    <option value="Crema de Cacahuete 100% Hacendado (500g)"></option>
+    <option value="Chocolate Negro 85% Cacao Hacendado"></option>
+    <option value="Levadura en Polvo Hacendado (Sobres Repostería)"></option>
+    <option value="Café Molido Natural Hacendado (250g)"></option>
+  </datalist>
+
+  <!-- JAVASCRIPT LOGIC & STATE MANAGEMENT -->
+  <script>
+    // ==========================================
+    // 1. CATÁLOGO DE PRECIOS Y REFERENCIAS MERCADONA.ES
+    // ==========================================
+    const MERCADONA_CATALOG = [
+      // Frutería y Verduras
+      { name: 'Plátanos de Canarias IGP (Bananas)', unitPrice: 0.38, unit: 'unidades', aisle: 'Frutería y Verduras', pantryCat: 'Frutas & Verduras', searchSlug: 'platano de canarias' },
+      { name: 'Mandarinas Clemenules de Castellón', unitPrice: 0.28, unit: 'unidades', aisle: 'Frutería y Verduras', pantryCat: 'Frutas & Verduras', searchSlug: 'mandarina' },
+      { name: 'Manzanas Fuji / Golden (Malla 1.5kg)', unitPrice: 2.15, unit: 'malla / pack', aisle: 'Frutería y Verduras', pantryCat: 'Frutas & Verduras', searchSlug: 'manzanas fuji' },
+      { name: 'Tomate Ensalada / Tomate Pera', unitPrice: 0.35, unit: 'unidades', aisle: 'Frutería y Verduras', pantryCat: 'Frutas & Verduras', searchSlug: 'tomate pera' },
+      { name: 'Cebollas Dulces / Grano de Oro (Malla 1kg)', unitPrice: 1.65, unit: 'malla / pack', aisle: 'Frutería y Verduras', pantryCat: 'Frutas & Verduras', searchSlug: 'cebollas' },
+      { name: 'Ajos Morados Hacendado (Malla 250g)', unitPrice: 1.45, unit: 'malla / pack', aisle: 'Frutería y Verduras', pantryCat: 'Frutas & Verduras', searchSlug: 'ajo morado' },
+      { name: 'Patatas para Cocer o Asar (Malla 2kg)', unitPrice: 2.85, unit: 'malla / pack', aisle: 'Frutería y Verduras', pantryCat: 'Frutas & Verduras', searchSlug: 'patatas' },
+      { name: 'Zanahorias Hacendado (Malla 1kg)', unitPrice: 0.95, unit: 'malla / pack', aisle: 'Frutería y Verduras', pantryCat: 'Frutas & Verduras', searchSlug: 'zanahorias' },
+      { name: 'Espinacas Baby Verdifresh (Bolsa)', unitPrice: 1.25, unit: 'unidades', aisle: 'Frutería y Verduras', pantryCat: 'Frutas & Verduras', searchSlug: 'espinacas baby' },
+      { name: 'Champiñones Laminados (Bandeja 300g)', unitPrice: 1.45, unit: 'bandeja', aisle: 'Frutería y Verduras', pantryCat: 'Frutas & Verduras', searchSlug: 'champiñones laminados' },
+      { name: 'Pimientos Semáforo Tricolor (Rojo, Verde, Amarillo)', unitPrice: 1.95, unit: 'malla / pack', aisle: 'Frutería y Verduras', pantryCat: 'Frutas & Verduras', searchSlug: 'pimientos' },
+      { name: 'Limones de Mesa (Malla 1kg)', unitPrice: 1.60, unit: 'malla / pack', aisle: 'Frutería y Verduras', pantryCat: 'Frutas & Verduras', searchSlug: 'limones' },
+      { name: 'Brócoli Fresco', unitPrice: 1.30, unit: 'unidades', aisle: 'Frutería y Verduras', pantryCat: 'Frutas & Verduras', searchSlug: 'brocoli' },
+      { name: 'Ensalada Mezclum Brotes Tiernos Verdifresh', unitPrice: 1.15, unit: 'unidades', aisle: 'Frutería y Verduras', pantryCat: 'Frutas & Verduras', searchSlug: 'ensalada mezclum' },
+      { name: 'Aguacates Hass', unitPrice: 0.95, unit: 'unidades', aisle: 'Frutería y Verduras', pantryCat: 'Frutas & Verduras', searchSlug: 'aguacate' },
+      { name: 'Calabacín Verde', unitPrice: 0.65, unit: 'unidades', aisle: 'Frutería y Verduras', pantryCat: 'Frutas & Verduras', searchSlug: 'calabacin' },
+
+      // Carnicería
+      { name: 'Pechuga de Pollo Fileteada', unitPrice: 4.35, unit: 'bandeja', aisle: 'Carnicería y Charcutería', pantryCat: 'Nevera & Frescos', searchSlug: 'pechuga de pollo' },
+      { name: 'Cinta de Lomo de Cerdo Extrafina', unitPrice: 3.85, unit: 'bandeja', aisle: 'Carnicería y Charcutería', pantryCat: 'Nevera & Frescos', searchSlug: 'cinta de lomo' },
+      { name: 'Hamburguesas de Vacuno y Cerdo / Pollo (Pack 2)', unitPrice: 2.80, unit: 'bandeja', aisle: 'Carnicería y Charcutería', pantryCat: 'Nevera & Frescos', searchSlug: 'hamburguesas' },
+      { name: 'Solomillos / Bandeja Ahorro Pollo Familiar (~1kg)', unitPrice: 6.75, unit: 'bandeja', aisle: 'Carnicería y Charcutería', pantryCat: 'Nevera & Frescos', searchSlug: 'pollo bandeja' },
+      { name: 'Pechuga de Pavo en Lonchas Finas Hacendado', unitPrice: 2.15, unit: 'malla / pack', aisle: 'Carnicería y Charcutería', pantryCat: 'Nevera & Frescos', searchSlug: 'pechuga de pavo lonchas' },
+      { name: 'Jamón Serrano Reserva Lonchas Incarlopsa', unitPrice: 2.45, unit: 'malla / pack', aisle: 'Carnicería y Charcutería', pantryCat: 'Nevera & Frescos', searchSlug: 'jamon serrano lonchas' },
+      { name: 'Carne Picada Vacuno / Pollo', unitPrice: 3.60, unit: 'bandeja', aisle: 'Carnicería y Charcutería', pantryCat: 'Nevera & Frescos', searchSlug: 'carne picada' },
+
+      // Pescadería
+      { name: 'Filetes de Merluza sin Piel Hacendado', unitPrice: 1.95, unit: 'unidades', aisle: 'Pescadería', pantryCat: 'Congelador', searchSlug: 'filetes de merluza' },
+      { name: 'Merluza Ultracongelada Bolsa Ahorro Hacendado (800g)', unitPrice: 4.95, unit: 'malla / pack', aisle: 'Pescadería', pantryCat: 'Congelador', searchSlug: 'merluza ultracongelada' },
+      { name: 'Lomos de Salmón Fresco / Ultracongelado', unitPrice: 3.40, unit: 'unidades', aisle: 'Pescadería', pantryCat: 'Congelador', searchSlug: 'lomos de salmon' },
+
+      // Lácteos y Huevos
+      { name: 'Huevos Camperos / Grandes L Huevos Guillén', unitPrice: 2.60, unit: 'malla / pack', aisle: 'Lácteos y Huevos', pantryCat: 'Nevera & Frescos', searchSlug: 'huevos grandes L' },
+      { name: 'Yogur +Proteínas Natural Hacendado', unitPrice: 1.65, unit: 'malla / pack', aisle: 'Lácteos y Huevos', pantryCat: 'Nevera & Frescos', searchSlug: 'yogur proteinas' },
+      { name: 'Queso Fresco Batido 0% +Proteínas Hacendado (500g)', unitPrice: 1.15, unit: 'unidades', aisle: 'Lácteos y Huevos', pantryCat: 'Nevera & Frescos', searchSlug: 'queso fresco batido' },
+      { name: 'Queso Cottage Hacendado', unitPrice: 1.35, unit: 'unidades', aisle: 'Lácteos y Huevos', pantryCat: 'Nevera & Frescos', searchSlug: 'queso cottage' },
+      { name: 'Yogur Natural Hacendado (Pack 4)', unitPrice: 0.90, unit: 'malla / pack', aisle: 'Lácteos y Huevos', pantryCat: 'Nevera & Frescos', searchSlug: 'yogur natural' },
+      { name: 'Queso Fresco de Burgos Hacendado', unitPrice: 1.60, unit: 'malla / pack', aisle: 'Lácteos y Huevos', pantryCat: 'Nevera & Frescos', searchSlug: 'queso fresco burgos' },
+      { name: 'Queso Grana Padano en Cuña / Polvo Hacendado', unitPrice: 2.75, unit: 'unidades', aisle: 'Lácteos y Huevos', pantryCat: 'Nevera & Frescos', searchSlug: 'grana padano' },
+      { name: 'Queso en Lonchas Havarti Light Hacendado', unitPrice: 1.85, unit: 'malla / pack', aisle: 'Lácteos y Huevos', pantryCat: 'Nevera & Frescos', searchSlug: 'queso havarti light' },
+      { name: 'Leche Semidesnatada / +Proteínas Hacendado', unitPrice: 0.98, unit: 'brik', aisle: 'Lácteos y Huevos', pantryCat: 'Bebidas', searchSlug: 'leche semidesnatada' },
+      { name: 'Bebida de Avena Sin Azúcar Hacendado', unitPrice: 0.95, unit: 'brik', aisle: 'Lácteos y Huevos', pantryCat: 'Bebidas', searchSlug: 'bebida de avena' },
+
+      // Aceites, Sal, Especias y Sazonadores
+      { name: 'Aceite de Oliva Virgen Extra (AOVE) Hacendado', unitPrice: 6.95, unit: 'botella', aisle: 'Aceites y Despensa', pantryCat: 'Aceites y Especias', searchSlug: 'aceite de oliva virgen extra' },
+      { name: 'Vinagre de Manzana / Vino Blanco Hacendado', unitPrice: 0.85, unit: 'botella', aisle: 'Aceites y Despensa', pantryCat: 'Aceites y Especias', searchSlug: 'vinagre de manzana' },
+      { name: 'Sal Marina Fina Hacendado', unitPrice: 0.40, unit: 'unidades', aisle: 'Aceites y Despensa', pantryCat: 'Aceites y Especias', searchSlug: 'sal fina' },
+      { name: 'Sazonador Pollo y Carne Hacendado', unitPrice: 1.35, unit: 'unidades', aisle: 'Aceites y Despensa', pantryCat: 'Aceites y Especias', searchSlug: 'sazonador carne' },
+      { name: 'Sazonador Pasta Hacendado', unitPrice: 1.30, unit: 'unidades', aisle: 'Aceites y Despensa', pantryCat: 'Aceites y Especias', searchSlug: 'sazonador pasta' },
+      { name: 'Comino Molido Hacendado', unitPrice: 0.95, unit: 'unidades', aisle: 'Aceites y Despensa', pantryCat: 'Aceites y Especias', searchSlug: 'comino molido' },
+      { name: 'Ajo Granulado / En Polvo Hacendado', unitPrice: 0.95, unit: 'unidades', aisle: 'Aceites y Despensa', pantryCat: 'Aceites y Especias', searchSlug: 'ajo en polvo' },
+      { name: 'Cebolla en Polvo Hacendado', unitPrice: 1.10, unit: 'unidades', aisle: 'Aceites y Despensa', pantryCat: 'Aceites y Especias', searchSlug: 'cebolla en polvo' },
+      { name: 'Curry Molido Hacendado', unitPrice: 1.15, unit: 'unidades', aisle: 'Aceites y Despensa', pantryCat: 'Aceites y Especias', searchSlug: 'curry molido' },
+      { name: 'Pimienta Negra Molida Hacendado', unitPrice: 1.05, unit: 'unidades', aisle: 'Aceites y Despensa', pantryCat: 'Aceites y Especias', searchSlug: 'pimienta negra' },
+      { name: 'Orégano en Hoja Hacendado', unitPrice: 0.85, unit: 'unidades', aisle: 'Aceites y Despensa', pantryCat: 'Aceites y Especias', searchSlug: 'oregano' },
+      { name: 'Pimentón Dulce de la Vera Hacendado', unitPrice: 1.35, unit: 'unidades', aisle: 'Aceites y Despensa', pantryCat: 'Aceites y Especias', searchSlug: 'pimenton dulce' },
+      { name: 'Canela Molida Hacendado', unitPrice: 0.95, unit: 'unidades', aisle: 'Aceites y Despensa', pantryCat: 'Aceites y Especias', searchSlug: 'canela molida' },
+      { name: 'Salsa de Soja Reducida en Sal Hacendado', unitPrice: 1.65, unit: 'botella', aisle: 'Aceites y Despensa', pantryCat: 'Aceites y Especias', searchSlug: 'salsa de soja' },
+
+      // Alacena Seca & Conservas
+      { name: 'Arroz Redondo Hacendado', unitPrice: 1.30, unit: 'unidades', aisle: 'Aceites y Despensa', pantryCat: 'Alacena Seca & Conservas', searchSlug: 'arroz redondo' },
+      { name: 'Arroz Integral / Basmati Hacendado (1kg)', unitPrice: 1.65, unit: 'unidades', aisle: 'Aceites y Despensa', pantryCat: 'Alacena Seca & Conservas', searchSlug: 'arroz basmati' },
+      { name: 'Espaguetis / Macarrones Integrales Hacendado', unitPrice: 0.95, unit: 'unidades', aisle: 'Aceites y Despensa', pantryCat: 'Alacena Seca & Conservas', searchSlug: 'espaguetis integrales' },
+      { name: 'Atún Claro en Aceite de Oliva Hacendado', unitPrice: 4.50, unit: 'malla / pack', aisle: 'Aceites y Despensa', pantryCat: 'Alacena Seca & Conservas', searchSlug: 'atun claro aceite de oliva' },
+      { name: 'Atún Claro al Natural Hacendado (Pack 6 latas)', unitPrice: 4.10, unit: 'malla / pack', aisle: 'Aceites y Despensa', pantryCat: 'Alacena Seca & Conservas', searchSlug: 'atun al natural' },
+      { name: 'Copos de Avena Integral Bruselas', unitPrice: 1.05, unit: 'malla / pack', aisle: 'Aceites y Despensa', pantryCat: 'Alacena Seca & Conservas', searchSlug: 'copos de avena' },
+      { name: 'Lenteja Pardina Cocida Hacendado', unitPrice: 0.85, unit: 'unidades', aisle: 'Aceites y Despensa', pantryCat: 'Alacena Seca & Conservas', searchSlug: 'lenteja cocida' },
+      { name: 'Garbanzo Cocido Pedrosillano Hacendado', unitPrice: 0.85, unit: 'unidades', aisle: 'Aceites y Despensa', pantryCat: 'Alacena Seca & Conservas', searchSlug: 'garbanzo cocido' },
+      { name: 'Alubias Blancas Cocidas Hacendado (Bote 400g)', unitPrice: 0.85, unit: 'unidades', aisle: 'Aceites y Despensa', pantryCat: 'Alacena Seca & Conservas', searchSlug: 'alubias cocidas' },
+      { name: 'Quinoa Hacendado (500g)', unitPrice: 2.10, unit: 'unidades', aisle: 'Aceites y Despensa', pantryCat: 'Alacena Seca & Conservas', searchSlug: 'quinoa' },
+      { name: 'Maíz Dulce Hacendado (Pack 3 latas)', unitPrice: 1.45, unit: 'malla / pack', aisle: 'Aceites y Despensa', pantryCat: 'Alacena Seca & Conservas', searchSlug: 'maiz dulce' },
+      { name: 'Tomate Triturado Natural Hacendado', unitPrice: 0.75, unit: 'unidades', aisle: 'Aceites y Despensa', pantryCat: 'Alacena Seca & Conservas', searchSlug: 'tomate triturado' },
+      { name: 'Pan de Molde 100% Integral Familiar Hacendado', unitPrice: 1.35, unit: 'unidades', aisle: 'Panadería y Horno', pantryCat: 'Alacena Seca & Conservas', searchSlug: 'pan de molde integral' },
+      { name: 'Nueces Naturales Peladas Hacendado', unitPrice: 2.35, unit: 'malla / pack', aisle: 'Frutería y Verduras', pantryCat: 'Alacena Seca & Conservas', searchSlug: 'nueces peladas' },
+      { name: 'Crema de Cacahuete 100% Hacendado (500g)', unitPrice: 2.95, unit: 'unidades', aisle: 'Aceites y Despensa', pantryCat: 'Alacena Seca & Conservas', searchSlug: 'crema de cacahuete' },
+      { name: 'Chocolate Negro 85% Cacao Hacendado', unitPrice: 1.25, unit: 'unidades', aisle: 'Aceites y Despensa', pantryCat: 'Alacena Seca & Conservas', searchSlug: 'chocolate 85' },
+      { name: 'Levadura en Polvo Hacendado (Sobres)', unitPrice: 0.85, unit: 'malla / pack', aisle: 'Aceites y Despensa', pantryCat: 'Alacena Seca & Conservas', searchSlug: 'levadura en polvo' },
+      { name: 'Café Molido Natural Hacendado', unitPrice: 2.45, unit: 'unidades', aisle: 'Bebidas y Bodega', pantryCat: 'Bebidas', searchSlug: 'cafe molido natural' }
+    ];
+
+    function findCatalogItem(name) {
+      if (!name) return null;
+      const lower = name.toLowerCase();
+      return MERCADONA_CATALOG.find(c =>
+        c.name.toLowerCase() === lower ||
+        lower.includes(c.name.toLowerCase().split(' ')[0]) ||
+        c.name.toLowerCase().includes(lower.split(' ')[0])
+      ) || null;
+    }
+
+    function getEstimatedUnitPrice(item) {
+      if (typeof item.unitPrice === 'number' && !isNaN(item.unitPrice)) return item.unitPrice;
+      const catMatch = findCatalogItem(item.name);
+      return catMatch ? catMatch.unitPrice : 1.50;
+    }
+
+    // ==========================================
+    // 2. DEFAULT STATE & GLOBAL EXPOSURE
+    // ==========================================
+    window.DEFAULT_STATE = {
+      config: {
+        adults: 1,
+        children: 0,
+        ageRange: "26-40 años",
+        athleteLevel: "deportista",
+        supermarket: "Mercadona (Castellón - Gran Vía / Av. Valencia)",
+        days: 7,
+        weeklyBudgetLimit: 40,
+        customNotes: "Me gustan los productos frescos de la huerta de Castellón, pescado blanco y carnes magras.",
+        preferences: {
+          citricos: true,
+          platanos: true,
+          aove: true,
+          pollo: true,
+          pescado: true,
+          legumbres: true,
+          lacteos: true,
+          cafe: true,
+          ensaladas: true
+        }
+      },
+      // Clean Pantry: ONLY what the user currently has at home
+      pantry: [
+        // 1. Aceites, Sal & Especias
+        { id: 'p_aove', name: 'Aceite de Oliva Virgen Extra (AOVE) Hacendado', qty: 'Media botella (500ml)', category: 'Aceites y Especias' },
+        { id: 'p_sal', name: 'Sal Marina Fina Hacendado', qty: 'Paquete 1kg', category: 'Aceites y Especias' },
+        { id: 'p_saz_pollo', name: 'Sazonador Pollo y Carne Hacendado', qty: '1 bote', category: 'Aceites y Especias' },
+        { id: 'p_saz_pasta', name: 'Sazonador Pasta Hacendado', qty: '1 bote', category: 'Aceites y Especias' },
+        { id: 'p_comino', name: 'Comino Molido Hacendado', qty: '1 bote a mitad', category: 'Aceites y Especias' },
+        { id: 'p_pimienta', name: 'Pimienta Negra y Orégano Hacendado', qty: '2 botes a mitad', category: 'Aceites y Especias' },
+        { id: 'p_canela', name: 'Canela Molida Hacendado', qty: '1 bote (para el budín)', category: 'Aceites y Especias' },
+
+        // 2. Alacena Seca & Conservas
+        { id: 'p_arroz', name: 'Arroz Redondo Hacendado', qty: 'Medio paquete (~500g)', category: 'Alacena Seca & Conservas' },
+        { id: 'p_pasta', name: 'Espaguetis Integrales Hacendado', qty: '1 paquete (500g)', category: 'Alacena Seca & Conservas' },
+        { id: 'p_atun_aove', name: 'Atún Claro en Aceite de Oliva Hacendado', qty: '3 latas sueltas', category: 'Alacena Seca & Conservas' },
+        { id: 'p_lentejas', name: 'Lenteja Pardina Cocida Hacendado', qty: '1 bote de cristal (400g)', category: 'Alacena Seca & Conservas' },
+        { id: 'p_pan_molde', name: 'Pan de Molde 100% Integral Familiar Hacendado', qty: 'Medio paquete', category: 'Alacena Seca & Conservas' },
+
+        // 3. Nevera & Frescos
+        { id: 'p_pavo', name: 'Pechuga de Pavo en Lonchas Finas Hacendado', qty: '1 blíster empezado', category: 'Nevera & Frescos' },
+        { id: 'p_queso_fresco', name: 'Queso Fresco de Burgos Hacendado', qty: '2 tarrinas', category: 'Nevera & Frescos' },
+
+        // 4. Frutas & Verduras
+        { id: 'p_cebollas', name: 'Cebollas Dulces / Grano de Oro', qty: '3 unidades', category: 'Frutas & Verduras' },
+        { id: 'p_ajos', name: 'Ajos Morados Hacendado', qty: '1 cabeza', category: 'Frutas & Verduras' },
+        { id: 'p_patatas', name: 'Patatas para Cocer o Asar', qty: '4 patatas medianas', category: 'Frutas & Verduras' },
+
+        // 5. Bebidas & Desayunos
+        { id: 'p_cafe', name: 'Café Molido Natural Hacendado', qty: '1 paquete en uso', category: 'Bebidas' },
+        { id: 'p_leche', name: 'Leche Semidesnatada Hacendado', qty: '1 brik de 1L', category: 'Bebidas' },
+
+        // 6. Congelador
+        { id: 'p_verdura_cong', name: 'Salteado de Verduras Ultracongelado Hacendado', qty: '1 bolsa (450g)', category: 'Congelador' }
+      ],
+      // Shopping list with real Mercadona prices (€)
+      shoppingList: [
+        { id: 's1', name: 'Plátanos de Canarias IGP (Bananas)', qty: 5, unit: 'unidades', unitPrice: 0.38, category: 'Frutería y Verduras', note: '2 para comer + 3 para el Budín de Banana Proteico', checked: false },
+        { id: 's2', name: 'Mandarinas Clemenules de Castellón', qty: 3, unit: 'unidades', unitPrice: 0.28, category: 'Frutería y Verduras', note: 'Fruta fresca de temporada para media mañana/merienda', checked: false },
+        { id: 's3', name: 'Tomate Ensalada / Tomate Pera', qty: 4, unit: 'unidades', unitPrice: 0.35, category: 'Frutería y Verduras', note: 'Para tostadas del desayuno y ensaladas', checked: false },
+        { id: 's4', name: 'Pechuga de Pollo Fileteada', qty: 1, unit: 'bandeja', unitPrice: 4.35, category: 'Carnicería y Charcutería', note: 'Proteína magra para almuerzos (~500g)', checked: false },
+        { id: 's5', name: 'Huevos Camperos / Grandes L Huevos Guillén', qty: 1, unit: 'malla / pack', unitPrice: 2.60, category: 'Lácteos y Huevos', note: 'Docena (quedan pocos en casa)', checked: false },
+        { id: 's6', name: 'Yogur +Proteínas Natural Hacendado', qty: 1, unit: 'malla / pack', unitPrice: 1.65, category: 'Lácteos y Huevos', note: 'Pack de 4 para meriendas y masa del budín', checked: false },
+        { id: 's7', name: 'Copos de Avena Integral Bruselas', qty: 1, unit: 'malla / pack', unitPrice: 1.05, category: 'Aceites y Despensa', note: 'Paquete 500g para desayunos y budín de banana', checked: false },
+        { id: 's8', name: 'Filetes de Merluza sin Piel Hacendado', qty: 2, unit: 'unidades', unitPrice: 1.95, category: 'Pescadería', note: 'Cenas ligeras y aporte de Omega-3', checked: false }
+      ],
+      // Weekly meal plan (including Breakfast, High-Protein Snack/Merienda & Clinical Nutritionist Notes)
+      mealPlan: [
+        { 
+          day: 'Lunes', 
+          macros: '~142g Prot · 2.250 kcal',
+          breakfast: 'Café solo o con leche + 2 tostadas integrales con tomate natural rallado, AOVE y 2 lonchas de pavo/jamón o 1 huevo',
+          lunch: 'Plato Harvard: 150g pechuga de pollo a la plancha + 80g arroz redondo (de tu despensa) + ensalada de tomate y cebolla con AOVE', 
+          snack: '🍰 1 Porción de Budín de Banana Proteico casero (plátano + avena + huevo) + 1 Mandarina de Castellón',
+          dinner: 'Tortilla francesa de 2 huevos camperos + 1 lata de atún al natural/AOVE con ensalada verde',
+          nutriTip: 'Al enfriar ligeramente el arroz o acompañarlo de fibra y AOVE reduces su índice glucémico y mejoras la energía sostenida.'
+        },
+        { 
+          day: 'Martes', 
+          macros: '~138g Prot · 2.180 kcal',
+          breakfast: 'Café habitual + bol de copos de avena (60g) cocidos con leche, canela en polvo y ½ plátano en rodajas',
+          lunch: 'Guiso rápido de lentejas con sofrito de cebolla/ajo (de tu despensa), pimentón de la Vera y 1 lata de atún o huevo duro', 
+          snack: '🥪 Bocadillo integral pequeño de queso fresco/pavo + 1 Plátano (listo para llevar en mochila)',
+          dinner: '200g de pescado blanco (merluza/bacalao) a la plancha con ajo, perejil, patata cocida y chorrito de AOVE',
+          nutriTip: 'Las legumbres combinadas con vitamina C (mandarina o tomate en fresco) multiplican por 2 la absorción del hierro no-hemo.'
+        },
+        { 
+          day: 'Miércoles', 
+          macros: '~145g Prot · 2.300 kcal',
+          breakfast: 'Café habitual + 2 tostadas integrales con 2 huevos revueltos y chorrito de AOVE',
+          lunch: 'Pasta espaguetis (de tu despensa) salteada con ajo, orégano, tomate natural y 2 latas de atún claro escurridas', 
+          snack: '🍰 1 Porción de Budín de Banana Proteico casero + 1 Mandarina Clemenules',
+          dinner: 'Pechuga de pollo salteada con tiras de cebolla y ensalada de tomate con orégano y AOVE',
+          nutriTip: 'El triptófano del huevo y el pollo en la cena favorece el descanso muscular y la síntesis proteica nocturna.'
+        },
+        { 
+          day: 'Jueves', 
+          macros: '~136g Prot · 2.150 kcal',
+          breakfast: 'Café habitual + 2 tostadas integrales con tomate, AOVE y tortilla de 1 huevo o queso fresco',
+          lunch: 'Pollo al horno o sartén con patata asada, cebolla (de tu despensa) y especias mediterráneas', 
+          snack: '🥣 Yogur natural o proteico + 40g copos de avena + 1 Plátano troceado',
+          dinner: 'Revuelto de 2 huevos camperos con tomate troceado, orégano y 1 rebanada de pan integral',
+          nutriTip: 'La patata cocida/asada tiene el mayor índice de saciedad por caloría de todos los carbohidratos.'
+        },
+        { 
+          day: 'Viernes', 
+          macros: '~140g Prot · 2.220 kcal',
+          breakfast: 'Café habitual + tostadas con AOVE o bol de avena proteica con canela',
+          lunch: 'Arroz mediterráneo salteado con pollo, ajo, pimentón de la Vera y tomate natural', 
+          snack: '🍰 1 Porción de Budín de Banana Proteico casero + 1 Mandarina de Castellón',
+          dinner: 'Filetes de pescado o sándwich completo de pollo/atún, huevo a la plancha y rodajas de tomate fresco',
+          nutriTip: 'Mantener la merienda estructurada el viernes evita llegar con hambre voraz a la cena del fin de semana.'
+        }
+      ]
+    };
+
+    // Attach appState to window so it is accessible from both script and module scopes
+    window.appState = JSON.parse(JSON.stringify(window.DEFAULT_STATE));
+    var appState = window.appState;
+
+    let currentCategoryFilter = 'ALL';
+    let tempAIGeneratedItems = [];
+
+    const MERCADONA_AISLES = [
+      { name: 'Frutería y Verduras', icon: 'fa-apple-whole', color: 'text-emerald-600', bg: 'bg-emerald-50', border: 'border-emerald-200' },
+      { name: 'Carnicería y Charcutería', icon: 'fa-drumstick-bite', color: 'text-rose-600', bg: 'bg-rose-50', border: 'border-rose-200' },
+      { name: 'Pescadería', icon: 'fa-fish', color: 'text-sky-600', bg: 'bg-sky-50', border: 'border-sky-200' },
+      { name: 'Lácteos y Huevos', icon: 'fa-egg', color: 'text-amber-600', bg: 'bg-amber-50', border: 'border-amber-200' },
+      { name: 'Aceites y Despensa', icon: 'fa-bottle-droplet', color: 'text-lime-700', bg: 'bg-lime-50', border: 'border-lime-200' },
+      { name: 'Panadería y Horno', icon: 'fa-bread-slice', color: 'text-orange-600', bg: 'bg-orange-50', border: 'border-orange-200' },
+      { name: 'Bebidas y Bodega', icon: 'fa-mug-hot', color: 'text-indigo-600', bg: 'bg-indigo-50', border: 'border-indigo-200' },
+      { name: 'Limpieza y Hogar', icon: 'fa-gears', color: 'text-teal-600', bg: 'bg-teal-50', border: 'border-teal-200' }
+    ];
+
+    // ==========================================
+    // 3. INITIALIZATION & NAVIGATION
+    // ==========================================
+    function updateCloudBadge(statusText, isSaving = false) {
+      const badge = document.getElementById('cloud-sync-badge');
+      if (!badge) return;
+      if (isSaving) {
+        badge.innerHTML = `<i class="fa-solid fa-rotate fa-spin text-amber-500 text-[10px]"></i><span>Guardando...</span>`;
+      } else {
+        badge.innerHTML = `<i class="fa-solid fa-cloud-arrow-up text-emerald-600 text-[10px]"></i><span>${statusText || 'Guardado activo'}</span>`;
+      }
+    }
+
+    function saveStateToStorage() {
+      updateCloudBadge('Guardando...', true);
+
+      // Guardado local permanente (para que funcione sin internet en el móvil al abrir el .html)
+      try {
+        localStorage.setItem('superplan_local_state', JSON.stringify(appState));
+      } catch (e) {
+        console.warn("Aviso de almacenamiento local:", e);
+      }
+
+      if (typeof window.saveStateToCloud === 'function') {
+        window.saveStateToCloud(appState);
+      } else {
+        setTimeout(() => updateCloudBadge('Guardado activo', false), 300);
+      }
+    }
+
+    function mergeCatalogWithSavedPantry(savedPantry) {
+      if (!Array.isArray(savedPantry)) {
+        return JSON.parse(JSON.stringify(window.DEFAULT_STATE.pantry));
+      }
+      return savedPantry;
+    }
+
+    function initApp() {
+      // Recuperar datos guardados localmente si existen
+      try {
+        const savedLocal = localStorage.getItem('superplan_local_state');
+        if (savedLocal) {
+          const parsed = JSON.parse(savedLocal);
+          if (parsed && typeof parsed === 'object') {
+            if (parsed.config) appState.config = { ...appState.config, ...parsed.config };
+            if (Array.isArray(parsed.pantry)) appState.pantry = parsed.pantry;
+            if (Array.isArray(parsed.shoppingList)) appState.shoppingList = parsed.shoppingList;
+            if (Array.isArray(parsed.mealPlan)) appState.mealPlan = parsed.mealPlan;
+          }
+        }
+      } catch (e) {
+        console.warn("No se pudieron cargar datos locales previos:", e);
+      }
+
+      syncConfigFormInputs();
+      updateUIHeader();
+      renderShoppingList();
+      renderPantryList();
+      renderBudgetSection();
+      renderMealPlan();
+    }
+
+    function openPhoneInstallModal() {
+      const modal = document.getElementById('modal-phone-install');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function switchTab(tabId) {
+      const tabs = ['list', 'pantry', 'budget', 'menu', 'config'];
+      tabs.forEach(t => {
+        const section = document.getElementById(`tab-content-${t}`);
+        const btn = document.getElementById(`tab-btn-${t}`);
+        if (section) {
+          if (t === tabId) section.classList.remove('hidden');
+          else section.classList.add('hidden');
+        }
+        if (btn) {
+          if (t === tabId) {
+            btn.className = "tab-btn flex items-center gap-2 py-2 px-3 text-sm font-semibold rounded-lg text-mercadona bg-mercadona-light transition-all whitespace-nowrap";
+          } else {
+            btn.className = "tab-btn flex items-center gap-2 py-2 px-3 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all whitespace-nowrap";
+          }
+        }
+      });
+      if (tabId === 'budget') {
+        renderBudgetSection();
+      }
+    }
+
+    function updateUIHeader() {
+      const c = appState.config || {};
+      const storeShort = (c.supermarket || 'Mercadona Castellón').split('(')[0].trim();
+      const memberStr = `${c.adults || 1} Adulto${(c.adults || 1) > 1 ? 's' : ''}${c.children > 0 ? ` + ${c.children} Niño${c.children > 1 ? 's' : ''}` : ''} · ${c.ageRange || '26-40 años'}${c.athleteLevel === 'deportista' ? ' ⚡' : ''}`;
+
+      const storeLabel = document.getElementById('header-store-label');
+      const membersLabel = document.getElementById('header-members-label');
+
+      if (storeLabel) storeLabel.innerText = storeShort;
+      if (membersLabel) membersLabel.innerText = memberStr;
+
+      // AI Modal labels
+      const aiPeople = document.getElementById('ai-modal-people');
+      const aiDays = document.getElementById('ai-modal-days');
+      const aiPantry = document.getElementById('ai-modal-pantry-items');
+      if (aiPeople) aiPeople.innerText = memberStr;
+      if (aiDays) aiDays.innerText = `${c.days || 7} Días`;
+      if (aiPantry) aiPantry.innerText = `${(appState.pantry || []).length} alimentos en casa`;
+    }
+
+    function formatEuro(amount) {
+      return (Number(amount) || 0).toFixed(2).replace('.', ',') + ' €';
+    }
+
+    function calculateCartTotal() {
+      return (appState.shoppingList || []).reduce((acc, item) => {
+        const price = getEstimatedUnitPrice(item);
+        return acc + (price * (Number(item.qty) || 1));
+      }, 0);
+    }
+
+    // ==========================================
+    // 4. SHOPPING LIST RENDERING & AISLE LOGIC
+    // ==========================================
+    function setCategoryFilter(category) {
+      currentCategoryFilter = category;
+      const chips = document.querySelectorAll('#category-filter-chips .category-chip');
+      chips.forEach(chip => {
+        const text = chip.innerText.trim();
+        const isActive = (category === 'ALL' && text.startsWith('Todos')) ||
+                         (category.includes('Frutería') && text === 'Frutería') ||
+                         (category.includes('Carnicería') && text === 'Carnicería') ||
+                         (category.includes('Aceites') && text === 'Aceites y Despensa') ||
+                         (category.includes('Lácteos') && text === 'Lácteos');
+        if (isActive) {
+          chip.className = "category-chip active px-3 py-1.5 rounded-full font-semibold bg-slate-900 text-white transition-all whitespace-nowrap";
+        } else {
+          chip.className = "category-chip px-3 py-1.5 rounded-full font-medium bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition-all whitespace-nowrap";
+        }
+      });
+      renderShoppingList();
+    }
+
+    function renderShoppingList() {
+      if (!Array.isArray(appState.shoppingList)) {
+        appState.shoppingList = [];
+      }
+      const list = appState.shoppingList;
+      const container = document.getElementById('shopping-aisles-container');
+      const emptyState = document.getElementById('empty-shopping-list');
+
+      // Update counters & progress bar
+      const total = list.length;
+      const checkedCount = list.filter(i => i.checked).length;
+      const pct = total === 0 ? 0 : Math.round((checkedCount / total) * 100);
+      const totalEuros = calculateCartTotal();
+
+      const badgeCount = document.getElementById('badge-cart-count');
+      const countAllFilter = document.getElementById('count-all-filter');
+      const progressText = document.getElementById('cart-progress-text');
+      const progressBar = document.getElementById('cart-progress-bar');
+      const estTicket = document.getElementById('list-estimated-ticket');
+      const badgeBudget = document.getElementById('badge-budget-total');
+
+      if (badgeCount) badgeCount.innerText = total - checkedCount;
+      if (countAllFilter) countAllFilter.innerText = total;
+      if (progressText) progressText.innerText = `${checkedCount} de ${total} productos en el carro (${pct}%)`;
+      if (progressBar) progressBar.style.width = `${pct}%`;
+      if (estTicket) estTicket.innerText = `Ticket Est: ${formatEuro(totalEuros)}`;
+      if (badgeBudget) badgeBudget.innerText = formatEuro(totalEuros);
+
+      if (total === 0) {
+        if (container) container.innerHTML = '';
+        if (emptyState) emptyState.classList.remove('hidden');
+        renderBudgetSection();
+        saveStateToStorage();
+        return;
+      }
+
+      if (emptyState) emptyState.classList.add('hidden');
+
+      const filteredList = currentCategoryFilter === 'ALL'
+        ? list
+        : list.filter(item => item.category === currentCategoryFilter);
+
+      let html = '';
+
+      MERCADONA_AISLES.forEach(aisle => {
+        const itemsInAisle = filteredList.filter(i => i.category === aisle.name);
+        if (itemsInAisle.length === 0) return;
+
+        const aisleSubtotal = itemsInAisle.reduce((sum, i) => sum + (getEstimatedUnitPrice(i) * (Number(i.qty) || 1)), 0);
+
+        html += `
+          <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-2xs">
+            <div class="${aisle.bg} px-4 py-2.5 border-b ${aisle.border} flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <i class="fa-solid ${aisle.icon} ${aisle.color} text-sm"></i>
+                <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-800">${aisle.name}</h3>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-[11px] font-bold text-mercadona bg-white/90 px-2 py-0.5 rounded-full border border-emerald-100">
+                  ~${formatEuro(aisleSubtotal)}
+                </span>
+                <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-white text-slate-700 shadow-2xs">
+                  ${itemsInAisle.filter(i => i.checked).length}/${itemsInAisle.length}
+                </span>
+              </div>
+            </div>
+            <div class="divide-y divide-slate-100">
+              ${itemsInAisle.map(item => {
+                const lineTotal = getEstimatedUnitPrice(item) * (Number(item.qty) || 1);
+                return `
+                <div class="p-3 sm:px-4 flex items-center justify-between gap-3 hover:bg-slate-50/80 transition-colors ${item.checked ? 'bg-slate-50/60' : ''}">
+                  <div class="flex items-center gap-3 min-w-0 flex-1 cursor-pointer" onclick="toggleItemChecked('${item.id}')">
+                    <button type="button" class="w-5 h-5 rounded-lg border-2 flex items-center justify-center transition-all shrink-0 ${item.checked ? 'bg-mercadona border-mercadona text-white' : 'border-slate-300 bg-white hover:border-mercadona'}">
+                      ${item.checked ? '<i class="fa-solid fa-check text-[10px]"></i>' : ''}
+                    </button>
+                    <div class="min-w-0 flex-1">
+                      <div class="flex items-center gap-2">
+                        <p class="text-sm font-semibold ${item.checked ? 'line-through text-slate-400' : 'text-slate-800'} truncate">
+                          ${item.name}
+                        </p>
+                        <span class="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded shrink-0">
+                          ${formatEuro(lineTotal)}
+                        </span>
+                      </div>
+                      ${item.note ? `<p class="text-[11px] text-slate-400 truncate">${item.note}</p>` : ''}
+                    </div>
+                  </div>
+
+                  <div class="flex items-center gap-2 shrink-0">
+                    <div class="flex items-center bg-slate-100 rounded-xl p-0.5 border border-slate-200">
+                      <button onclick="changeItemQuantity('${item.id}', -1)" class="w-6 h-6 rounded-lg hover:bg-white text-slate-600 font-bold text-xs flex items-center justify-center transition-colors">-</button>
+                      <span class="px-2 text-xs font-bold text-slate-800 whitespace-nowrap">${item.qty} <span class="font-normal text-[10px] text-slate-500">${item.unit || 'uds'}</span></span>
+                      <button onclick="changeItemQuantity('${item.id}', 1)" class="w-6 h-6 rounded-lg hover:bg-white text-slate-600 font-bold text-xs flex items-center justify-center transition-colors">+</button>
+                    </div>
+                    <button onclick="deleteShoppingItem('${item.id}')" class="w-7 h-7 rounded-lg text-slate-300 hover:text-rose-500 hover:bg-rose-50 flex items-center justify-center transition-colors" title="Eliminar">
+                      <i class="fa-solid fa-trash-can text-xs"></i>
+                    </button>
+                  </div>
+                </div>
+              `}).join('')}
+            </div>
+          </div>
+        `;
+      });
+
+      const knownNames = MERCADONA_AISLES.map(a => a.name);
+      const otherItems = filteredList.filter(i => !knownNames.includes(i.category));
+      if (otherItems.length > 0) {
+        html += `
+          <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-2xs">
+            <div class="bg-slate-100 px-4 py-2.5 border-b border-slate-200 flex items-center justify-between">
+              <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-700">Otros Productos</h3>
+              <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-white text-slate-700">${otherItems.length}</span>
+            </div>
+            <div class="divide-y divide-slate-100">
+              ${otherItems.map(item => `
+                <div class="p-3 sm:px-4 flex items-center justify-between gap-3">
+                  <div class="flex items-center gap-3 min-w-0 flex-1 cursor-pointer" onclick="toggleItemChecked('${item.id}')">
+                    <button type="button" class="w-5 h-5 rounded-lg border-2 flex items-center justify-center ${item.checked ? 'bg-mercadona border-mercadona text-white' : 'border-slate-300 bg-white'}">
+                      ${item.checked ? '<i class="fa-solid fa-check text-[10px]"></i>' : ''}
+                    </button>
+                    <span class="text-sm font-semibold ${item.checked ? 'line-through text-slate-400' : 'text-slate-800'}">${item.name}</span>
+                  </div>
+                  <span class="text-xs font-bold text-slate-700">${item.qty} ${item.unit || 'uds'}</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      if (container) container.innerHTML = html;
+      renderBudgetSection();
+      saveStateToStorage();
+    }
+
+    // ==========================================
+    // 5. MODALS & CONFIGURATION HANDLERS
+    // ==========================================
+    function openAddItemModal() {
+      document.getElementById('modal-item-name').value = '';
+      document.getElementById('modal-item-qty').value = '1';
+      document.getElementById('modal-item-notes').value = '';
+      document.getElementById('modal-add-item').classList.remove('hidden');
+      setTimeout(() => document.getElementById('modal-item-name').focus(), 100);
+    }
+
+    function saveNewShoppingItem() {
+      const name = document.getElementById('modal-item-name').value.trim();
+      const qty = parseFloat(document.getElementById('modal-item-qty').value) || 1;
+      const unit = document.getElementById('modal-item-unit').value;
+      const category = document.getElementById('modal-item-category').value;
+      const note = document.getElementById('modal-item-notes').value.trim();
+
+      if (!name) {
+        showToast("Escribe el nombre del producto");
+        return;
+      }
+
+      const catMatch = findCatalogItem(name);
+
+      if (!Array.isArray(appState.shoppingList)) appState.shoppingList = [];
+      appState.shoppingList.unshift({
+        id: 's_' + Date.now(),
+        name: capitalize(name),
+        qty,
+        unit: catMatch ? catMatch.unit : unit,
+        unitPrice: catMatch ? catMatch.unitPrice : 1.50,
+        category: catMatch ? catMatch.aisle : category,
+        note,
+        checked: false
+      });
+
+      closeModal('modal-add-item');
+      renderShoppingList();
+      showToast(`Añadido a la compra: ${qty} ${unit} de ${name}`);
+    }
+
+    function openAddPantryModal(defaultCategory = 'Alacena Seca & Conservas') {
+      document.getElementById('modal-pantry-edit-id').value = '';
+      document.getElementById('modal-pantry-title').innerHTML = `<i class="fa-solid fa-boxes-stacked text-mercadona"></i><span>Añadir Comida que tengo en Casa</span>`;
+      document.getElementById('modal-pantry-name').value = '';
+      document.getElementById('modal-pantry-qty').value = '';
+      const catSelect = document.getElementById('modal-pantry-cat');
+      if (catSelect && defaultCategory) catSelect.value = defaultCategory;
+      document.getElementById('modal-add-pantry').classList.remove('hidden');
+      setTimeout(() => document.getElementById('modal-pantry-name').focus(), 100);
+    }
+
+    function openEditPantryModal(pantryId) {
+      const item = (appState.pantry || []).find(p => p.id === pantryId);
+      if (!item) return;
+
+      document.getElementById('modal-pantry-edit-id').value = item.id;
+      document.getElementById('modal-pantry-title').innerHTML = `<i class="fa-solid fa-pen text-mercadona"></i><span>Editar Cantidad / Producto en Casa</span>`;
+      document.getElementById('modal-pantry-name').value = item.name;
+      document.getElementById('modal-pantry-qty').value = item.qty || '';
+      const catSelect = document.getElementById('modal-pantry-cat');
+      if (catSelect && item.category) catSelect.value = item.category;
+
+      document.getElementById('modal-add-pantry').classList.remove('hidden');
+      setTimeout(() => {
+        const qtyInput = document.getElementById('modal-pantry-qty');
+        qtyInput.focus();
+        qtyInput.select();
+      }, 100);
+    }
+
+    function saveNewPantryItem() {
+      const editId = document.getElementById('modal-pantry-edit-id').value;
+      const name = document.getElementById('modal-pantry-name').value.trim();
+      const qty = document.getElementById('modal-pantry-qty').value.trim() || '1 unidad / En casa';
+      const category = document.getElementById('modal-pantry-cat').value;
+
+      if (!name) {
+        showToast("Indica qué alimento tienes en casa");
+        return;
+      }
+
+      if (!Array.isArray(appState.pantry)) appState.pantry = [];
+
+      if (editId) {
+        // ACTUALIZACIÓN EXISTENTE (evita duplicación)
+        const existing = appState.pantry.find(p => p.id === editId);
+        if (existing) {
+          existing.name = capitalize(name);
+          existing.qty = qty;
+          existing.category = category;
+          showToast(`Actualizado en tu despensa: ${existing.name} (${existing.qty})`);
+        }
+      } else {
+        // NUEVO PRODUCTO
+        appState.pantry.unshift({
+          id: 'p_' + Date.now(),
+          name: capitalize(name),
+          qty,
+          category
+        });
+        showToast(`Guardado en tu despensa: ${name}`);
+      }
+
+      closeModal('modal-add-pantry');
+      renderPantryList();
+      renderBudgetSection();
+      updateUIHeader();
+      saveStateToStorage();
+    }
+
+    function quickAddPantryItem() {
+      const nameInput = document.getElementById('quick-pantry-name');
+      const qtyInput = document.getElementById('quick-pantry-qty');
+      const catSelect = document.getElementById('quick-pantry-cat');
+
+      const name = nameInput.value.trim();
+      if (!name) {
+        showToast("Escribe o selecciona un producto de la lista");
+        nameInput.focus();
+        return;
+      }
+
+      const catMatch = findCatalogItem(name);
+      let chosenCat = catSelect.value;
+      if (chosenCat === 'AUTO') {
+        chosenCat = catMatch ? catMatch.pantryCat : mapToPantryCategory('', name);
+      }
+
+      const qty = qtyInput.value.trim() || 'En casa';
+
+      if (!Array.isArray(appState.pantry)) appState.pantry = [];
+      appState.pantry.unshift({
+        id: 'p_' + Date.now(),
+        name: capitalize(name),
+        qty,
+        category: chosenCat
+      });
+
+      nameInput.value = '';
+      qtyInput.value = '';
+      renderPantryList();
+      renderBudgetSection();
+      updateUIHeader();
+      saveStateToStorage();
+      showToast(`Añadido a ${chosenCat}: ${name}`);
+    }
+
+    function closeModal(modalId) {
+      const m = document.getElementById(modalId);
+      if (m) m.classList.add('hidden');
+    }
+
+    function updateMemberCount(type, delta) {
+      if (type === 'adults') {
+        appState.config.adults = Math.max(1, (appState.config.adults || 1) + delta);
+        document.getElementById('cfg-adults-count').innerText = appState.config.adults;
+      } else {
+        appState.config.children = Math.max(0, (appState.config.children || 0) + delta);
+        document.getElementById('cfg-children-count').innerText = appState.config.children;
+      }
+      saveProfileSettings();
+    }
+
+    function syncConfigFormInputs() {
+      const c = appState.config || {};
+      const elAdults = document.getElementById('cfg-adults-count');
+      const elChildren = document.getElementById('cfg-children-count');
+      const elAge = document.getElementById('cfg-age-range');
+      const elAthlete = document.getElementById('cfg-athlete-level');
+      const elStore = document.getElementById('cfg-supermarket-select');
+      const elDays = document.getElementById('cfg-plan-days');
+      const elNotes = document.getElementById('cfg-custom-notes');
+
+      if (elAdults) elAdults.innerText = c.adults || 1;
+      if (elChildren) elChildren.innerText = c.children || 0;
+      if (elAge && c.ageRange) elAge.value = c.ageRange;
+      if (elAthlete && c.athleteLevel) elAthlete.value = c.athleteLevel;
+      if (elStore && c.supermarket) elStore.value = c.supermarket;
+      if (elDays && c.days) elDays.value = String(c.days);
+      if (elNotes && c.customNotes) elNotes.value = c.customNotes;
+    }
+
+    function saveProfileSettings() {
+      const elAge = document.getElementById('cfg-age-range');
+      const elAthlete = document.getElementById('cfg-athlete-level');
+      const elStore = document.getElementById('cfg-supermarket-select');
+      const elDays = document.getElementById('cfg-plan-days');
+      const elNotes = document.getElementById('cfg-custom-notes');
+
+      if (elAge) appState.config.ageRange = elAge.value;
+      if (elAthlete) appState.config.athleteLevel = elAthlete.value;
+      if (elStore) appState.config.supermarket = elStore.value;
+      if (elDays) appState.config.days = parseInt(elDays.value, 10) || 7;
+      if (elNotes) appState.config.customNotes = elNotes.value;
+
+      updateUIHeader();
+      renderMealPlan();
+      saveStateToStorage();
+      showToast("Perfil y preferencias actualizados");
+    }
+
+    function loadSampleWeekList() {
+      appState.shoppingList = JSON.parse(JSON.stringify(window.DEFAULT_STATE.shoppingList));
+      renderShoppingList();
+      showToast("Cesta semanal de Mercadona cargada");
+    }
+
+    function restoreInitialDataset() {
+      appState = JSON.parse(JSON.stringify(window.DEFAULT_STATE));
+      window.appState = appState;
+      syncConfigFormInputs();
+      updateUIHeader();
+      renderShoppingList();
+      renderPantryList();
+      renderMealPlan();
+      saveStateToStorage();
+      showToast("Catálogo Mercadona y datos iniciales restablecidos");
+    }
+
+    // ==========================================
+    // 6. MEAL PLAN RENDER & NUTRITIONAL TARGETS
+    // ==========================================
+    function renderMealPlan() {
+      const container = document.getElementById('meal-plan-grid');
+      const macroCardsContainer = document.getElementById('nutri-macro-cards');
+      const badge = document.getElementById('nutri-target-badge');
+
+      const isAthlete = appState.config?.athleteLevel === 'deportista';
+      const isModerate = appState.config?.athleteLevel === 'moderado';
+
+      const baseKcal = isAthlete ? 2250 : (isModerate ? 1950 : 1750);
+      const baseProt = isAthlete ? 140 : (isModerate ? 115 : 95);
+      const baseCarbs = isAthlete ? 245 : (isModerate ? 195 : 165);
+      const baseFats = isAthlete ? 75 : (isModerate ? 68 : 60);
+
+      if (badge) {
+        badge.innerText = isAthlete 
+          ? `⚡ Deportista (${appState.config?.ageRange || '26-40 años'}) · ~${baseProt}g Prot/día`
+          : ` Perfil Activo (${appState.config?.ageRange || '26-40 años'}) · ~${baseProt}g Prot/día`;
+      }
+
+      if (macroCardsContainer) {
+        macroCardsContainer.innerHTML = `
+          <div class="bg-emerald-50/70 border border-emerald-200/80 rounded-xl p-2.5 text-center">
+            <span class="text-[10px] font-bold uppercase text-emerald-800 block">Proteína Diaria (1 persona)</span>
+            <span class="text-sm sm:text-base font-black text-mercadona">~${baseProt}g / día</span>
+            <span class="text-[10px] text-slate-500 block">Pollo, huevos, atún, lácteos</span>
+          </div>
+          <div class="bg-amber-50/70 border border-amber-200/80 rounded-xl p-2.5 text-center">
+            <span class="text-[10px] font-bold uppercase text-amber-800 block">Energía & Hidratos</span>
+            <span class="text-sm sm:text-base font-black text-amber-700">~${baseKcal} kcal</span>
+            <span class="text-[10px] text-slate-500 block">~${baseCarbs}g HC (Arroz, avena, fruta)</span>
+          </div>
+          <div class="bg-sky-50/70 border border-sky-200/80 rounded-xl p-2.5 text-center">
+            <span class="text-[10px] font-bold uppercase text-sky-800 block">Grasas Saludables</span>
+            <span class="text-sm sm:text-base font-black text-sky-700">~${baseFats}g / día</span>
+            <span class="text-[10px] text-slate-500 block">Prioridad AOVE & Omega-3</span>
+          </div>
+        `;
+      }
+
+      if (!container) return;
+      let html = '';
+
+      (appState.mealPlan || []).forEach((plan) => {
+        html += `
+          <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-xs flex flex-col justify-between hover:border-slate-300 transition-all">
+            <div>
+              <div class="flex items-center justify-between pb-2.5 border-b border-slate-100">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                  <span class="text-sm font-black uppercase tracking-wider text-slate-800">${plan.day}</span>
+                </div>
+                <span class="text-[10px] font-bold bg-emerald-50 text-mercadona px-2.5 py-0.5 rounded-full border border-emerald-200">
+                  ${plan.macros || (isAthlete ? '~140g Prot · 2.250 kcal' : '~115g Prot · 1.950 kcal')}
+                </span>
+              </div>
+
+              <div class="space-y-2.5 mt-3">
+                <!-- Desayuno -->
+                <div class="bg-amber-50/70 p-2.5 rounded-xl border border-amber-200/60">
+                  <div class="flex items-center justify-between mb-1">
+                    <div class="flex items-center gap-1.5">
+                      <i class="fa-solid fa-mug-saucer text-amber-600 text-xs"></i>
+                      <span class="text-[10px] font-bold text-amber-800 uppercase tracking-wide">Desayuno habitual (~25g Prot)</span>
+                    </div>
+                  </div>
+                  <p class="text-xs font-medium text-slate-800">${plan.breakfast || 'Café habitual + 2 tostadas integrales con AOVE, tomate y huevo/pavo'}</p>
+                </div>
+
+                <!-- Almuerzo / Comida -->
+                <div class="bg-emerald-50/60 p-2.5 rounded-xl border border-emerald-100">
+                  <div class="flex items-center gap-1.5 mb-1">
+                    <i class="fa-solid fa-utensils text-emerald-700 text-xs"></i>
+                    <span class="text-[10px] font-bold text-emerald-800 uppercase tracking-wide">Almuerzo Completo (~45g Prot)</span>
+                  </div>
+                  <p class="text-xs font-medium text-slate-800">${plan.lunch}</p>
+                </div>
+
+                <!-- Merienda Saludable & Proteica -->
+                <div class="bg-violet-50/70 p-2.5 rounded-xl border border-violet-200/70 shadow-2xs">
+                  <div class="flex items-center justify-between mb-1">
+                    <div class="flex items-center gap-1.5">
+                      <i class="fa-solid fa-cookie-bite text-violet-600 text-xs"></i>
+                      <span class="text-[10px] font-extrabold text-violet-900 uppercase tracking-wide">Merienda Saludable & Proteica (~20g Prot)</span>
+                    </div>
+                    <span class="text-[9px] font-semibold text-violet-700 bg-violet-100/80 px-1.5 py-0.2 rounded">Fácil de llevar</span>
+                  </div>
+                  <p class="text-xs font-medium text-slate-800">${plan.snack || 'Budín de banana proteico casero + mandarina'}</p>
+                </div>
+
+                <!-- Cena -->
+                <div class="bg-sky-50/60 p-2.5 rounded-xl border border-sky-100">
+                  <div class="flex items-center gap-1.5 mb-1">
+                    <i class="fa-solid fa-moon text-sky-600 text-xs"></i>
+                    <span class="text-[10px] font-bold text-sky-800 uppercase tracking-wide">Cena Ligera & Reparadora (~40g Prot)</span>
+                  </div>
+                  <p class="text-xs font-medium text-slate-800">${plan.dinner}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-3 pt-2.5 border-t border-slate-100 flex items-start gap-2 text-[11px] text-slate-500">
+              <i class="fa-solid fa-stethoscope text-mercadona mt-0.5"></i>
+              <span><strong class="text-slate-700">Criterio Nutricional:</strong> ${plan.nutriTip || 'Distribución de aminoácidos esenciales y fibra soluble para mantener glucemia estable.'}</span>
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    function toggleItemChecked(id) {
+      const item = appState.shoppingList.find(i => i.id === id);
+      if (item) {
+        item.checked = !item.checked;
+        renderShoppingList();
+      }
+    }
+
+    function changeItemQuantity(id, delta) {
+      const item = appState.shoppingList.find(i => i.id === id);
+      if (item) {
+        let newQty = Number(item.qty) + delta;
+        if (newQty <= 0) {
+          deleteShoppingItem(id);
+        } else {
+          item.qty = Number(newQty.toFixed(1));
+          renderShoppingList();
+        }
+      }
+    }
+
+    function deleteShoppingItem(id) {
+      appState.shoppingList = appState.shoppingList.filter(i => i.id !== id);
+      renderShoppingList();
+      showToast("Producto eliminado de la lista");
+    }
+
+    function quickAddShoppingItem() {
+      const input = document.getElementById('quick-item-name');
+      const text = input.value.trim();
+      const category = document.getElementById('quick-item-category').value;
+      if (!text) return;
+
+      const parsed = parseQuickItemString(text);
+      const catMatch = findCatalogItem(parsed.name);
+      
+      const newItem = {
+        id: 's_' + Date.now(),
+        name: parsed.name,
+        qty: parsed.qty,
+        unit: catMatch ? catMatch.unit : parsed.unit,
+        unitPrice: catMatch ? catMatch.unitPrice : 1.50,
+        category: catMatch ? catMatch.aisle : category,
+        note: 'Añadido rápido',
+        checked: false
+      };
+
+      appState.shoppingList.unshift(newItem);
+      input.value = '';
+      renderShoppingList();
+      showToast(`Añadido: ${newItem.qty} ${newItem.name}`);
+    }
+
+    function parseQuickItemString(str) {
+      const match = str.match(/^(\d+(?:[\.,]\d+)?)\s*([a-zA-ZáéíóúÁÉÍÓÚñÑ]+)?\s+(.*)$/i);
+      if (match) {
+        const qtyNum = parseFloat(match[1].replace(',', '.'));
+        const unitCandidate = (match[2] || '').toLowerCase();
+        const commonUnits = ['kg', 'g', 'litro', 'litros', 'l', 'botella', 'botellas', 'pack', 'lata', 'latas'];
+        
+        if (commonUnits.includes(unitCandidate)) {
+          return { qty: qtyNum, unit: unitCandidate, name: capitalize(match[3]) };
+        } else {
+          const fullName = unitCandidate ? `${unitCandidate} ${match[3]}` : match[3];
+          return { qty: qtyNum, unit: 'unidades', name: capitalize(fullName) };
+        }
+      }
+
+      const simpleMatch = str.match(/^(\d+)\s+(.+)$/);
+      if (simpleMatch) {
+        return { qty: parseInt(simpleMatch[1], 10), unit: 'unidades', name: capitalize(simpleMatch[2]) };
+      }
+
+      return { qty: 1, unit: 'unidades', name: capitalize(str) };
+    }
+
+    function capitalize(s) {
+      if (!s) return '';
+      return s.charAt(0).toUpperCase() + s.slice(1);
+    }
+
+    function clearCompletedShoppingItems() {
+      const count = appState.shoppingList.filter(i => i.checked).length;
+      if (count === 0) {
+        showToast("No hay productos marcados en la cesta");
+        return;
+      }
+      appState.shoppingList = appState.shoppingList.filter(i => !i.checked);
+      renderShoppingList();
+      saveStateToStorage();
+      showToast(`Se han limpiado ${count} productos comprados de la lista.`);
+    }
+
+    function finishShoppingSession() {
+      const bought = appState.shoppingList.filter(i => i.checked);
+      if (bought.length === 0) {
+        showToast("Marca primero las casillas de los productos que ya tienes en el carro.");
+        return;
+      }
+
+      bought.forEach(item => {
+        const existingPantry = appState.pantry.find(
+          p => p.name.toLowerCase() === item.name.toLowerCase()
+        );
+        if (existingPantry) {
+          existingPantry.qty = `${item.qty} ${item.unit || 'uds'} (Recién comprado)`;
+        } else {
+          appState.pantry.unshift({
+            id: 'p_' + Date.now() + Math.random().toString(36).substring(2, 5),
+            name: item.name,
+            qty: `${item.qty} ${item.unit || 'uds'}`,
+            category: mapToPantryCategory(item.category, item.name)
+          });
+        }
+      });
+
+      appState.shoppingList = appState.shoppingList.filter(i => !i.checked);
+      renderShoppingList();
+      renderPantryList();
+      renderBudgetSection();
+      updateUIHeader();
+      saveStateToStorage();
+
+      showToast(`¡Compra terminada! Se han guardado ${bought.length} productos en tu Despensa.`);
+    }
+
+    function mapToPantryCategory(shoppingCat, itemName = '') {
+      const lowerName = itemName.toLowerCase();
+      if (lowerName.includes('aceite') || lowerName.includes('aove') || lowerName.includes('sal') || 
+          lowerName.includes('pimienta') || lowerName.includes('especia') || lowerName.includes('vinagre') || 
+          lowerName.includes('orégano') || lowerName.includes('oregano') || lowerName.includes('pimentón') || 
+          lowerName.includes('pimenton') || lowerName.includes('sazonador') || lowerName.includes('comino') ||
+          lowerName.includes('curry') || lowerName.includes('soja') || lowerName.includes('ajo en polvo') ||
+          lowerName.includes('cebolla en polvo') || lowerName.includes('canela')) {
+        return 'Aceites y Especias';
+      }
+      if (lowerName.includes('arroz') || lowerName.includes('pasta') || lowerName.includes('espagueti') || 
+          lowerName.includes('macarron') || lowerName.includes('atún') || lowerName.includes('atun') || 
+          lowerName.includes('lata') || lowerName.includes('conserva') || lowerName.includes('legumbre') || 
+          lowerName.includes('garbanzo') || lowerName.includes('lenteja') || lowerName.includes('alubia') ||
+          lowerName.includes('quinoa') || lowerName.includes('tomate frito') || lowerName.includes('avena') ||
+          lowerName.includes('cacahuete') || lowerName.includes('chocolate')) {
+        return 'Alacena Seca & Conservas';
+      }
+      if (shoppingCat.includes('Frutería')) return 'Frutas & Verduras';
+      if (shoppingCat.includes('Lácteos')) return 'Nevera & Frescos';
+      if (shoppingCat.includes('Carnicería') || shoppingCat.includes('Pescadería')) return 'Nevera & Frescos';
+      if (shoppingCat.includes('Bebidas')) return 'Bebidas';
+      if (shoppingCat.includes('Aceites y Despensa')) {
+        return lowerName.includes('aceite') ? 'Aceites y Especias' : 'Alacena Seca & Conservas';
+      }
+      return 'Alacena Seca & Conservas';
+    }
+
+    // ==========================================
+    // GENERADOR DE ARCHIVOS PWA PARA GITHUB PAGES
+    // ==========================================
+    const PWA_ICON_SVG_DATA_URI = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='112' fill='%23007A3D'/%3E%3Cpath d='M160 160h224l-24 128H184L160 160zm-32-32h32l32 192h192v32H176l-32-192h-16v-32zm80 256a24 24 0 1 1 0 48 24 24 0 0 1 0-48zm128 0a24 24 0 1 1 0 48 24 24 0 0 1 0-48z' fill='%23ffffff'/%3E%3C/svg%3E";
+
+    function getManifestJsonContent() {
+      const manifestObj = {
+        name: "SúperPlan - Compra Mercadona Castellón",
+        short_name: "SúperPlan",
+        description: "Organizador de despensa, nutricionista y lista de compra por pasillos de Mercadona Castellón.",
+        start_url: "./index.html",
+        scope: "./",
+        display: "standalone",
+        orientation: "portrait",
+        background_color: "#f8fafc",
+        theme_color: "#007A3D",
+        icons: [
+          {
+            src: PWA_ICON_SVG_DATA_URI,
+            sizes: "192x192 512x512",
+            type: "image/svg+xml",
+            purpose: "any maskable"
+          }
+        ]
+      };
+      return JSON.stringify(manifestObj, null, 2);
+    }
+
+    function getServiceWorkerJsContent() {
+      return `// Service Worker para SúperPlan Mercadona (Offline First en GitHub Pages)
+const CACHE_NAME = 'superplan-mercadona-v1';
+const ASSETS_TO_CACHE = [
+  './',
+  './index.html',
+  './manifest.json',
+  'https://cdn.tailwindcss.com',
+  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
+  'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap'
+];
+
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(ASSETS_TO_CACHE);
+    })
+  );
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((keys) =>
+      Promise.all(
+        keys.map((key) => {
+          if (key !== CACHE_NAME) {
+            return caches.delete(key);
+          }
+        })
+      )
+    )
+  );
+  self.clients.claim();
+});
+
+self.addEventListener('fetch', (event) => {
+  if (event.request.method !== 'GET') return;
+  event.respondWith(
+    caches.match(event.request).then((cachedResponse) => {
+      const fetchPromise = fetch(event.request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const responseClone = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(event.request, responseClone);
+            });
+          }
+          return networkResponse;
+        })
+        .catch(() => cachedResponse);
+
+      return cachedResponse || fetchPromise;
+    })
+  );
+});
+`;
+    }
+
+    function triggerDownloadBlob(content, filename, mimeType) {
+      const blob = new Blob([content], { type: mimeType });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function downloadAppFile() {
+      const fullHtml = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+      triggerDownloadBlob(fullHtml, 'index.html', 'text/html;charset=utf-8');
+      showToast("Descargado: index.html (nombre exacto para GitHub Pages)");
+    }
+
+    function downloadManifestFile() {
+      triggerDownloadBlob(getManifestJsonContent(), 'manifest.json', 'application/json;charset=utf-8');
+      showToast("Descargado: manifest.json");
+    }
+
+    function downloadServiceWorkerFile() {
+      triggerDownloadBlob(getServiceWorkerJsContent(), 'sw.js', 'application/javascript;charset=utf-8');
+      showToast("Descargado: sw.js (Service Worker offline)");
+    }
+
+    function downloadAllPWAFiles() {
+      downloadAppFile();
+      setTimeout(() => downloadManifestFile(), 350);
+      setTimeout(() => downloadServiceWorkerFile(), 700);
+      showToast("¡Descargando los 3 archivos (index.html, manifest.json y sw.js)!");
+    }
+
+    // Registro automático de PWA & captura del botón de instalación en Android/Chrome
+    let deferredPWAPrompt = null;
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPWAPrompt = e;
+      const installBtn = document.getElementById('btn-native-pwa-install');
+      if (installBtn) {
+        installBtn.classList.remove('hidden');
+        installBtn.classList.add('flex');
+      }
+    });
+
+    async function triggerNativePWAInstall() {
+      if (!deferredPWAPrompt) {
+        openPhoneInstallModal();
+        return;
+      }
+      deferredPWAPrompt.prompt();
+      const { outcome } = await deferredPWAPrompt.userChoice;
+      if (outcome === 'accepted') {
+        showToast("¡Aplicación instalada en tu pantalla de inicio!");
+        const installBtn = document.getElementById('btn-native-pwa-install');
+        if (installBtn) installBtn.classList.add('hidden');
+      }
+      deferredPWAPrompt = null;
+    }
+
+    function initPWAFeatures() {
+      if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+        navigator.serviceWorker.register('./sw.js')
+          .then((reg) => {
+            const statusText = document.getElementById('pwa-sw-status-text');
+            if (statusText) {
+              statusText.innerText = "Service Worker activo: la app ya funciona 100% offline y está lista para instalar.";
+            }
+          })
+          .catch(() => {
+            // Si aún no está subido el archivo sw.js separado, no bloquea nada
+          });
+      }
+    }
+
+    // ==========================================
+    // 7. PANTRY & INVENTORY LOGIC
+    // ==========================================
+    function renderPantryList() {
+      const container = document.getElementById('pantry-categories-container');
+      const pantryItems = appState.pantry || [];
+
+      const badgeCount = document.getElementById('badge-pantry-count');
+      if (badgeCount) badgeCount.innerText = pantryItems.length;
+
+      const pantryCategories = [
+        { 
+          name: 'Aceites y Especias', 
+          label: 'Aceites, Sal & Especias',
+          subtext: 'Aceite de oliva, vinagre, sal y todas las especias',
+          icon: 'fa-bottle-droplet', 
+          badgeBg: 'bg-amber-50 text-amber-700'
+        },
+        { 
+          name: 'Alacena Seca & Conservas', 
+          label: 'Alacena Seca & Conservas',
+          subtext: 'Arroz, pastas, atún, avena y legumbres (fuera de nevera)',
+          icon: 'fa-box-archive', 
+          badgeBg: 'bg-emerald-50 text-emerald-700'
+        },
+        { 
+          name: 'Nevera & Frescos', 
+          label: 'Nevera & Lácteos',
+          subtext: 'Huevos, carnes, yogures, quesos y fiambres',
+          icon: 'fa-temperature-low', 
+          badgeBg: 'bg-sky-50 text-sky-700'
+        },
+        { 
+          name: 'Frutas & Verduras', 
+          label: 'Frutas & Verduras',
+          subtext: 'Mandarinas, plátanos, tomates, cebollas, patatas...',
+          icon: 'fa-lemon', 
+          badgeBg: 'bg-orange-50 text-orange-700'
+        },
+        { 
+          name: 'Bebidas', 
+          label: 'Bebidas & Desayunos',
+          subtext: 'Café, leche, bebida de avena e infusiones',
+          icon: 'fa-mug-hot', 
+          badgeBg: 'bg-indigo-50 text-indigo-700'
+        },
+        { 
+          name: 'Congelador', 
+          label: 'Congelador',
+          subtext: 'Pescado congelado, verduras y reservas',
+          icon: 'fa-snowflake', 
+          badgeBg: 'bg-blue-50 text-blue-700'
+        }
+      ];
+
+      if (!container) return;
+      let html = '';
+      pantryCategories.forEach(cat => {
+        const items = pantryItems.filter(p => p.category === cat.name);
+
+        html += `
+          <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <div class="flex items-center gap-2">
+                  <div class="w-8 h-8 rounded-xl ${cat.badgeBg} flex items-center justify-center text-xs">
+                    <i class="fa-solid ${cat.icon}"></i>
+                  </div>
+                  <div>
+                    <h4 class="text-xs font-extrabold text-slate-800 uppercase tracking-wide leading-tight">${cat.label}</h4>
+                    <span class="text-[10px] text-slate-400 block">${cat.subtext}</span>
+                  </div>
+                </div>
+                <span class="text-xs font-bold bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full">
+                  ${items.length}
+                </span>
+              </div>
+
+              <div class="divide-y divide-slate-100 mt-1 max-h-72 overflow-y-auto pr-1">
+                ${items.length === 0 ? '<p class="text-xs text-slate-400 py-4 text-center italic">Vacío · Pulsa abajo para agregar</p>' : ''}
+                ${items.map(item => `
+                  <div class="py-2.5 flex items-center justify-between gap-2 group hover:bg-slate-50/80 rounded-lg px-1.5 transition-colors">
+                    <div class="min-w-0 flex-1">
+                      <span class="text-xs font-semibold text-slate-800 block truncate">${item.name}</span>
+                      <span class="text-[11px] text-mercadona font-medium block truncate">${item.qty || 'En casa'}</span>
+                    </div>
+
+                    <div class="flex items-center gap-1 shrink-0">
+                      <button onclick="openEditPantryModal('${item.id}')" title="Editar cantidad" class="w-7 h-7 rounded-lg text-slate-400 hover:text-mercadona hover:bg-emerald-50 flex items-center justify-center transition-colors">
+                        <i class="fa-solid fa-pen text-[11px]"></i>
+                      </button>
+                      <button onclick="deletePantryItem('${item.id}')" title="Quitar de mi despensa" class="w-7 h-7 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 flex items-center justify-center transition-colors">
+                        <i class="fa-solid fa-xmark text-xs"></i>
+                      </button>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+
+            <button onclick="openAddPantryModal('${cat.name}')" class="mt-3 w-full py-1.5 text-center text-xs font-semibold text-slate-500 hover:text-mercadona hover:bg-emerald-50/50 rounded-xl border border-dashed border-slate-200 transition-colors">
+              + Agregar a ${cat.label.split(' ')[0]}
+            </button>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    function deletePantryItem(id) {
+      const removed = appState.pantry.find(p => p.id === id);
+      appState.pantry = appState.pantry.filter(p => p.id !== id);
+      renderPantryList();
+      renderBudgetSection();
+      updateUIHeader();
+      saveStateToStorage();
+      if (removed) {
+        showToast(`Eliminado de tu despensa: ${removed.name}`);
+      }
+    }
+
+    // ==========================================
+    // 8. MERCADONA.ES BUDGET & SAVINGS SECTION
+    // ==========================================
+    const MERCADONA_SAVINGS_TIPS = [
+      {
+        id: 'swap_yogur',
+        title: 'Cambio Proteico: Queso Fresco Batido 0% (500g) vs Pack Yogur +Proteínas',
+        description: 'El bote de 500g de Queso Fresco Batido 0% Hacendado aporta 40g de proteína total por 1,15 €, frente a los 1,65 € del pack de 4 yogures (+Proteínas). Rinde igual para tus meriendas y el budín de banana.',
+        currentKeyword: 'yogur',
+        newName: 'Queso Fresco Batido 0% +Proteínas Hacendado (500g)',
+        newUnitPrice: 1.15,
+        newUnit: 'unidades',
+        savingAmount: 0.50
+      },
+      {
+        id: 'swap_merluza',
+        title: 'Formato Ahorro Congelado: Merluza Hacendado en bolsa vs Filetes sueltos',
+        description: 'Comprar los filetes de merluza sin piel en formato bolsa ultracongelada Hacendado reduce el coste por ración un 24% frente al mostrador fresco, manteniendo intacto el aporte proteico.',
+        currentKeyword: 'merluza',
+        newName: 'Filetes de Merluza sin Piel Hacendado (Formato Ahorro)',
+        newUnitPrice: 1.45,
+        newUnit: 'unidades',
+        savingAmount: 1.00
+      },
+      {
+        id: 'swap_pollo',
+        title: 'Bandeja Familiar de Pollo / Solomillos para porcionar y congelar',
+        description: 'En Mercadona el formato familiar de pechuga entera para filetear en casa sale a ~5,90 €/kg frente a ~7,80 €/kg ya fileteada.',
+        currentKeyword: 'pollo',
+        newName: 'Pechuga de Pollo Formato Ahorro Mercadona (~500g)',
+        newUnitPrice: 3.45,
+        newUnit: 'bandeja',
+        savingAmount: 0.90
+      }
+    ];
+
+    function renderBudgetSection() {
+      const listContainer = document.getElementById('budget-items-list');
+      const tipsContainer = document.getElementById('savings-tips-container');
+      if (!listContainer || !tipsContainer) return;
+
+      const list = appState.shoppingList || [];
+      const totalEuros = calculateCartTotal();
+      const days = appState.config?.days || 7;
+      const limit = appState.config?.weeklyBudgetLimit || 40;
+
+      const pantrySavings = (appState.pantry || []).reduce((acc, p) => {
+        const match = findCatalogItem(p.name);
+        return acc + (match ? match.unitPrice : 1.40);
+      }, 0);
+
+      const elMainTotal = document.getElementById('budget-main-total');
+      const elPerDay = document.getElementById('budget-per-day');
+      const elPantrySaved = document.getElementById('budget-pantry-saved');
+      const elLimitInput = document.getElementById('budget-limit-input');
+      const elStatusLabel = document.getElementById('budget-status-label');
+      const elStatusPct = document.getElementById('budget-status-pct');
+      const elLimitBar = document.getElementById('budget-limit-bar');
+
+      if (elMainTotal) elMainTotal.innerText = formatEuro(totalEuros);
+      if (elPerDay) elPerDay.innerText = `${formatEuro(totalEuros / days)} / día`;
+      if (elPantrySaved) elPantrySaved.innerText = `~${formatEuro(pantrySavings)}`;
+      if (elLimitInput) elLimitInput.value = limit;
+
+      const pct = Math.min(100, Math.round((totalEuros / limit) * 100));
+      if (elStatusPct) elStatusPct.innerText = `${formatEuro(totalEuros)} de ${formatEuro(limit)} (${pct}%)`;
+      if (elLimitBar) {
+        elLimitBar.style.width = `${pct}%`;
+        elLimitBar.className = totalEuros > limit
+          ? "bg-rose-500 h-2.5 rounded-full transition-all duration-300"
+          : "bg-mercadona h-2.5 rounded-full transition-all duration-300";
+      }
+      if (elStatusLabel) {
+        if (totalEuros > limit) {
+          elStatusLabel.innerText = `Te pasas por ${formatEuro(totalEuros - limit)} de tu meta. Revisa los consejos de ahorro a la derecha.`;
+          elStatusLabel.className = "font-semibold text-rose-600";
+        } else {
+          elStatusLabel.innerText = `¡Excelente! Te sobran ${formatEuro(limit - totalEuros)} respecto a tu presupuesto meta.`;
+          elStatusLabel.className = "font-semibold text-emerald-700";
+        }
+      }
+
+      if (list.length === 0) {
+        listContainer.innerHTML = `<div class="p-8 text-center text-xs text-slate-400">Tu lista de compra está vacía. Añade productos para ver el desglose de precios en mercadona.es</div>`;
+      } else {
+        listContainer.innerHTML = list.map(item => {
+          const unitPrice = getEstimatedUnitPrice(item);
+          const subtotal = unitPrice * (Number(item.qty) || 1);
+          const catMatch = findCatalogItem(item.name);
+          const queryTerm = encodeURIComponent(catMatch ? catMatch.searchSlug : item.name);
+          const mercadonaUrl = `https://tienda.mercadona.es/search-results?query=${queryTerm}`;
+
+          return `
+            <div class="p-3.5 sm:px-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-slate-50/70 transition-colors">
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center gap-2">
+                  <span class="text-xs sm:text-sm font-bold text-slate-800 truncate">${item.name}</span>
+                  <a href="${mercadonaUrl}" target="_blank" rel="noopener noreferrer" title="Ver precio actual en tienda.mercadona.es" class="text-[10px] font-semibold text-mercadona hover:underline bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200 shrink-0 flex items-center gap-1">
+                    <span>mercadona.es</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                  </a>
+                </div>
+                <span class="text-[11px] text-slate-400 block">${item.category} · Cantidad: <strong>${item.qty} ${item.unit || 'uds'}</strong></span>
+              </div>
+
+              <div class="flex items-center justify-between sm:justify-end gap-3 shrink-0">
+                <div class="flex items-center gap-1 text-xs text-slate-500">
+                  <span>Precio ud:</span>
+                  <input type="number" step="0.05" min="0.10" value="${unitPrice.toFixed(2)}" onchange="updateItemUnitPrice('${item.id}', this.value)" class="w-16 text-xs font-bold text-slate-800 bg-slate-100 border border-slate-200 rounded-lg px-2 py-1 text-right focus:outline-none focus:ring-1 focus:ring-mercadona">
+                  <span>€</span>
+                </div>
+                <div class="w-20 text-right">
+                  <span class="text-xs sm:text-sm font-black text-slate-900">${formatEuro(subtotal)}</span>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      tipsContainer.innerHTML = MERCADONA_SAVINGS_TIPS.map(tip => {
+        const matchingItem = list.find(i => i.name.toLowerCase().includes(tip.currentKeyword));
+        const alreadyApplied = list.some(i => i.name === tip.newName);
+
+        return `
+          <div class="bg-white rounded-xl p-3.5 border border-amber-200/80 shadow-2xs space-y-2">
+            <div class="flex items-start justify-between gap-2">
+              <h4 class="text-xs font-bold text-slate-800 leading-snug">${tip.title}</h4>
+              <span class="text-[10px] font-extrabold bg-emerald-100 text-mercadona px-2 py-0.5 rounded-full shrink-0">
+                -${formatEuro(tip.savingAmount)}
+              </span>
+            </div>
+            <p class="text-[11px] text-slate-600 leading-relaxed">${tip.description}</p>
+            <div class="pt-1 flex justify-end">
+              ${alreadyApplied ? `
+                <span class="text-[11px] font-bold text-emerald-700 flex items-center gap-1">
+                  <i class="fa-solid fa-circle-check"></i> Ahorro aplicado en tu lista
+                </span>
+              ` : matchingItem ? `
+                <button onclick="applySingleSavingSwap('${tip.id}')" class="text-[11px] font-bold bg-amber-400 hover:bg-amber-300 text-slate-900 px-3 py-1.5 rounded-lg transition-all">
+                  Cambiar y ahorrar ${formatEuro(tip.savingAmount)}
+                </button>
+              ` : `
+                <span class="text-[10px] text-slate-400 italic">Consejo disponible cuando añadas ${tip.currentKeyword}</span>
+              `}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function updateItemUnitPrice(itemId, newPriceVal) {
+      const item = (appState.shoppingList || []).find(i => i.id === itemId);
+      if (!item) return;
+      const parsed = parseFloat(newPriceVal);
+      if (!isNaN(parsed) && parsed >= 0) {
+        item.unitPrice = parsed;
+        renderShoppingList();
+        showToast(`Precio actualizado: ${item.name} (${formatEuro(parsed)})`);
+      }
+    }
+
+    function updateBudgetLimit(val) {
+      const parsed = parseFloat(val) || 40;
+      appState.config.weeklyBudgetLimit = parsed;
+      renderBudgetSection();
+      saveStateToStorage();
+    }
+
+    function applySingleSavingSwap(tipId) {
+      const tip = MERCADONA_SAVINGS_TIPS.find(t => t.id === tipId);
+      if (!tip) return;
+      const item = (appState.shoppingList || []).find(i => i.name.toLowerCase().includes(tip.currentKeyword));
+      if (item) {
+        item.name = tip.newName;
+        item.unitPrice = tip.newUnitPrice;
+        item.unit = tip.newUnit;
+        item.note = 'Formato Ahorro Inteligente Mercadona';
+        renderShoppingList();
+        showToast(`¡Cambio aplicado! Ahorras ${formatEuro(tip.savingAmount)} con ${tip.newName}`);
+      }
+    }
+
+    function applyAllSavingsSwaps() {
+      let count = 0;
+      MERCADONA_SAVINGS_TIPS.forEach(tip => {
+        const item = (appState.shoppingList || []).find(i => i.name.toLowerCase().includes(tip.currentKeyword) && i.name !== tip.newName);
+        if (item) {
+          item.name = tip.newName;
+          item.unitPrice = tip.newUnitPrice;
+          item.unit = tip.newUnit;
+          item.note = 'Formato Ahorro Inteligente Mercadona';
+          count++;
+        }
+      });
+      renderShoppingList();
+      if (count > 0) {
+        showToast(`¡Se aplicaron ${count} optimizaciones de ahorro en tu cesta de Mercadona!`);
+      } else {
+        showToast("Tu cesta ya tiene aplicados todos los formatos de máximo ahorro.");
+      }
+    }
+
+    function searchOnMercadonaWeb() {
+      const input = document.getElementById('mercadona-web-search');
+      const query = (input?.value || '').trim();
+      if (!query) {
+        window.open('https://tienda.mercadona.es/', '_blank');
+        return;
+      }
+      window.open(`https://tienda.mercadona.es/search-results?query=${encodeURIComponent(query)}`, '_blank');
+    }
+
+    function syncMenuToShoppingList() {
+      showToast("Analizando tu despensa Mercadona para no duplicar compras...");
+
+      const potentialItems = [
+        { name: 'Mandarinas Clemenules de Castellón', qty: 3, unit: 'unidades', unitPrice: 0.28, category: 'Frutería y Verduras', note: 'Snack fresco entre horas' },
+        { name: 'Plátanos de Canarias IGP (Bananas)', qty: 5, unit: 'unidades', unitPrice: 0.38, category: 'Frutería y Verduras', note: 'Para merienda y budín de banana proteico casero' },
+        { name: 'Copos de Avena Integral Bruselas', qty: 1, unit: 'malla / pack', unitPrice: 1.05, category: 'Aceites y Despensa', note: 'Base de avena para el budín y desayunos' },
+        { name: 'Huevos Camperos / Grandes L Huevos Guillén', qty: 1, unit: 'malla / pack', unitPrice: 2.60, category: 'Lácteos y Huevos', note: 'Para tortilla, cenas y budín proteico' },
+        { name: 'Pechuga de Pollo Fileteada', qty: 1, unit: 'bandeja', unitPrice: 4.35, category: 'Carnicería y Charcutería', note: 'Proteína magra para almuerzos' },
+        { name: 'Yogur +Proteínas Natural Hacendado', qty: 1, unit: 'malla / pack', unitPrice: 1.65, category: 'Lácteos y Huevos', note: 'Meriendas y receta del budín' },
+        { name: 'Tomate Ensalada / Tomate Pera', qty: 4, unit: 'unidades', unitPrice: 0.35, category: 'Frutería y Verduras', note: 'Para tostadas y ensalada' }
+      ];
+
+      let addedCount = 0;
+      potentialItems.forEach(n => {
+        const keyWord = n.name.toLowerCase().split(' ')[0];
+        const alreadyInPantry = (appState.pantry || []).some(p => p.name.toLowerCase() === n.name.toLowerCase() || p.name.toLowerCase().includes(keyWord));
+        const alreadyInShopping = (appState.shoppingList || []).some(s => s.name.toLowerCase() === n.name.toLowerCase() || s.name.toLowerCase().includes(keyWord));
+
+        if (!alreadyInShopping && !alreadyInPantry) {
+          appState.shoppingList.push({
+            id: 's_' + Date.now() + Math.random().toString(36).substr(2, 4),
+            ...n,
+            checked: false
+          });
+          addedCount++;
+        }
+      });
+
+      renderShoppingList();
+      showToast(addedCount > 0 
+        ? `Se han añadido ${addedCount} productos de Mercadona que te faltaban en casa.` 
+        : `¡Ya tienes los ingredientes en tu despensa o en tu lista!`);
+      switchTab('list');
+    }
+
+    // ==========================================
+    // 9. GEMINI AI ASSISTANT INTEGRATION
+    // ==========================================
+    function openAIAssistantModal() {
+      updateUIHeader();
+      document.getElementById('modal-ai-assistant').classList.remove('hidden');
+      document.getElementById('ai-loading-indicator').classList.add('hidden');
+      document.getElementById('ai-result-preview').classList.add('hidden');
+      document.getElementById('btn-apply-ai-items').classList.add('hidden');
+      document.getElementById('btn-run-ai').classList.remove('hidden');
+    }
+
+    async function generateSmartPlanWithGemini() {
+      const userPrompt = document.getElementById('ai-user-prompt').value;
+      const loading = document.getElementById('ai-loading-indicator');
+      const resultPreview = document.getElementById('ai-result-preview');
+      const btnRun = document.getElementById('btn-run-ai');
+      const btnApply = document.getElementById('btn-apply-ai-items');
+
+      loading.classList.remove('hidden');
+      resultPreview.classList.add('hidden');
+      btnRun.disabled = true;
+
+      const adults = appState.config?.adults || 1;
+      const children = appState.config?.children || 0;
+      const days = appState.config?.days || 7;
+      const ageRange = appState.config?.ageRange || "26-40 años";
+      const isAthlete = appState.config?.athleteLevel === 'deportista';
+      const pantryInStock = (appState.pantry || [])
+        .map(p => `${p.name} (${p.qty})`)
+        .join(', ');
+
+      const systemInstruction = `Eres un Nutricionista Clínico y Deportivo Colegiado y especialista en Batch Cooking y Ahorro en Mercadona (mercadona.es) en Castellón de la Plana.
+PERFIL TÉCNICO DEL USUARIO:
+- Personas: ${adults} adulto(s), ${children} niño(s).
+- Rango de edad: ${ageRange}.
+- Nivel de actividad: ${isAthlete ? 'DEPORTISTA (requiere 1.8-2.0g de proteína por kg de peso, ~140g proteína/día repartida en 4 tomas de 25-45g para optimizar la síntesis proteica muscular MPS, hidratos complejos de bajo/medio índice glucémico y grasas antiinflamatorias AOVE)' : 'Actividad moderada (~115g proteína/día, control de saciedad)'}.
+- Días de planificación: ${days} días.
+- INVENTARIO ACTUAL EN SU CASA (NO COMPRAR SI YA HAY SUFICIENTE): [${pantryInStock}].
+
+CRITERIOS NUTRICIONALES Y LOGÍSTICOS OBLIGATORIOS:
+1. CONEXIÓN CON LA DESPENSA: Revisa minuciosamente lo que ya tiene en casa ([${pantryInStock}]) y úsalo como base de los platos del menú sin volver a meterlo en la lista de compra.
+2. ESTRUCTURA TÉCNICA DE LAS 4 COMIDAS DIARIAS: breakfast, lunch, snack (budín de banana proteico casero para llevar), dinner, macros y nutriTip.
+3. CANTIDADES EXACTAS DE MERCADONA y pasillos oficiales.
+4. Devuelve la respuesta OBLIGATORIAMENTE en JSON según el schema.`;
+
+      const promptText = `Actúa como mi nutricionista deportivo personal. Diseña el menú para mi perfil (${ageRange}, ${isAthlete ? 'deportista' : 'activo'}) usando primero lo que ya tengo en mi casa (${pantryInStock}). Petición: "${userPrompt || 'Menú equilibrado y lista de compra de Mercadona'}".`;
+
+      const apiKey = "";
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+      const payload = {
+        contents: [{ role: "user", parts: [{ text: promptText }] }],
+        systemInstruction: { parts: [{ text: systemInstruction }] },
+        generationConfig: {
+          responseMimeType: "application/json",
+          responseSchema: {
+            type: "OBJECT",
+            properties: {
+              summary: { type: "STRING" },
+              menuHighlights: {
+                type: "ARRAY",
+                items: {
+                  type: "OBJECT",
+                  properties: {
+                    day: { type: "STRING" },
+                    macros: { type: "STRING" },
+                    breakfast: { type: "STRING" },
+                    lunch: { type: "STRING" },
+                    snack: { type: "STRING" },
+                    dinner: { type: "STRING" },
+                    nutriTip: { type: "STRING" }
+                  },
+                  required: ["day", "macros", "breakfast", "lunch", "snack", "dinner", "nutriTip"]
+                }
+              },
+              shoppingItems: {
+                type: "ARRAY",
+                items: {
+                  type: "OBJECT",
+                  properties: {
+                    name: { type: "STRING" },
+                    qty: { type: "NUMBER" },
+                    unit: { type: "STRING" },
+                    category: { type: "STRING" },
+                    note: { type: "STRING" }
+                  },
+                  required: ["name", "qty", "unit", "category"]
+                }
+              }
+            },
+            required: ["summary", "menuHighlights", "shoppingItems"]
+          }
+        }
+      };
+
+      try {
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+
+        const data = await response.json();
+        const jsonText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (!jsonText) throw new Error("No hay texto de respuesta");
+
+        const parsed = JSON.parse(jsonText);
+        tempAIGeneratedItems = parsed.shoppingItems || [];
+
+        document.getElementById('ai-summary-text').innerHTML = `<p class="font-medium text-slate-800">${parsed.summary}</p>`;
+        const chipsContainer = document.getElementById('ai-items-chips');
+        chipsContainer.innerHTML = tempAIGeneratedItems.map(item => `
+          <span class="inline-flex items-center gap-1 bg-white border border-emerald-200 text-slate-800 text-[11px] px-2.5 py-1 rounded-lg shadow-2xs font-medium">
+            <strong class="text-mercadona">${item.qty} ${item.unit}</strong> ${item.name}
+          </span>
+        `).join('');
+
+        if (parsed.menuHighlights && parsed.menuHighlights.length > 0) {
+          appState.mealPlan = parsed.menuHighlights;
+          renderMealPlan();
+        }
+
+        loading.classList.add('hidden');
+        resultPreview.classList.remove('hidden');
+        btnRun.classList.add('hidden');
+        btnApply.classList.remove('hidden');
+      } catch (err) {
+        console.warn("API de Gemini no accesible o sin clave, usando generador inteligente local:", err);
+        generateLocalIntelligentPlan();
+      } finally {
+        btnRun.disabled = false;
+        loading.classList.add('hidden');
+      }
+    }
+
+    function generateLocalIntelligentPlan() {
+      const items = [
+        { name: 'Mandarinas Clemenules de Castellón', qty: 3, unit: 'unidades', category: 'Frutería y Verduras', note: 'Vitamina C y snack fresco' },
+        { name: 'Plátanos de Canarias IGP (Bananas)', qty: 5, unit: 'unidades', category: 'Frutería y Verduras', note: '2 diarios + 3 para hornear el budín proteico' },
+        { name: 'Copos de Avena Integral Bruselas', qty: 1, unit: 'malla / pack', category: 'Aceites y Despensa', note: 'Para la masa del budín de banana' },
+        { name: 'Huevos Camperos / Grandes L Huevos Guillén', qty: 1, unit: 'malla / pack', category: 'Lácteos y Huevos', note: 'Proteína para comidas y repostería fitness' },
+        { name: 'Pechuga de Pollo Fileteada', qty: 1, unit: 'bandeja', category: 'Carnicería y Charcutería', note: 'Aprox. 500g para almuerzos' },
+        { name: 'Filetes de Merluza sin Piel Hacendado', qty: 2, unit: 'unidades', category: 'Pescadería', note: 'Cenas ligeras y omega-3' },
+        { name: 'Tomate Ensalada / Tomate Pera', qty: 4, unit: 'unidades', category: 'Frutería y Verduras', note: 'Para tostadas del desayuno y ensaladas' }
+      ];
+
+      tempAIGeneratedItems = items;
+      document.getElementById('ai-summary-text').innerHTML = `
+        <p class="font-medium text-slate-800">Plan adaptado a tu edad (${appState.config?.ageRange || '26-40 años'}) y perfil <strong>deportista</strong> en Castellón. Incluye ingredientes clave para preparar tu <strong>budín proteico de banana</strong> para las meriendas, evitando comida procesada fuera de casa y usando lo que ya tienes en tu despensa.</p>
+      `;
+
+      const chipsContainer = document.getElementById('ai-items-chips');
+      chipsContainer.innerHTML = items.map(item => `
+        <span class="inline-flex items-center gap-1 bg-white border border-emerald-200 text-slate-800 text-[11px] px-2.5 py-1 rounded-lg shadow-2xs font-medium">
+          <strong class="text-mercadona">${item.qty} ${item.unit}</strong> ${item.name}
+        </span>
+      `).join('');
+
+      document.getElementById('ai-result-preview').classList.remove('hidden');
+      document.getElementById('btn-run-ai').classList.add('hidden');
+      document.getElementById('btn-apply-ai-items').classList.remove('hidden');
+    }
+
+    function applyAIGeneratedItems() {
+      if (tempAIGeneratedItems.length === 0) return;
+
+      tempAIGeneratedItems.forEach(item => {
+        appState.shoppingList.unshift({
+          id: 's_' + Date.now() + Math.random().toString(36).substring(2, 6),
+          name: item.name,
+          qty: item.qty || 1,
+          unit: item.unit || 'unidades',
+          category: item.category || 'Frutería y Verduras',
+          note: item.note || 'Plan inteligente IA',
+          checked: false
+        });
+      });
+
+      renderShoppingList();
+      closeModal('modal-ai-assistant');
+      switchTab('list');
+      showToast(`¡Añadidos ${tempAIGeneratedItems.length} productos calculados a tu lista!`);
+      tempAIGeneratedItems = [];
+    }
+
+    // ==========================================
+    // 10. EXPORT TO PHONE NOTES & WHATSAPP
+    // ==========================================
+    let currentShareFormat = 'NOTES';
+
+    function openShareModal(initialFormat = 'NOTES') {
+      currentShareFormat = initialFormat;
+      document.getElementById('modal-share-export').classList.remove('hidden');
+      updateShareFormat(initialFormat);
+    }
+
+    function updateShareFormat(format) {
+      currentShareFormat = format;
+      ['NOTES', 'WHATSAPP', 'FULL'].forEach(f => {
+        const btn = document.getElementById(`fmt-btn-${f}`);
+        if (!btn) return;
+        if (f === format) {
+          btn.className = "fmt-btn py-2 px-2.5 rounded-xl font-bold bg-slate-900 text-white border border-slate-900 transition-all";
+        } else {
+          btn.className = "fmt-btn py-2 px-2.5 rounded-xl font-medium bg-slate-50 text-slate-700 border border-slate-200 hover:bg-slate-100 transition-all";
+        }
+      });
+
+      const textarea = document.getElementById('share-export-textarea');
+      if (textarea) textarea.value = buildExportString(format);
+    }
+
+    function buildExportString(format) {
+      const items = appState.shoppingList || [];
+      const adults = appState.config?.adults || 1;
+      const store = (appState.config?.supermarket || 'Mercadona Castellón').split('(')[0].trim();
+
+      if (format === 'NOTES') {
+        let text = `📋 COMPRA ${store.toUpperCase()} CASTELLÓN (${adults} Adulto${adults > 1 ? 's' : ''})\n`;
+        text += `----------------------------------------\n`;
+
+        if (items.length === 0) {
+          text += `(Sin productos pendientes en la lista)\n`;
+        } else {
+          MERCADONA_AISLES.forEach(aisle => {
+            const aisleItems = items.filter(i => i.category === aisle.name);
+            if (aisleItems.length > 0) {
+              text += `\n[${aisle.name.toUpperCase()}]\n`;
+              aisleItems.forEach(item => {
+                const check = item.checked ? '[x]' : '[ ]';
+                const linePrice = formatEuro(getEstimatedUnitPrice(item) * (Number(item.qty) || 1));
+                const noteStr = item.note ? ` — ${item.note}` : '';
+                text += `${check} ${item.qty} ${item.unit || ''} ${item.name} (~${linePrice})${noteStr}\n`;
+              });
+            }
+          });
+          text += `\n💰 TOTAL ESTIMADO MERCADONA: ${formatEuro(calculateCartTotal())}\n`;
+        }
+
+        const inStock = (appState.pantry || []).map(p => p.name);
+        if (inStock.length > 0) {
+          text += `\n🏠 YA TENGO EN CASA (NO COMPRAR):\n`;
+          text += inStock.join(', ') + `\n`;
+        }
+        return text;
+      }
+
+      if (format === 'WHATSAPP') {
+        let text = `🛒 *LISTA DE COMPRA - ${store.toUpperCase()} CASTELLÓN*\n`;
+        text += `👤 Perfil: ${adults} Adulto(s) · ${appState.config?.ageRange} (${appState.config?.athleteLevel === 'deportista' ? '⚡ Deportista' : 'Activo'})\n\n`;
+
+        MERCADONA_AISLES.forEach(aisle => {
+          const aisleItems = items.filter(i => i.category === aisle.name);
+          if (aisleItems.length > 0) {
+            text += `📍 *${aisle.name.toUpperCase()}*\n`;
+            aisleItems.forEach(item => {
+              const status = item.checked ? '✅' : '⬜';
+              text += `${status} *${item.qty} ${item.unit || ''}* - ${item.name}${item.note ? ` _(${item.note})_` : ''}\n`;
+            });
+            text += `\n`;
+          }
+        });
+        text += `_Generado con SúperPlan Castellón_`;
+        return text;
+      }
+
+      if (format === 'FULL') {
+        let text = buildExportString('NOTES');
+        text += `\n========================================\n`;
+        text += `🥗 PLAN NUTRICIONAL SEMANAL & MERIENDAS\n`;
+        text += `========================================\n`;
+        text += `🍞 BATCH COOKING DOMINGO: Budín de Banana Proteico (3 plátanos maduros + 3 huevos L + 150g avena + 1 yogur natural + canela -> 25 min al horno a 180ºC).\n\n`;
+
+        (appState.mealPlan || []).forEach(d => {
+          text += `📅 ${d.day.toUpperCase()} (${d.macros || '~140g Prot'})\n`;
+          text += `  • Desayuno: ${d.breakfast}\n`;
+          text += `  • Almuerzo: ${d.lunch}\n`;
+          text += `  • Merienda: ${d.snack}\n`;
+          text += `  • Cena: ${d.dinner}\n\n`;
+        });
+        return text;
+      }
+      return '';
+    }
+
+    function selectAllShareText() {
+      const textarea = document.getElementById('share-export-textarea');
+      if (!textarea) return;
+      textarea.focus();
+      textarea.select();
+      showToast("Texto seleccionado. Pulsa 'Copiar' en tu pantalla.");
+    }
+
+    function copyFromShareModal() {
+      const textarea = document.getElementById('share-export-textarea');
+      if (!textarea) return;
+      textarea.focus();
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        showToast("¡Copiado al portapapeles! Ya puedes pegarlo en tus Notas o en un mensaje.");
+      } catch (e) {
+        showToast("Selecciona el texto y pulsa Copiar");
+      }
+    }
+
+    function sendDirectToWhatsApp() {
+      const textarea = document.getElementById('share-export-textarea');
+      if (!textarea) return;
+      const encoded = encodeURIComponent(textarea.value);
+      window.open(`https://wa.me/?text=${encoded}`, '_blank');
+    }
+
+    function showToast(message) {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+      const toast = document.createElement('div');
+      toast.className = "bg-slate-900/95 text-white text-xs px-4 py-3 rounded-2xl shadow-xl flex items-center justify-between gap-3 border border-slate-700 pointer-events-auto fade-in";
+      toast.innerHTML = `
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-circle-info text-emerald-400"></i>
+          <span>${message}</span>
+        </div>
+      `;
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(-10px)';
+        toast.style.transition = 'all 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 3200);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      initApp();
+      initPWAFeatures();
+    });
+  </script>
+
+  <!-- CLOUD STORAGE MODULE FOR AUTOMATIC PERSISTENCE -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'superplan-castellon';
+    let db = null;
+    let auth = null;
+    let currentUser = null;
+    let isApplyingRemoteUpdate = false;
+
+    async function initCloudStorage() {
+      if (typeof __firebase_config === 'undefined' || !__firebase_config) {
+        if (typeof updateCloudBadge === 'function') {
+          updateCloudBadge('Guardado local activo', false);
+        }
+        return;
+      }
+
+      try {
+        const firebaseConfig = JSON.parse(__firebase_config);
+        const app = initializeApp(firebaseConfig);
+        db = getFirestore(app);
+        auth = getAuth(app);
+
+        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+          await signInWithCustomToken(auth, __initial_auth_token);
+        } else {
+          await signInAnonymously(auth);
+        }
+
+        onAuthStateChanged(auth, (user) => {
+          currentUser = user;
+          if (!currentUser) return;
+
+          const stateDocRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'superplan_data', 'main_state');
+
+          onSnapshot(
+            stateDocRef,
+            (snapshot) => {
+              if (snapshot.exists()) {
+                const cloudData = snapshot.data();
+                isApplyingRemoteUpdate = true;
+
+                const targetState = window.appState || {};
+                const defaultState = window.DEFAULT_STATE || {};
+
+                if (cloudData.config) {
+                  targetState.config = { ...defaultState.config, ...cloudData.config };
+                }
+                if (Array.isArray(cloudData.pantry)) {
+                  targetState.pantry = cloudData.pantry;
+                }
+                if (Array.isArray(cloudData.shoppingList)) {
+                  targetState.shoppingList = cloudData.shoppingList;
+                }
+                if (Array.isArray(cloudData.mealPlan)) {
+                  targetState.mealPlan = cloudData.mealPlan;
+                }
+
+                if (typeof syncConfigFormInputs === 'function') syncConfigFormInputs();
+                if (typeof updateUIHeader === 'function') updateUIHeader();
+                if (typeof renderShoppingList === 'function') renderShoppingList();
+                if (typeof renderPantryList === 'function') renderPantryList();
+                if (typeof renderMealPlan === 'function') renderMealPlan();
+                if (typeof updateCloudBadge === 'function') updateCloudBadge('Sincronizado en la nube', false);
+                isApplyingRemoteUpdate = false;
+              } else {
+                if (typeof window.saveStateToCloud === 'function' && window.appState) {
+                  window.saveStateToCloud(window.appState);
+                }
+              }
+            },
+            (error) => {
+              console.warn("Aviso de sincronización:", error);
+              if (typeof updateCloudBadge === 'function') updateCloudBadge('Modo local activo', false);
+            }
+          );
+        });
+      } catch (err) {
+        console.warn("Inicialización de almacenamiento:", err);
+        if (typeof updateCloudBadge === 'function') updateCloudBadge('Guardado activo', false);
+      }
+    }
+
+    window.saveStateToCloud = async function(stateToSave) {
+      if (!currentUser || !db || isApplyingRemoteUpdate) {
+        if (typeof updateCloudBadge === 'function') updateCloudBadge('Guardado activo', false);
+        return;
+      }
+      try {
+        const stateDocRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'superplan_data', 'main_state');
+        await setDoc(stateDocRef, {
+          config: stateToSave.config,
+          pantry: stateToSave.pantry,
+          shoppingList: stateToSave.shoppingList,
+          mealPlan: stateToSave.mealPlan,
+          updatedAt: Date.now()
+        });
+        if (typeof updateCloudBadge === 'function') updateCloudBadge('Sincronizado en la nube', false);
+      } catch (e) {
+        console.warn("Error al guardar en la nube:", e);
+        if (typeof updateCloudBadge === 'function') updateCloudBadge('Guardado activo', false);
+      }
+    };
+
+    initCloudStorage();
+  </script>
+
+</main></body></html>
