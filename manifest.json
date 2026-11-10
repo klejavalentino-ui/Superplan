@@ -1,7 +1,7 @@
 {
-  "name": "SúperPlan - Compra Mercadona Castellón",
+  "name": "SúperPlan - Compra Inteligente Castellón",
   "short_name": "SúperPlan",
-  "description": "Organizador de despensa, nutricionista y lista de compra por pasillos de Mercadona Castellón.",
+  "description": "Sistema experto local de despensa, nutrición y compra en Mercadona, Carrefour y Alcampo Castellón.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
