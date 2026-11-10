@@ -1,5 +1,5 @@
 // Service Worker para SúperPlan Castellón (100% Offline First en GitHub Pages)
-const CACHE_NAME = 'superplan-castellon-v3';
+const CACHE_NAME = 'superplan-castellon-v4';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',

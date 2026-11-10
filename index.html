@@ -399,6 +399,76 @@
         <!-- Tarjetas de objetivos nutricionales y evaluación de reglas -->
         <div id="nutri-macro-cards" class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1"></div>
         <div id="nutri-compliance-banner" class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1"></div>
+
+        <!-- Guía Nutricional Clínica & Deportiva (Evidencia & Práctica España/Argentina) -->
+        <details class="group bg-slate-50 border border-slate-200/90 rounded-xl p-3.5 text-xs transition-all mt-1">
+          <summary class="cursor-pointer font-bold text-slate-800 flex items-center justify-between select-none list-none">
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-graduation-cap text-mercadona text-sm"></i>
+              <span class="text-xs font-extrabold text-slate-900">Fundamentos de Nutrición Clínica, Deportiva &amp; Variedades (España &amp; Argentina)</span>
+              <span class="text-[10px] bg-emerald-100 text-mercadona font-bold px-2 py-0.5 rounded-full hidden sm:inline-block">Criterio Experto</span>
+            </div>
+            <span class="text-[11px] text-slate-500 font-semibold group-open:rotate-180 transition-transform">
+              <i class="fa-solid fa-chevron-down"></i>
+            </span>
+          </summary>
+          
+          <div class="mt-3 pt-3 border-t border-slate-200/80 space-y-3 text-slate-600 leading-relaxed">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <!-- 1. Leucina y mTOR -->
+              <div class="p-3 bg-white rounded-xl border border-slate-200/70 shadow-2xs space-y-1">
+                <div class="flex items-center gap-2 text-slate-900 font-bold">
+                  <span class="w-5 h-5 rounded-lg bg-emerald-100 text-mercadona flex items-center justify-center text-[11px] font-black">1</span>
+                  <span>Umbral de Leucina &amp; Síntesis Proteica (mTOR)</span>
+                </div>
+                <p class="text-[11px] text-slate-600">
+                  Para estimular al máximo la síntesis muscular y la saciedad, se fraccionan entre <strong>30g y 45g de proteína de alto valor biológico</strong> en cada comida principal. Esto asegura alcanzar el <em>umbral de leucina (~2,7g por ingesta)</em> a través de pollo, huevos camperos, bife magro, merluza, atún, queso fresco/ricota y legumbres combinadas.
+                </p>
+              </div>
+
+              <!-- 2. Almidón Resistente & Microbiota -->
+              <div class="p-3 bg-white rounded-xl border border-slate-200/70 shadow-2xs space-y-1">
+                <div class="flex items-center gap-2 text-slate-900 font-bold">
+                  <span class="w-5 h-5 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center text-[11px] font-black">2</span>
+                  <span>Almidón Resistente Tipo 3 &amp; Salud Intestinal</span>
+                </div>
+                <p class="text-[11px] text-slate-600">
+                  Cocer arroz o patatas/papas y dejarlos <strong>enfriar en nevera a 4°C durante 12-24 horas</strong> reordena sus moléculas de amilosa formando <em>almidón resistente</em>. Este actúa como fibra prebiótica en el colon, genera <strong>butirato</strong>, disminuye el pico de glucemia e insulina posprandial y aumenta la saciedad duradera.
+                </p>
+              </div>
+
+              <!-- 3. Biodisponibilidad de Hierro -->
+              <div class="p-3 bg-white rounded-xl border border-slate-200/70 shadow-2xs space-y-1">
+                <div class="flex items-center gap-2 text-slate-900 font-bold">
+                  <span class="w-5 h-5 rounded-lg bg-rose-100 text-rose-800 flex items-center justify-center text-[11px] font-black">3</span>
+                  <span>Sinergia de Micronutrientes (Hierro + Vitamina C)</span>
+                </div>
+                <p class="text-[11px] text-slate-600">
+                  El hierro no-hemo de las lentejas y garbanzos se absorbe hasta <strong>3 veces más</strong> al consumirlo junto a vitamina C (mandarina, naranja, tomate crudo o pimiento). Se aconseja distanciar el café, té o mate al menos 45-60 min de las legumbres para que sus taninos no inhiban la asimilación del hierro.
+                </p>
+              </div>
+
+              <!-- 4. Dieta Mediterránea y Río de la Plata -->
+              <div class="p-3 bg-white rounded-xl border border-slate-200/70 shadow-2xs space-y-1">
+                <div class="flex items-center gap-2 text-slate-900 font-bold">
+                  <span class="w-5 h-5 rounded-lg bg-sky-100 text-sky-800 flex items-center justify-center text-[11px] font-black">4</span>
+                  <span>Sinergia Cultural: AOVE, Mate Amargo &amp; Hidratación</span>
+                </div>
+                <p class="text-[11px] text-slate-600">
+                  Combina lo mejor de la <strong>dieta mediterránea</strong> (ácido oleico y oleocanthal antiinflamatorio del AOVE en crudo) con los <strong>hábitos del Río de la Plata</strong> (polifenoles y mateína del mate amargo, cortes magros ricos en zinc y B12). Acompañar con ~2 litros de agua pura diarios para un balance hídrico perfecto.
+                </p>
+              </div>
+            </div>
+
+            <!-- Regla Despensa Prioritaria -->
+            <div class="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center gap-2.5">
+              <i class="fa-solid fa-house-chimney-crack text-emerald-700 text-base shrink-0"></i>
+              <div class="text-[11px] text-emerald-900">
+                <strong class="font-extrabold text-emerald-950">Motor de Reglas Prioritarias:</strong> El algoritmo da la máxima puntuación a las recetas que emplean los alimentos que ya tienes en tu despensa (arroz, pasta, atún, patatas, huevos, avena, especias). Si un plato puede cocinarse 100% con lo de casa, se prioriza automáticamente para reducir el gasto de tu compra a 0,00 €.
+              </div>
+            </div>
+          </div>
+        </details>
       </div>
 
       <!-- Grid de días del menú -->
@@ -435,11 +505,11 @@
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
             <div class="space-y-1">
               <label class="font-bold text-slate-700 block">Nombre</label>
-              <input id="cfg-first-name" type="text" placeholder="Ej: Valentino" onchange="saveProfileSettings()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-mercadona">
+              <input id="cfg-first-name" type="text" onchange="saveProfileSettings()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-mercadona">
             </div>
             <div class="space-y-1">
               <label class="font-bold text-slate-700 block">Apellido</label>
-              <input id="cfg-last-name" type="text" placeholder="Ej: Kleja" onchange="saveProfileSettings()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-mercadona">
+              <input id="cfg-last-name" type="text" onchange="saveProfileSettings()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-mercadona">
             </div>
             <div class="space-y-1">
               <label class="font-bold text-slate-700 block">Género (Ajusta Kcal y Proteína)</label>
@@ -869,7 +939,8 @@
       ['atún', 'atun', 'caballa', 'jurel'],
       ['merluza', 'pescado blanco', 'filet de merluza', 'bacalao', 'abadejo'],
       ['espinaca', 'espinacas', 'acelga', 'acelgas'],
-      ['mate', 'yerba', 'yerba mate', 'café', 'cafe', 'infusión']
+      ['mate', 'yerba', 'yerba mate', 'café', 'cafe', 'infusión'],
+      ['cacahuete', 'cacahuetes', 'maní', 'mani', 'crema de cacahuete']
     ];
 
     function expandFoodSynonyms(term) {
@@ -948,7 +1019,8 @@
       { name: 'Pan 100% Integral en Rebanadas', unitPrice: 1.35, prices: { mercadona: 1.35, carrefour: 1.45, alcampo: 1.29 }, unit: 'unidades', aisle: 'Panadería y Horno', pantryCat: 'Alacena Seca & Conservas', searchSlug: 'pan de molde integral' },
       { name: 'Nueces / Frutos Secos Naturales', unitPrice: 2.35, prices: { mercadona: 2.35, carrefour: 2.50, alcampo: 2.25 }, unit: 'malla / pack', aisle: 'Frutería y Verduras', pantryCat: 'Alacena Seca & Conservas', searchSlug: 'nueces' },
       { name: 'Café Molido Natural', unitPrice: 2.45, prices: { mercadona: 2.45, carrefour: 2.60, alcampo: 2.35 }, unit: 'unidades', aisle: 'Bebidas y Bodega', pantryCat: 'Bebidas', searchSlug: 'cafe molido' },
-      { name: 'Yerba Mate Tradicional', unitPrice: 3.20, prices: { mercadona: 3.20, carrefour: 3.10, alcampo: 2.95 }, unit: 'unidades', aisle: 'Bebidas y Bodega', pantryCat: 'Bebidas', searchSlug: 'yerba mate' }
+      { name: 'Yerba Mate Tradicional', unitPrice: 3.20, prices: { mercadona: 3.20, carrefour: 3.10, alcampo: 2.95 }, unit: 'unidades', aisle: 'Bebidas y Bodega', pantryCat: 'Bebidas', searchSlug: 'yerba mate' },
+      { name: 'Crema de Cacahuete / Maní 100%', unitPrice: 2.60, prices: { mercadona: 2.60, carrefour: 2.75, alcampo: 2.49 }, unit: 'unidades', aisle: 'Aceites y Despensa', pantryCat: 'Alacena Seca & Conservas', searchSlug: 'crema de cacahuete' }
     ];
 
     // Capa modular preparada para recibir JSON externo, API o scraping en el futuro
@@ -1130,52 +1202,84 @@
         { id: 's7', name: 'Copos de Avena Integral', qty: 1, unit: 'malla / pack', unitPrice: 1.05, category: 'Aceites y Despensa', note: 'Paquete 500g para porridge y budín casero', checked: false },
         { id: 's8', name: 'Filetes de Merluza', qty: 2, unit: 'unidades', unitPrice: 1.95, category: 'Pescadería', note: 'Cenas ligeras y digestivas', checked: false }
       ],
-      // Menú semanal experto (hábitos España + Argentina)
+      // Menú semanal experto (hábitos España + Argentina, con prioridad a lo que hay en casa)
       mealPlan: [
         { 
           day: 'Día 1 · Lunes', 
           macros: '~142g Prot · 2.240 kcal · 32g Fibra',
+          pantryBadge: '🏠 3 productos de tu alacena (Arroz, Atún, AOVE)',
+          isFullHome: false,
           breakfast: 'Café con leche o Mate cebado + 2 tostadas integrales con AOVE, tomate natural rallado y 2 huevos a la plancha + 1 mandarina',
           lunch: 'Plato Harvard (España/Argentina): 160g pechuga/suprema de pollo a la plancha al limón + arroz redondo (de tu despensa) + ensalada de tomate y cebolla con AOVE', 
           snack: '🍰 1 Porción de Budín de Banana y Avena proteico casero + Mate o infusión + 1 Mandarina',
-          dinner: 'Tortilla francesa de 2 huevos + 1 lata de atún al natural con ensalada templada de verduras salteadas',
+          dinner: 'Tortilla francesa de 2 huevos + 1 lata de atún al natural con ensalada templada de verduras salteadas (de tu alacena)',
           nutriTip: 'Síntesis proteica óptima (>30g de proteína por ingesta principal) con almidón de fácil digestión y antioxidantes.'
         },
         { 
           day: 'Día 2 · Martes', 
           macros: '~139g Prot · 2.190 kcal · 35g Fibra',
+          pantryBadge: '🏠 4 productos de tu despensa (Lentejas, Especias, Patatas, AOVE)',
+          isFullHome: false,
           breakfast: 'Mate cebado o Café + Porridge de copos de avena cocidos con leche, canela, yogur proteico y 1 banana/plátano en rodajas',
-          lunch: 'Guiso casero de lentejas con sofrito de cebolla, ajo, zanahoria y pimentón (de tu despensa) + 1 huevo duro picado', 
+          lunch: 'Guiso casero de lentejas con sofrito de cebolla, ajo, zanahoria y pimentón (todo de tu alacena) + 1 huevo duro picado', 
           snack: '🥪 Tostado / Bocadillo integral de jamón cocido o pavo magro y queso fresco/ricota + 1 fruta fresca',
-          dinner: 'Filetes de merluza a la plancha con ajo y perejil + patata/papa cocida al vapor y ensalada verde con AOVE',
+          dinner: 'Filetes de merluza a la plancha con ajo y perejil + patata/papa cocida al vapor (de tu casa) y ensalada verde con AOVE',
           nutriTip: 'Combinar legumbres (hierro no-hemo) con cítricos de postre duplica la biodisponibilidad del hierro en sangre.'
         },
         { 
           day: 'Día 3 · Miércoles', 
           macros: '~145g Prot · 2.280 kcal · 31g Fibra',
+          pantryBadge: '🏠 3 productos de tu despensa (Patatas, Pan, AOVE)',
+          isFullHome: false,
           breakfast: 'Café o Mate + 2 tostadas integrales con queso fresco/untable magro, 2 huevos revueltos y semillas o chorrito de AOVE',
-          lunch: 'Suprema de pollo o bife magro a la plancha + puré rústico de patata/papa o calabaza/zapallo con AOVE y ensalada criolla (tomate, cebolla y pimiento)', 
+          lunch: 'Suprema de pollo o bife magro a la plancha + puré rústico de patata/papa o calabaza con AOVE y ensalada criolla (tomate, cebolla y pimiento)', 
           snack: '🍰 1 Porción de Budín de Banana y Avena casero + 1 Mandarina o Manzana',
-          dinner: 'Revuelto de 2 huevos y claras con espinacas/acelgas salteadas, ajo y taquitos de pavo + 1 rebanada de pan integral',
+          dinner: 'Revuelto de 2 huevos camperos con espinacas/acelgas salteadas, ajo y taquitos de pavo + 1 rebanada de pan integral de casa',
           nutriTip: 'El aporte de potasio y betacarotenos del zapallo/patata junto a proteína magra acelera la recuperación muscular.'
         },
         { 
           day: 'Día 4 · Jueves', 
           macros: '~138g Prot · 2.170 kcal · 33g Fibra',
+          pantryBadge: '🏠 Máximo Ahorro Despensa (Pasta, Atún, Cebollas, AOVE)',
+          isFullHome: false,
           breakfast: 'Mate o Café con leche + 2 tostadas integrales con tomate natural, AOVE y lonchas de pavo/jamón magro + 1 fruta',
           lunch: 'Espaguetis / Fideos integrales (de tu despensa) con salsa casera de tomate natural, cebolla, orégano y 2 latas de atún al natural', 
           snack: '🥣 Bol de yogur natural/proteico o queso fresco batido con 40g de avena y ½ banana/plátano',
-          dinner: 'Milanesa de pollo/ternera al horno (rebozada en avena/pan integral sin freír) con ensalada fresca de tomate y hojas verdes',
+          dinner: 'Milanesa de suprema de pollo al horno (rebozada en avena sin freír) con ensalada fresca de tomate y hojas verdes',
           nutriTip: 'Cocinar la milanesa al horno con avena reduce un 65% las grasas saturadas respecto a la fritura tradicional manteniendo la saciedad.'
         },
         { 
           day: 'Día 5 · Viernes', 
           macros: '~141g Prot · 2.220 kcal · 32g Fibra',
+          pantryBadge: '🏠 3 productos de tu despensa (Arroz, Cebollas, Especias)',
+          isFullHome: false,
           breakfast: 'Café o Mate cebado + Tortita/Omelette de avena, 1 banana pisada y 2 huevos a la sartén con canela',
-          lunch: 'Salteado mediterráneo de garbanzos o arroz con tiras de pollo, verduras (pimiento, cebolla, espinaca) y pimentón dulce', 
+          lunch: 'Salteado mediterráneo de arroz o garbanzos con tiras de pollo, verduras salteadas (cebolla, espinaca) y pimentón dulce de alacena', 
           snack: '🍰 1 Porción de Budín de Banana y Avena proteico + 1 Mandarina',
-          dinner: 'Tarta rápida / Tortilla al horno de espinaca o acelga, cebolla, ricota/queso fresco y 2 huevos + ensalada de tomate',
+          dinner: 'Tarta rápida / Pastel al horno de espinaca o acelga, cebolla, ricota/queso fresco y 2 huevos + ensalada de tomate',
           nutriTip: 'Cena rica en calcio, triptófano y magnesio para favorecer el descanso profundo de fin de semana.'
+        },
+        { 
+          day: 'Día 6 · Sábado', 
+          macros: '~144g Prot · 2.260 kcal · 30g Fibra',
+          pantryBadge: '🏠 100% con lo que tienes en casa (0 € extra)',
+          isFullHome: true,
+          breakfast: 'Mate cebado o Café con leche + 2 tostadas integrales con tomate natural y 2 huevos revueltos + 1 banana/plátano',
+          lunch: 'Cazuela de arroz salteado con atún al natural, cebolla, ajo y verduras salteadas al pimentón (todo de tu despensa)', 
+          snack: '🥪 Tostado integral de pavo magro y queso fresco + Mate cebado + 1 mandarina',
+          dinner: 'Tortilla española ligera de patatas y cebollas de tu casa con ensalada de tomate al AOVE',
+          nutriTip: 'Cena tradicional rica en colina, carbohidratos complejos para reponer glucógeno y saciedad sin frituras pesadas.'
+        },
+        { 
+          day: 'Día 7 · Domingo', 
+          macros: '~140g Prot · 2.210 kcal · 34g Fibra',
+          pantryBadge: '🏠 4 productos de tu despensa (Avena, Leche, Patatas, AOVE)',
+          isFullHome: false,
+          breakfast: 'Mate o Café + Porridge de copos de avena cocidos con leche, canela, queso batido y manzana en dados',
+          lunch: 'Bife magro de ternera o pechuga al grill con puré rústico de calabaza y papas de casa + ensalada criolla fresca', 
+          snack: '🍰 1 Porción de Budín de Banana y Avena proteico casero + Mate amargo + 1 fruta de temporada',
+          dinner: 'Revuelto de calabacín/zapallito, cebolla y taquitos de pavo con 2 huevos camperos + ensalada verde al AOVE',
+          nutriTip: 'Digestión ligera pre-descanso para optimizar la síntesis proteica nocturna y empezar la semana al 100%.'
         }
       ]
     };
@@ -2012,14 +2116,21 @@
         html += `
           <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-xs flex flex-col justify-between hover:border-slate-300 transition-all">
             <div>
-              <div class="flex items-center justify-between pb-2.5 border-b border-slate-100">
+              <div class="flex items-center justify-between pb-2.5 border-b border-slate-100 flex-wrap gap-2">
                 <div class="flex items-center gap-2">
                   <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
                   <span class="text-sm font-black uppercase tracking-wider text-slate-800">${plan.day}</span>
                 </div>
-                <span class="text-[10px] font-bold bg-emerald-50 text-mercadona px-2.5 py-0.5 rounded-full border border-emerald-200">
-                  ${plan.macros || `~${targets.prot}g Prot · ${targets.kcal} kcal`}
-                </span>
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  ${plan.pantryBadge ? `
+                    <span class="text-[10px] font-bold ${plan.isFullHome ? 'bg-emerald-100 text-emerald-800 border-emerald-300' : 'bg-emerald-50 text-emerald-700 border-emerald-200'} px-2 py-0.5 rounded-full border flex items-center gap-1 shadow-2xs">
+                      <i class="fa-solid fa-house-chimney-user text-emerald-600"></i> ${plan.pantryBadge}
+                    </span>
+                  ` : ''}
+                  <span class="text-[10px] font-bold bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full border border-slate-200">
+                    ${plan.macros || `~${targets.prot}g Prot · ${targets.kcal} kcal`}
+                  </span>
+                </div>
               </div>
 
               <div class="space-y-2.5 mt-3">
@@ -2736,6 +2847,42 @@
             { keyword: 'queso fresco', name: 'Queso Fresco / Ricota / Queso Untable Magro', qty: 1, unit: 'unidades', category: 'Lácteos y Huevos' },
             { keyword: 'mandarina', name: 'Mandarinas / Naranjas', qty: 4, unit: 'unidades', category: 'Frutería y Verduras' }
           ]
+        },
+        {
+          id: 'bf_omelette_queso_tostada',
+          region: 'argentina',
+          title: 'Mate amargo o Café + Omelette esponjoso de 2 huevos con orégano y queso fresco fundido sobre tostada integral + 1 manzana',
+          protein: 30, kcal: 480, fiber: 6, hasVeg: false, hasFruit: true, mainTag: 'huevo_queso',
+          ingredients: [
+            { keyword: 'huevo', name: 'Huevos Camperos / Grandes L (Docena)', qty: 1, unit: 'malla / pack', category: 'Lácteos y Huevos' },
+            { keyword: 'queso fresco', name: 'Queso Fresco / Ricota / Queso Untable Magro', qty: 1, unit: 'unidades', category: 'Lácteos y Huevos' },
+            { keyword: 'pan', name: 'Pan 100% Integral en Rebanadas', qty: 1, unit: 'unidades', category: 'Panadería y Horno' },
+            { keyword: 'manzana', name: 'Manzanas', qty: 1, unit: 'malla / pack', category: 'Frutería y Verduras' }
+          ]
+        },
+        {
+          id: 'bf_bol_yogur_manzana_avena',
+          region: 'espana',
+          title: 'Café con leche + Bol saciante de yogur proteico con dados de manzana fresca, copos de avena, canela y nueces',
+          protein: 26, kcal: 450, fiber: 8, hasVeg: false, hasFruit: true, mainTag: 'yogur_manzana',
+          ingredients: [
+            { keyword: 'yogur', name: 'Yogur Natural / Proteico', qty: 1, unit: 'malla / pack', category: 'Lácteos y Huevos' },
+            { keyword: 'manzana', name: 'Manzanas', qty: 1, unit: 'malla / pack', category: 'Frutería y Verduras' },
+            { keyword: 'avena', name: 'Copos de Avena Integral', qty: 1, unit: 'malla / pack', category: 'Aceites y Despensa' },
+            { keyword: 'nueces', name: 'Nueces / Frutos Secos Naturales', qty: 1, unit: 'malla / pack', category: 'Frutería y Verduras' },
+            { keyword: 'leche', name: 'Leche Semidesnatada / Descremada', qty: 1, unit: 'brik', category: 'Lácteos y Huevos' }
+          ]
+        },
+        {
+          id: 'bf_revuelto_tomate_tostadas',
+          region: 'argentina',
+          title: 'Mate cebado tradicional + Revuelto criollo de 2 huevos camperos con tomate picado y 2 rebanadas de pan integral al AOVE',
+          protein: 27, kcal: 460, fiber: 7, hasVeg: true, hasFruit: false, mainTag: 'huevo_tomate',
+          ingredients: [
+            { keyword: 'huevo', name: 'Huevos Camperos / Grandes L (Docena)', qty: 1, unit: 'malla / pack', category: 'Lácteos y Huevos' },
+            { keyword: 'tomate', name: 'Tomates para Ensalada / Salsa', qty: 4, unit: 'unidades', category: 'Frutería y Verduras' },
+            { keyword: 'pan', name: 'Pan 100% Integral en Rebanadas', qty: 1, unit: 'unidades', category: 'Panadería y Horno' }
+          ]
         }
       ],
       lunches: [
@@ -2827,6 +2974,74 @@
             { keyword: 'merluza', name: 'Filetes de Merluza', qty: 2, unit: 'unidades', category: 'Pescadería' },
             { keyword: 'brócoli', name: 'Brócoli Fresco', qty: 1, unit: 'unidades', category: 'Frutería y Verduras' }
           ]
+        },
+        {
+          id: 'ln_pastel_papa_calabaza_carne',
+          region: 'argentina',
+          title: 'Pastel criollo al horno de papa y zapallo/calabaza con carne picada magra, cebolla salteada y huevo duro',
+          protein: 46, kcal: 660, fiber: 9, hasVeg: true, hasFruit: false, mainTag: 'carne_picada',
+          nutriTip: 'Plato tradicional de gran reconfort con bajo tenor graso al combinar carne picada magra y puré mixto con AOVE.',
+          ingredients: [
+            { keyword: 'patata', name: 'Patatas / Papas', qty: 1, unit: 'malla / pack', category: 'Frutería y Verduras' },
+            { keyword: 'calabaza', name: 'Calabaza / Zapallo', qty: 1, unit: 'unidades', category: 'Frutería y Verduras' },
+            { keyword: 'ternera', name: 'Carne Picada Magra de Vacuno / Pollo', qty: 1, unit: 'bandeja', category: 'Carnicería y Charcutería' },
+            { keyword: 'cebolla', name: 'Cebollas', qty: 1, unit: 'malla / pack', category: 'Frutería y Verduras' },
+            { keyword: 'huevo', name: 'Huevos Camperos / Grandes L (Docena)', qty: 1, unit: 'malla / pack', category: 'Lácteos y Huevos' }
+          ]
+        },
+        {
+          id: 'ln_zapallitos_rellenos_pollo',
+          region: 'argentina',
+          title: 'Zapallitos verdes / Calabacines rellenos de pollo desmenuzado, cebolla y tomate gratinados con queso fresco',
+          protein: 45, kcal: 610, fiber: 10, hasVeg: true, hasFruit: false, mainTag: 'pollo_zapallito',
+          nutriTip: 'Muy rico en agua celular, potasio y fibra mucilaginosa que desinflama el tracto digestivo.',
+          ingredients: [
+            { keyword: 'calabacín', name: 'Calabacín / Zapallito Verde', qty: 2, unit: 'unidades', category: 'Frutería y Verduras' },
+            { keyword: 'pollo', name: 'Pechuga / Suprema de Pollo', qty: 1, unit: 'bandeja', category: 'Carnicería y Charcutería' },
+            { keyword: 'cebolla', name: 'Cebollas', qty: 1, unit: 'malla / pack', category: 'Frutería y Verduras' },
+            { keyword: 'queso fresco', name: 'Queso Fresco / Ricota / Queso Untable Magro', qty: 1, unit: 'unidades', category: 'Lácteos y Huevos' },
+            { keyword: 'tomate', name: 'Tomates para Ensalada / Salsa', qty: 4, unit: 'unidades', category: 'Frutería y Verduras' }
+          ]
+        },
+        {
+          id: 'ln_wok_pollo_arroz_verduras',
+          region: 'ambos',
+          title: 'Salteado wok de pechuga de pollo con calabacín, zanahoria, cebolla y arroz al vapor con orégano y AOVE',
+          protein: 47, kcal: 650, fiber: 8, hasVeg: true, hasFruit: false, mainTag: 'pollo_arroz',
+          nutriTip: 'Comida rápida de sartén única que aprovecha arroz de tu alacena y verduras frescas con mínima merma.',
+          ingredients: [
+            { keyword: 'pollo', name: 'Pechuga / Suprema de Pollo', qty: 1, unit: 'bandeja', category: 'Carnicería y Charcutería' },
+            { keyword: 'arroz', name: 'Arroz Redondo / Largo Fino', qty: 1, unit: 'unidades', category: 'Aceites y Despensa' },
+            { keyword: 'calabacín', name: 'Calabacín / Zapallito Verde', qty: 2, unit: 'unidades', category: 'Frutería y Verduras' },
+            { keyword: 'zanahoria', name: 'Zanahorias', qty: 1, unit: 'malla / pack', category: 'Frutería y Verduras' },
+            { keyword: 'cebolla', name: 'Cebollas', qty: 1, unit: 'malla / pack', category: 'Frutería y Verduras' }
+          ]
+        },
+        {
+          id: 'ln_garbanzos_huevo_espinacas',
+          region: 'espana',
+          title: 'Cazuela de garbanzos con 2 huevos poché/cocidos, espinacas salteadas al comino y tomate natural al AOVE',
+          protein: 40, kcal: 620, fiber: 14, hasVeg: true, hasFruit: false, mainTag: 'garbanzo_huevo',
+          nutriTip: 'Plato mediterráneo tradicional de cuaresma: 14g de fibra saciante y perfil completo de aminoácidos.',
+          ingredients: [
+            { keyword: 'garbanzo', name: 'Garbanzos Cocidos', qty: 1, unit: 'unidades', category: 'Aceites y Despensa' },
+            { keyword: 'huevo', name: 'Huevos Camperos / Grandes L (Docena)', qty: 1, unit: 'malla / pack', category: 'Lácteos y Huevos' },
+            { keyword: 'espinaca', name: 'Espinacas / Acelgas Frescas', qty: 1, unit: 'malla / pack', category: 'Frutería y Verduras' },
+            { keyword: 'tomate', name: 'Tomate Triturado Natural', qty: 1, unit: 'unidades', category: 'Aceites y Despensa' }
+          ]
+        },
+        {
+          id: 'ln_churrasco_ternera_patatas',
+          region: 'espana',
+          title: 'Churrasco / Bife de ternera magra a la plancha con patatas asadas al pimentón dulce y ensalada de tomate y cebolla',
+          protein: 49, kcal: 670, fiber: 7, hasVeg: true, hasFruit: false, mainTag: 'ternera_patata',
+          nutriTip: 'Pico de síntesis proteica con hierro hemo de absorción inmediata para rendimiento deportivo.',
+          ingredients: [
+            { keyword: 'ternera', name: 'Bife Magro de Ternera / Cuadril / Lomo', qty: 1, unit: 'bandeja', category: 'Carnicería y Charcutería' },
+            { keyword: 'patata', name: 'Patatas / Papas', qty: 1, unit: 'malla / pack', category: 'Frutería y Verduras' },
+            { keyword: 'tomate', name: 'Tomates para Ensalada / Salsa', qty: 4, unit: 'unidades', category: 'Frutería y Verduras' },
+            { keyword: 'cebolla', name: 'Cebollas', qty: 1, unit: 'malla / pack', category: 'Frutería y Verduras' }
+          ]
         }
       ],
       snacks: [
@@ -2861,6 +3076,51 @@
             { keyword: 'yogur', name: 'Yogur Natural / Proteico', qty: 1, unit: 'malla / pack', category: 'Lácteos y Huevos' },
             { keyword: 'plátano', name: 'Plátanos / Bananas', qty: 5, unit: 'unidades', category: 'Frutería y Verduras' },
             { keyword: 'avena', name: 'Copos de Avena Integral', qty: 1, unit: 'malla / pack', category: 'Aceites y Despensa' }
+          ]
+        },
+        {
+          id: 'sn_tostada_huevo_aove',
+          region: 'espana',
+          title: 'Tostada 100% integral con 1 huevo campero duro laminado, chorrito de AOVE y pimentón dulce + 1 mandarina',
+          protein: 19, kcal: 310, fiber: 5, hasVeg: false, hasFruit: true, mainTag: 'tostada_huevo',
+          ingredients: [
+            { keyword: 'pan', name: 'Pan 100% Integral en Rebanadas', qty: 1, unit: 'unidades', category: 'Panadería y Horno' },
+            { keyword: 'huevo', name: 'Huevos Camperos / Grandes L (Docena)', qty: 1, unit: 'malla / pack', category: 'Lácteos y Huevos' },
+            { keyword: 'mandarina', name: 'Mandarinas / Naranjas', qty: 4, unit: 'unidades', category: 'Frutería y Verduras' }
+          ]
+        },
+        {
+          id: 'sn_manzana_mantequilla_mani',
+          region: 'ambos',
+          title: 'Manzana fresca cortada en gajos con yogur natural y 1 cucharada de crema de cacahuete/maní + Café o Mate',
+          protein: 18, kcal: 320, fiber: 6, hasVeg: false, hasFruit: true, mainTag: 'manzana_mani',
+          ingredients: [
+            { keyword: 'manzana', name: 'Manzanas', qty: 1, unit: 'malla / pack', category: 'Frutería y Verduras' },
+            { keyword: 'yogur', name: 'Yogur Natural / Proteico', qty: 1, unit: 'malla / pack', category: 'Lácteos y Huevos' },
+            { keyword: 'cacahuete', name: 'Crema de Cacahuete / Maní 100%', qty: 1, unit: 'unidades', category: 'Aceites y Despensa' }
+          ]
+        },
+        {
+          id: 'sn_galletitas_avena_mate',
+          region: 'argentina',
+          title: '🧉 Mate cebado tradicional con 2 galletas caseras de avena y banana al horno sin azúcar + 1 mandarina',
+          protein: 17, kcal: 310, fiber: 7, hasVeg: false, hasFruit: true, mainTag: 'avena_mate',
+          ingredients: [
+            { keyword: 'avena', name: 'Copos de Avena Integral', qty: 1, unit: 'malla / pack', category: 'Aceites y Despensa' },
+            { keyword: 'plátano', name: 'Plátanos / Bananas', qty: 5, unit: 'unidades', category: 'Frutería y Verduras' },
+            { keyword: 'mandarina', name: 'Mandarinas / Naranjas', qty: 4, unit: 'unidades', category: 'Frutería y Verduras' }
+          ]
+        },
+        {
+          id: 'sn_batido_leche_banana_avena',
+          region: 'ambos',
+          title: 'Batido proteico saciante de leche semidesnatada, 1 banana, 30g de copos de avena y yogur con canela molida',
+          protein: 24, kcal: 340, fiber: 6, hasVeg: false, hasFruit: true, mainTag: 'batido_avena',
+          ingredients: [
+            { keyword: 'leche', name: 'Leche Semidesnatada / Descremada', qty: 1, unit: 'brik', category: 'Lácteos y Huevos' },
+            { keyword: 'plátano', name: 'Plátanos / Bananas', qty: 5, unit: 'unidades', category: 'Frutería y Verduras' },
+            { keyword: 'avena', name: 'Copos de Avena Integral', qty: 1, unit: 'malla / pack', category: 'Aceites y Despensa' },
+            { keyword: 'yogur', name: 'Yogur Natural / Proteico', qty: 1, unit: 'malla / pack', category: 'Lácteos y Huevos' }
           ]
         }
       ],
@@ -2925,9 +3185,76 @@
             { keyword: 'pavo', name: 'Pechuga de Pavo / Jamón Cocido Magro', qty: 1, unit: 'malla / pack', category: 'Carnicería y Charcutería' },
             { keyword: 'calabacín', name: 'Calabacín / Zapallito Verde', qty: 2, unit: 'unidades', category: 'Frutería y Verduras' }
           ]
+        },
+        {
+          id: 'dn_tortilla_espanola_ensalada',
+          region: 'espana',
+          title: 'Tortilla española ligera de patatas y cebollas de tu casa con ensalada de tomate al AOVE y 1 lata de atún al natural',
+          protein: 40, kcal: 480, fiber: 6, hasVeg: true, hasFruit: false, mainTag: 'tortilla_patata',
+          nutriTip: 'Cena tradicional rica en colina de los huevos camperos y glucógeno de recarga muscular con grasas monoinsaturadas del AOVE.',
+          ingredients: [
+            { keyword: 'huevo', name: 'Huevos Camperos / Grandes L (Docena)', qty: 1, unit: 'malla / pack', category: 'Lácteos y Huevos' },
+            { keyword: 'patata', name: 'Patatas / Papas', qty: 1, unit: 'malla / pack', category: 'Frutería y Verduras' },
+            { keyword: 'cebolla', name: 'Cebollas', qty: 1, unit: 'malla / pack', category: 'Frutería y Verduras' },
+            { keyword: 'atún', name: 'Atún al Natural / en Aceite de Oliva', qty: 1, unit: 'malla / pack', category: 'Aceites y Despensa' },
+            { keyword: 'tomate', name: 'Tomates para Ensalada / Salsa', qty: 4, unit: 'unidades', category: 'Frutería y Verduras' }
+          ]
+        },
+        {
+          id: 'dn_hamburguesas_pollo_pure_zapallo',
+          region: 'argentina',
+          title: 'Hamburguesas caseras de pechuga picada/pollo a la plancha con puré suave de calabaza/zapallo al orégano y ensalada verde',
+          protein: 44, kcal: 460, fiber: 7, hasVeg: true, hasFruit: false, mainTag: 'hamburguesa_pollo',
+          nutriTip: 'Cena de digestión amable rica en zinc, selenio y betacarotenos ideal para deportistas post-entrenamiento vespertino.',
+          ingredients: [
+            { keyword: 'pollo', name: 'Pechuga / Suprema de Pollo', qty: 1, unit: 'bandeja', category: 'Carnicería y Charcutería' },
+            { keyword: 'calabaza', name: 'Calabaza / Zapallo', qty: 1, unit: 'unidades', category: 'Frutería y Verduras' },
+            { keyword: 'tomate', name: 'Tomates para Ensalada / Salsa', qty: 4, unit: 'unidades', category: 'Frutería y Verduras' }
+          ]
+        },
+        {
+          id: 'dn_crema_calabaza_huevo_duro',
+          region: 'ambos',
+          title: 'Sopa crema casera de calabaza y zanahoria con AOVE + 2 huevos camperos duros picados y semillas',
+          protein: 36, kcal: 430, fiber: 9, hasVeg: true, hasFruit: false, mainTag: 'crema_calabaza',
+          nutriTip: 'Altísima densidad en micronutrientes y carotenoides antioxidantes con suave impacto glucémico para conciliar el sueño.',
+          ingredients: [
+            { keyword: 'calabaza', name: 'Calabaza / Zapallo', qty: 1, unit: 'unidades', category: 'Frutería y Verduras' },
+            { keyword: 'zanahoria', name: 'Zanahorias', qty: 1, unit: 'malla / pack', category: 'Frutería y Verduras' },
+            { keyword: 'huevo', name: 'Huevos Camperos / Grandes L (Docena)', qty: 1, unit: 'malla / pack', category: 'Lácteos y Huevos' },
+            { keyword: 'cebolla', name: 'Cebollas', qty: 1, unit: 'malla / pack', category: 'Frutería y Verduras' }
+          ]
+        },
+        {
+          id: 'dn_ensalada_campera_atun',
+          region: 'espana',
+          title: 'Ensalada campera mediterránea de patatas cocidas de casa, 1 lata de atún al natural, 1 huevo duro, cebolla, tomate y AOVE',
+          protein: 39, kcal: 465, fiber: 7, hasVeg: true, hasFruit: false, mainTag: 'campera_atun',
+          nutriTip: 'Si dejas enfriar las patatas previamente en la nevera, el almidón resistente alimentará tu flora intestinal nocturna.',
+          ingredients: [
+            { keyword: 'patata', name: 'Patatas / Papas', qty: 1, unit: 'malla / pack', category: 'Frutería y Verduras' },
+            { keyword: 'atún', name: 'Atún al Natural / en Aceite de Oliva', qty: 1, unit: 'malla / pack', category: 'Aceites y Despensa' },
+            { keyword: 'huevo', name: 'Huevos Camperos / Grandes L (Docena)', qty: 1, unit: 'malla / pack', category: 'Lácteos y Huevos' },
+            { keyword: 'cebolla', name: 'Cebollas', qty: 1, unit: 'malla / pack', category: 'Frutería y Verduras' },
+            { keyword: 'tomate', name: 'Tomates para Ensalada / Salsa', qty: 4, unit: 'unidades', category: 'Frutería y Verduras' }
+          ]
+        },
+        {
+          id: 'dn_pollo_mostaza_verduras_horno',
+          region: 'ambos',
+          title: 'Pechuga de pollo al limón y orégano a la plancha + verduras asadas al horno (calabacín, cebolla y tomate) con AOVE',
+          protein: 45, kcal: 440, fiber: 7, hasVeg: true, hasFruit: false, mainTag: 'pollo_horno_cena',
+          nutriTip: 'Cena magra hipocalórica de gran volumen que maximiza la saciedad mecánica sin pesadez estomacal.',
+          ingredients: [
+            { keyword: 'pollo', name: 'Pechuga / Suprema de Pollo', qty: 1, unit: 'bandeja', category: 'Carnicería y Charcutería' },
+            { keyword: 'calabacín', name: 'Calabacín / Zapallito Verde', qty: 2, unit: 'unidades', category: 'Frutería y Verduras' },
+            { keyword: 'cebolla', name: 'Cebollas', qty: 1, unit: 'malla / pack', category: 'Frutería y Verduras' },
+            { keyword: 'tomate', name: 'Tomates para Ensalada / Salsa', qty: 4, unit: 'unidades', category: 'Frutería y Verduras' }
+          ]
         }
       ]
     };
+    window.LOCAL_RECIPES_DB = LOCAL_RECIPES_DB;
 
     window.ExpertRuleEngine = {
       hasInPantry(keyword) {
@@ -2952,69 +3279,86 @@
         let score = 100;
         const matchedPantryNames = [];
         let missingCost = 0;
+        let missingItemsCount = 0;
         const habit = appState.config?.cuisineHabit || 'ambos';
 
         // Regla Cultural (España / Argentina / Ambos)
         if (habit === 'espana') {
-          if (recipe.region === 'espana') score += 35;
-          else if (recipe.region === 'ambos') score += 20;
-          else score -= 35;
+          if (recipe.region === 'espana') score += 40;
+          else if (recipe.region === 'ambos') score += 25;
+          else score -= 40;
         } else if (habit === 'argentina') {
-          if (recipe.region === 'argentina') score += 35;
-          else if (recipe.region === 'ambos') score += 20;
-          else score -= 35;
+          if (recipe.region === 'argentina') score += 40;
+          else if (recipe.region === 'ambos') score += 25;
+          else score -= 40;
         } else {
-          // 'ambos': equilibra recetas españolas, argentinas y mixtas
-          score += 20;
+          score += 25;
         }
 
+        const totalIngredients = (recipe.ingredients || []).length;
         (recipe.ingredients || []).forEach(ing => {
           const pantryItem = this.hasInPantry(ing.keyword);
           if (pantryItem) {
-            // Regla 1: Consumir alimentos disponibles en despensa
-            score += 32;
+            // REGLA PRIORITARIA SUPREMA: Consumir alimentos disponibles en casa
+            score += 65;
             matchedPantryNames.push(pantryItem.name.split('(')[0].trim());
           } else {
-            // Regla 2: Minimizar gasto semanal
+            missingItemsCount++;
             const catItem = findCatalogItem(ing.name);
             const price = catItem ? window.SupermarketPricingLayer.getPriceForStore(catItem) : 1.50;
             missingCost += price;
-            score -= price * 5.5;
+            // Penalización firme por obligar a comprar productos fuera
+            score -= (45 + (price * 8));
             if (this.wasFrequentlyBought(ing.keyword)) {
-              score += 8;
+              score += 10;
             }
           }
         });
 
-        // Regla 3: Mantener variedad (penalizar repetición consecutiva de proteína o receta)
+        // BONIFICACIÓN MASIVA POR COBERTURA DE DESPENSA DE CASA
+        if (totalIngredients > 0) {
+          const coverage = matchedPantryNames.length / totalIngredients;
+          if (coverage === 1.0) {
+            score += 220; // 100% de ingredientes en casa: prioridad indiscutible!
+          } else if (coverage >= 0.75) {
+            score += 120;
+          } else if (coverage >= 0.50) {
+            score += 60;
+          }
+        }
+
+        // Regla de Variedad: penalizar repetición de proteína principal o plato
         const lastTag = usedMainTags.length > 0 ? usedMainTags[usedMainTags.length - 1] : null;
         if (lastTag && lastTag === recipe.mainTag) {
-          score -= 55;
+          score -= 60;
         }
         const timesUsed = usedRecipeIds.filter(id => id === recipe.id).length;
-        score -= timesUsed * 45;
+        score -= timesUsed * 50;
 
-        // Regla 4: Equilibrio nutricional experto (verdura, fruta, fibra y densidad proteica)
-        if (recipe.hasVeg) score += 22;
-        if (recipe.hasFruit) score += 15;
-        if (recipe.fiber >= 7) score += 16;
+        // Regla Nutricional: verdura diaria, fruta, fibra prebiótica
+        if (recipe.hasVeg) score += 25;
+        if (recipe.hasFruit) score += 18;
+        if (recipe.fiber >= 7) score += 18;
 
-        // Preferencias manuales del usuario (ej. "sin pescado", "económico", "mate", "asado", "vegetariano")
+        // Preferencias del usuario en texto libre
         if (customFilterText) {
           const lower = customFilterText.toLowerCase();
-          if (lower.includes('sin pescado') && recipe.mainTag.includes('pescado')) score -= 200;
-          if ((lower.includes('económico') || lower.includes('barato') || lower.includes('ahorro')) && missingCost > 3) score -= 40;
-          if (lower.includes('mate') && recipe.title.toLowerCase().includes('mate')) score += 30;
-          if (lower.includes('argentin') && recipe.region === 'argentina') score += 35;
-          if (lower.includes('españ') && recipe.region === 'espana') score += 35;
-          if (lower.includes(recipe.mainTag)) score += 30;
+          if (lower.includes('sin pescado') && recipe.mainTag.includes('pescado')) score -= 300;
+          if ((lower.includes('económico') || lower.includes('barato') || lower.includes('casa') || lower.includes('despensa')) && missingItemsCount === 0) score += 70;
+          if (lower.includes('mate') && recipe.title.toLowerCase().includes('mate')) score += 35;
+          if (lower.includes('argentin') && recipe.region === 'argentina') score += 40;
+          if (lower.includes('españ') && recipe.region === 'espana') score += 40;
+          if (lower.includes(recipe.mainTag)) score += 35;
         }
 
         return {
           recipe,
           score,
           matchedPantryNames,
-          missingCost
+          missingCost,
+          missingItemsCount,
+          isFullPantry: totalIngredients > 0 && matchedPantryNames.length === totalIngredients,
+          pantryCoveragePct: totalIngredients > 0 ? Math.round((matchedPantryNames.length / totalIngredients) * 100) : 0
         };
       },
 
@@ -3060,7 +3404,7 @@
           const dnCandidates = LOCAL_RECIPES_DB.dinners
             .map(r => {
               const s = this.scoreRecipe(r, usedDinnerTags, usedRecipeIds, customPrompt);
-              if (r.mainTag === chosenLn.recipe.mainTag) s.score -= 50;
+              if (r.mainTag === chosenLn.recipe.mainTag) s.score -= 60;
               return s;
             })
             .sort((a, b) => b.score - a.score);
@@ -3071,10 +3415,17 @@
           usedRecipeIds.push(chosenBf.recipe.id, chosenLn.recipe.id, chosenDn.recipe.id);
 
           const dailySelections = [chosenBf, chosenLn, chosenSn, chosenDn];
+          const dailyPantryMatches = new Set();
+          let dailyMissingCount = 0;
+
           dailySelections.forEach(sel => {
-            sel.matchedPantryNames.forEach(n => allPantryUsed.add(n));
+            sel.matchedPantryNames.forEach(n => {
+              allPantryUsed.add(n);
+              dailyPantryMatches.add(n);
+            });
             (sel.recipe.ingredients || []).forEach(ing => {
               if (!this.hasInPantry(ing.keyword)) {
+                dailyMissingCount++;
                 if (!requiredIngredientsMap.has(ing.name)) {
                   const catItem = findCatalogItem(ing.name);
                   requiredIngredientsMap.set(ing.name, {
@@ -3096,9 +3447,17 @@
           const scaledKcal = Math.round((rawKcal + targets.kcal) / 2);
           const totalFiber = Math.max(targets.fiber, chosenBf.recipe.fiber + chosenLn.recipe.fiber + chosenSn.recipe.fiber + chosenDn.recipe.fiber);
 
+          const isFullHome = dailyMissingCount === 0;
+          const pantryArr = Array.from(dailyPantryMatches);
+          const pantryBadge = isFullHome
+            ? '100% con lo que tienes en casa (0 € extra)'
+            : (pantryArr.length > 0 ? `🏠 ${pantryArr.length} prod. de tu casa (${pantryArr.slice(0, 3).join(', ')})` : 'Prioridad Despensa');
+
           generatedDays.push({
             day: dayNames[i] || `Día ${i + 1}`,
             macros: `~${scaledProt}g Prot · ${scaledKcal} kcal · ${totalFiber}g Fibra`,
+            pantryBadge,
+            isFullHome,
             breakfast: chosenBf.recipe.title,
             lunch: chosenLn.recipe.title,
             snack: chosenSn.recipe.title,
@@ -3111,8 +3470,8 @@
         const storeName = (appState.config?.supermarket || 'Mercadona Castellón').split('(')[0].trim();
         const summaryParts = [
           `<strong>Nutricionista Experta Local (Hábitos ${habitName}):</strong> Menú de ${daysCount} días adaptado a tu perfil (<strong>~${targets.prot}g Prot · ${targets.kcal} kcal/día</strong>) y precios de <strong>${storeName}</strong>.`,
-          allPantryUsed.size > 0 ? `Aprovecha <strong>${allPantryUsed.size} productos que ya tienes en tu despensa</strong> (${Array.from(allPantryUsed).slice(0, 6).join(', ')}).` : '',
-          `Garantiza distribución proteica en 4 ingestas, <strong>verdura diaria</strong> en almuerzos y cenas, <strong>fruta diaria</strong> y <strong>fibra ≥${targets.fiber}g</strong>.`
+          allPantryUsed.size > 0 ? `Prioriza masivamente <strong>${allPantryUsed.size} alimentos disponibles en tu propia casa</strong> (${Array.from(allPantryUsed).slice(0, 7).join(', ')}).` : '',
+          `Garantiza distribución proteica óptima en 4 ingestas, <strong>verdura diaria</strong> en almuerzos y cenas, <strong>fruta diaria</strong> y <strong>fibra ≥${targets.fiber}g</strong>.`
         ].filter(Boolean).join(' ');
 
         return {
